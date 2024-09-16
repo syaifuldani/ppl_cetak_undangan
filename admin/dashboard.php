@@ -21,28 +21,28 @@ $title = "Plee ART";
             </div>
             <ul>
                 <li>
-                    <button class="dashboard-button">
-                        <a href="dashboard.php">
+                    <a href="dashboard.php">
+                        <button class="dashboard-button">
                             <img src="./style/img/dashboard.png" alt="Logo">
                             <span>Dashboard</span>
-                        </a>
-                    </button>
+                        </button>
+                    </a>
                 </li>
                 <li>
-                    <button class="dashboard-button">
-                        <a href="./product.php">
+                    <a href="./product.php">
+                        <button class="dashboard-button">
                             <img src="./style/img/produk.png" alt="Logo">
                             <span>All Product</span>
-                        </a>
-                    </button>
+                        </button>
+                    </a>
                 </li>
                 <li>
-                    <button class="dashboard-button">
-                        <a href="./orderlist.php">
+                    <a href="./orderlist.php">
+                        <button class="dashboard-button">
                             <img src="./style/img/order.png" alt="Logo">
                             <span>Order List</span>
-                        </a>
-                    </button>
+                        </button>
+                    </a>
                 </li>
             </ul>
             <div class="categories">
@@ -86,8 +86,12 @@ $title = "Plee ART";
                     <button>Bulan</button>
                     <button>Tahunan</button>
                 </div>
-                <div class="chart">
 
+                <!-- Cart -->
+                <div class="chart">
+                    <canvas id="myChart1"></canvas>
+
+                    <canvas id="myChart2"></canvas>
                 </div>
             </section>
 
@@ -146,6 +150,65 @@ $title = "Plee ART";
             </section>
         </main>
     </div>
+    <script src="../node_modules/chart.js/dist/chart.umd.js"></script>
+    <script>
+        const xValues1 = [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150];
+        const yValues1 = [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
+
+        new Chart("myChart1", {
+            type: "line",
+            data: {
+                labels: xValues1,
+                datasets: [{
+                    backgroundColor: "rgba(0,0,255,1.0)",
+                    borderColor: "rgba(0,0,255,0.1)",
+                    data: yValues1
+                }]
+            },
+            options: {
+                maintainAspectRatio: false, // Prevent chart from resizing
+                responsive: false, // Disable responsiveness
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            min: 6,
+                            max: 16
+                        }
+                    }],
+                }
+            }
+        });
+
+
+        var xValues2 = ["Italy", "France", "Spain", "USA", "Argentina"];
+        var yValues2 = [55, 49, 44, 24, 15];
+        var barColors = ["red", "green", "blue", "orange", "brown"];
+
+        new Chart("myChart2", {
+            type: "bar",
+            data: {
+                labels: xValues2,
+                datasets: [{
+                    backgroundColor: barColors,
+                    data: yValues2
+                }]
+            },
+            options: {
+                maintainAspectRatio: false, // Prevent chart from resizing
+                responsive: false, // Disable responsiveness
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: "World Wine Production 2018"
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>

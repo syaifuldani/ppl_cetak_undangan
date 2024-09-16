@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order List</title>
     <link rel="stylesheet" href="./style/style.css">
 </head>
+
 <body>
     <div class="container">
         <div class="sidebar">
@@ -15,28 +17,28 @@
             </div>
             <ul>
                 <li>
-                    <button class="dashboard-button">
                     <a href="./dashboard.php">
-                        <img src="./style/img/dashboard.png" alt="Logo">
-                        <span>Dashboard</span>
+                        <button class="dashboard-button">
+                            <img src="./style/img/dashboard.png" alt="Logo">
+                            <span>Dashboard</span>
+                        </button>
                     </a>
-                    </button>
                 </li>
                 <li>
-                    <button class="dashboard-button">
                     <a href="./product.php">
-                        <img src="./style/img/produk.png" alt="Logo">
-                        <span>All Product</span>
+                        <button class="dashboard-button">
+                            <img src="./style/img/produk.png" alt="Logo">
+                            <span>All Product</span>
+                        </button>
                     </a>
-                    </button>
                 </li>
                 <li>
-                    <button class="dashboard-button">
                     <a href="orderlist.php">
-                        <img src="./style/img/order.png" alt="Logo">
-                        <span>Order List</span>
+                        <button class="dashboard-button">
+                            <img src="./style/img/order.png" alt="Logo">
+                            <span>Order List</span>
+                        </button>
                     </a>
-                    </button>
                 </li>
             </ul>
             <div class="categories">
@@ -49,17 +51,17 @@
             </div>
         </div>
         <div class="main">
-        <header class="header">
-            <h2>Dashboard</h2>
-            <div class="date">Oct 11, 2023 - Nov 11, 2022</div>
-            <div class="admin-dropdown">
-                <button class="dropdown-toggle">Admin ▼</button>
-                <ul class="dropdown-menu">
-                    <li><a href="./profile/profile.php">Profile</a></li>
-                    <li><a href="#">Logout</a></li>
-                </ul>
-            </div>
-         </header>
+            <header class="header">
+                <h2>Dashboard</h2>
+                <div class="date">Oct 11, 2023 - Nov 11, 2022</div>
+                <div class="admin-dropdown">
+                    <button class="dropdown-toggle">Admin ▼</button>
+                    <ul class="dropdown-menu">
+                        <li><a href="./profile/profile.php">Profile</a></li>
+                        <li><a href="#">Logout</a></li>
+                    </ul>
+                </div>
+            </header>
             <div class="content">
                 <h3>Riwayat Penjualan</h3>
                 <table class="table">
@@ -156,4 +158,5 @@
     </div>
     <script src="https://kit.fontawesome.com/your-font-awesome-kit-id.js" crossorigin="anonymous"></script>
 </body>
+
 </html>
