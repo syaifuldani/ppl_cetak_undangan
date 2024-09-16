@@ -1,0 +1,838 @@
+/* Dashboard stylesheet */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #ffffff;
+}
+
+.container {
+    display: flex;  
+    min-height: 100vh;
+}
+
+.sidebar {
+    background-color: #2b2b2b;
+    color: rgb(125, 122,     122);
+    width: 100%;
+    padding: 50px;
+}
+.p{
+    color: #1a1a1a;
+}
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    align-content: center;
+    
+}
+.sidebar .logo span{
+    color: rgb(0, 0, 0);
+    font-size: 20px;
+}
+.sidebar nav ul {
+    list-style: none;
+}
+
+.sidebar nav ul li {
+    margin: 40px 0;
+}
+
+.sidebar nav ul li a {
+    color: rgb(106, 106, 106);
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar nav ul li a:hover {
+    background-color: #1a1a1a;
+}
+.dashboard-button {
+    background-color: #4da7f1; /* Warna latar belakang tombol */
+    color: rgb(255, 255, 255); /* Warna teks tombol */
+    padding: 10px 50px; /* Padding tombol */
+    border: none; /* Menghilangkan border */
+    border-radius: 5px; /* Memberikan efek rounded corner */
+    cursor: pointer; /* Menampilkan cursor pointer ketika mouse di atas tombol */
+    display: flex; /* Mengatur elemen di dalam tombol agar sejajar */
+    align-items: center; /* Menyejajarkan elemen secara vertikal */
+}
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header .date {
+    font-size: 14px;
+    color: #666;
+    margin-left: auto; /* Mendorong elemen ke kanan */
+}
+
+.header .admin-dropdown button {
+    background-color: #f4f4f4;
+    border: 1px solid #ccc;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.dashboard-cards {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 10;
+}
+
+.card {
+    background-color: rgb(38, 201, 51);
+    padding: 20px;
+    width: 48%;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+    margin-bottom: 10px;
+}
+
+.chart-section {
+    margin: 20px 0;
+}
+
+.chart-controls button {
+    background-color: #ddd;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.chart {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.sales-section {
+    margin: 20px 0;
+}
+
+.sales-list {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.sales-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.sales-list button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.recent-orders {
+    margin-top: 20px;
+}
+
+.recent-orders table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.recent-orders th, .recent-orders td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.recent-orders th {
+    background-color: #f4f4f4;
+}
+
+.recent-orders td {
+    background-color: white;
+}
+
+.recent-orders tr:hover {
+    background-color: #f9f9f9;
+}
+/* Drop down menu */
+/* General header styles */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.header .date {
+    font-size: 14px;
+    color: #666;
+}
+
+.admin-dropdown {
+    position: relative;
+}
+
+.dropdown-toggle {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.dropdown-toggle:hover {
+    background-color: #0056b3;
+}
+
+/* Dropdown menu styles */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 0 0 0;
+    width: 150px;
+}
+
+.admin-dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu li {
+    border-bottom: 1px solid #ddd;
+}
+
+.dropdown-menu li:last-child {
+    border-bottom: none;
+}
+
+.dropdown-menu li a {
+    display: block;
+    padding: 10px 15px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.dropdown-menu li a:hover {
+    background-color: #f1f1f1;
+}
+
+/* style product */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    background-color: #2b2b2b;
+    color: white;
+    width: 240px;
+    padding: 20px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.sidebar nav ul {
+    list-style: none;
+}
+
+.sidebar nav ul li {
+    margin: 20px 0;
+}
+
+.sidebar nav ul li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar nav ul li a:hover {
+    background-color: #1a1a1a;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h2 {
+    font-size: 24px;
+}
+
+.admin-dropdown button,
+.add-product {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.add-product {
+    background-color: #28a745;
+}
+
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.product-item {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.product-item img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.product-details {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.product-details h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.product-details p {
+    margin-bottom: 10px;
+    color: #666;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding-top: 10px;
+    font-size: 14px;
+    color: #888;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination a,
+.pagination span {
+    padding: 10px;
+    margin: 0 5px;
+    border: 1px solid #ddd;
+    color: #007bff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.pagination a:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Product details stylesheet */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    background-color: #2b2b2b;
+    color: white;
+    width: 240px;
+    padding: 20px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.sidebar nav ul {
+    list-style: none;
+}
+
+.sidebar nav ul li {
+    margin: 20px 0;
+}
+
+.sidebar nav ul li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar nav ul li a:hover {
+    background-color: #1a1a1a;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h2 {
+    font-size: 24px;
+}
+
+.admin-dropdown button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.product-detail form {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.form-group {
+    margin-bottom: 5px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input, 
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+.price-group {
+    display: flex;
+    gap: 20px;
+}
+
+.price-field {
+    flex: 1;
+}
+
+.product-gallery {
+    text-align: center;
+}
+
+.product-gallery label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.image-upload {
+    border: 2px dashed #ddd;
+    padding: 20px;
+    border-radius: 5px;
+    position: relative;
+    height: 300px;
+}
+
+.image-upload img {
+    max-height: 200px;
+    margin-bottom: 10px;
+}
+
+.image-upload input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 50%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.image-upload p {
+    color: #888;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-update {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-cancel {
+    background-color: #6c757d;
+    color: white;
+}
+
+/* Adjust the order of form elements */
+.product-detail form {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+/* Order of the form elements within the grid */
+.product-detail form > .form-group:nth-child(1) { /* Nama Produk */
+    grid-row: 1;
+}
+
+.product-detail form > .form-group:nth-child(2) { /* Deskripsi */
+    grid-row: 2;
+}
+
+.product-detail form > .form-group:nth-child(3) { /* Kategori */
+    grid-row: 3;
+}
+
+.product-detail form > .form-group:nth-child(4) { /* Nama Brand */
+    grid-row: 4;
+}
+
+.product-detail form > .form-group:nth-child(5) { /* Jumlah Stok */
+    grid-row: 5;
+}
+
+.product-detail form > .form-group:nth-child(6) { /* Harga Produk */
+    grid-row: 6;
+}
+
+.product-detail form > .form-group:nth-child(7) { /* Harga Jual */
+    grid-row: 7;
+}
+
+/* Responsive adjustments for smaller screens */
+@media screen and (max-width: 768px) {
+    .product-detail form {
+        grid-template-columns: 1fr; /* Stack form elements vertically */
+    }
+}
+/* Orderlist stylesheet */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color:rgb(238 238 238);
+    height: 100%;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+    
+}
+
+.sidebar {
+    width: 260px;
+    background-color: #ffffff;
+
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.logo img {
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+    border-radius: 50%;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.sidebar ul li a {
+    display: block;
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.sidebar ul li a i {
+    margin-right: 10px;
+}
+
+.sidebar ul li.active a {
+    color: #007bff;
+}
+
+.categories {
+    margin-top: 20px;
+}
+
+.categories h4 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.categories ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.categories ul li {
+    padding: 5px 0;
+}
+
+.categories ul li a {
+    display: block;
+    color: #666;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.categories ul li a:hover {
+    color: #333;
+}
+
+.main {
+    flex: 1;
+    padding: 20px;
+    background-color: #a8fbff;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h2 {
+    margin: 0;
+    color: #333;
+}
+
+.header span {
+    font-size: 14px;
+    color: #666;
+}
+
+.date {
+    display: flex;
+    align-items: center;
+}
+
+.date i {
+    margin-right: 5px;
+    color: #666;
+}
+
+.content {
+    padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+}
+
+.content h3 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.table th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+.table td img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.table td span {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.delivered {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.canceled {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.pagination {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.pagination ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pagination ul li {
+    display: inline-block;
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: 1px solid #eee;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.pagination ul li.active {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.pagination ul li a {
+    text-decoration: none;
+    color: #333;
+}
+
+.pagination ul li a:hover {
+    color: #fff;
+}
+
+/* Profile stylesheet */
