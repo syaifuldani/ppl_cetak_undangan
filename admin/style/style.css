@@ -15,12 +15,6 @@ body {
     min-height: 100vh;
 }
 
-.sidebar {
-    background-color: #2b2b2b;
-    color: rgb(125, 122, 122);
-    width: 100%;
-    padding: 50px;
-}
 .p {
     color: #1a1a1a;
 }
@@ -30,6 +24,14 @@ body {
     margin-bottom: 20px;
     align-content: center;
 }
+
+.sidebar {
+    background-color: #2b2b2b;
+    color: rgb(125, 122, 122);
+    width: 100%;
+    padding: 50px;
+}
+
 .sidebar .logo span {
     color: rgb(0, 0, 0);
     font-size: 20px;
@@ -54,14 +56,26 @@ body {
     background-color: #1a1a1a;
 }
 .dashboard-button {
-    background-color: #4da7f1; /* Warna latar belakang tombol */
-    color: rgb(255, 255, 255); /* Warna teks tombol */
-    padding: 10px 50px; /* Padding tombol */
-    border: none; /* Menghilangkan border */
-    border-radius: 5px; /* Memberikan efek rounded corner */
-    cursor: pointer; /* Menampilkan cursor pointer ketika mouse di atas tombol */
-    display: flex; /* Mengatur elemen di dalam tombol agar sejajar */
-    align-items: center; /* Menyejajarkan elemen secara vertikal */
+    background-color: #4da7f1;
+    /*Warnalatarbelakangtombol*/
+    color: rgb(255, 255, 255);
+    /*Warnatekstombol*/
+    padding: 10px 50px;
+    /*Paddingtombol*/
+    border: none;
+    /*Menghilangkanborder*/
+    border-radius: 5px;
+    /*Memberikanefekroundedcorner*/
+    cursor: pointer;
+    /*Menampilkancursorpointerketikamousediatastombol*/
+    display: flex;
+    /*Mengaturelemendidalamtombolagarsejajar*/
+    align-items: center;
+    /* Menyejajarkan elemen secara vertikal */
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
 }
 .main-content {
     flex-grow: 1;
@@ -89,16 +103,18 @@ body {
 
 .dashboard-cards {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     margin: 20px 10;
 }
 
 .card {
-    background-color: rgb(38, 201, 51);
-    padding: 20px;
-    width: 48%;
+    background-color: rgb(255, 179, 0);
+    padding: 10px;
+    width: 20%;
     border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+    box-shadow: 10px 8px 6px rgba(0, 0, 0, 0.1);
+    margin: 10px;
 }
 
 .card h3 {
@@ -115,13 +131,28 @@ body {
     padding: 10px;
     cursor: pointer;
     margin-right: 10px;
+    margin-top: 6px;
 }
-
 .chart {
+    display: flex; /* Align canvases side by side */
+    justify-content: space-between; /* Space between charts */
     background-color: white;
     padding: 20px;
-    border-radius: 10px;
+    gap: 20px;
+    border-radius: 8px;
     margin-top: 10px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+}
+
+.chart canvas {
+    width: 650px !important; /* Fixed width */
+    height: 340px !important; /* Fixed height */
+    background-color: #f9f9f9; /* Optional background color for visibility */
+    padding: 10px;
+    border-radius: 8px;
 }
 
 .sales-section {
@@ -130,8 +161,13 @@ body {
 
 .sales-list {
     background-color: white;
-    padding: 20px;
-    border-radius: 10px;
+    padding: 14px;
+    margin-top: 6px;
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
 }
 
 .sales-item {
@@ -154,11 +190,14 @@ body {
 
 .recent-orders table {
     width: 100%;
-    border-collapse: collapse;
     background-color: white;
-    padding: 20px;
-    border-radius: 10px;
+    padding: 14px;
+    border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
 }
 
 .recent-orders th,
@@ -210,6 +249,7 @@ body {
     background-color: #007bff;
     color: white;
     border: none;
+    margin-left: 9px;
     border-radius: 8px;
     cursor: pointer;
 }
@@ -293,11 +333,6 @@ body {
     background-color: #f4f4f4;
 }
 
-.container {
-    display: flex;
-    min-height: 100vh;
-}
-
 .sidebar {
     background-color: #2b2b2b;
     color: white;
@@ -309,10 +344,6 @@ body {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 20px;
-}
-
-.sidebar nav ul {
-    list-style: none;
 }
 
 .sidebar nav ul li {
@@ -334,6 +365,10 @@ body {
 .main-content {
     flex-grow: 1;
     padding: 20px;
+    width: calc(100% - 250px);
+    height: 100vh;
+    overflow-y: auto;
+    box-sizing: border-box;
 }
 
 .header {
@@ -369,11 +404,15 @@ body {
 .product-item {
     background-color: white;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     align-items: center;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
 }
 
 .product-item img {
@@ -439,11 +478,6 @@ body {
     background-color: #f4f4f4;
 }
 
-.container {
-    display: flex;
-    min-height: 100vh;
-}
-
 .sidebar {
     background-color: #2b2b2b;
     color: white;
@@ -479,7 +513,8 @@ body {
 
 .main-content {
     flex-grow: 1;
-    padding: 20px;
+    padding: 30px;
+    background-color: #b9dbfb;
 }
 
 .header {
@@ -666,6 +701,7 @@ body {
 .container {
     display: flex;
     height: 100vh;
+    overflow: hidden;
 }
 
 .sidebar {
@@ -744,8 +780,8 @@ body {
 
 .main {
     flex: 1;
-    padding: 20px;
-    background-color: #a8fbff;
+    padding: 50px;
+    background-color: #9ac8f4;
 }
 
 .header {
@@ -776,19 +812,20 @@ body {
 }
 
 .content {
-    padding: 20px;
-    border: 1px solid #eee;
-    border-radius: 5px;
+    padding: 50px;
+    border: 15px solid #ffffff;
+    border-radius: 10px;
 }
 
 .content h3 {
     margin-bottom: 20px;
-    color: #333;
+    color: #000000;
 }
 
 .table {
     width: 100%;
     border-collapse: collapse;
+    background-color: #ccc;
 }
 
 .table th,

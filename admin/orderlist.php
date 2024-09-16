@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order List</title>
     <link rel="stylesheet" href="./style/style.css">
 </head>
+
 <body>
     <div class="container">
         <div class="sidebar">
@@ -15,51 +17,51 @@
             </div>
             <ul>
                 <li>
-                    <button class="dashboard-button">
                     <a href="./dashboard.php">
-                        <img src="./style/img/dashboard.png" alt="Logo">
-                        <span>Dashboard</span>
+                        <button class="dashboard-button">
+                            <img src="./style/img/dashboard.png" alt="Logo">
+                            <span>Dashboard</span>
+                        </button>
                     </a>
-                    </button>
                 </li>
                 <li>
-                    <button class="dashboard-button">
                     <a href="./product.php">
-                        <img src="./style/img/produk.png" alt="Logo">
-                        <span>All Product</span>
+                        <button class="dashboard-button">
+                            <img src="./style/img/produk.png" alt="Logo">
+                            <span>All Product</span>
+                        </button>
                     </a>
-                    </button>
                 </li>
                 <li>
-                    <button class="dashboard-button">
                     <a href="orderlist.php">
-                        <img src="./style/img/order.png" alt="Logo">
-                        <span>Order List</span>
+                        <button class="dashboard-button">
+                            <img src="./style/img/order.png" alt="Logo">
+                            <span>Order List</span>
+                        </button>
                     </a>
-                    </button>
                 </li>
             </ul>
             <div class="categories">
                 <h4>Categories</h4>
                 <ul>
-                    <li><a href="#">Undangan Pernikahan</a></li>
-                    <li><a href="#">Undangan Khitan</a></li>
-                    <li><a href="#">Undangan Tahlil</a></li>
+                    <li><a href="./undangan_pernikahan.php">Undangan Pernikahan</a></li>
+                    <li><a href="./undangan_khitan.php">Undangan Khitan</a></li>
+                    <li><a href="./undangan_tahlil.php">Undangan Tahlil</a></li>
                 </ul>
             </div>
         </div>
         <div class="main">
-        <header class="header">
-            <h2>Dashboard</h2>
-            <div class="date">Oct 11, 2023 - Nov 11, 2022</div>
-            <div class="admin-dropdown">
-                <button class="dropdown-toggle">Admin ▼</button>
-                <ul class="dropdown-menu">
-                    <li><a href="./profile/profile.php">Profile</a></li>
-                    <li><a href="#">Logout</a></li>
-                </ul>
-            </div>
-         </header>
+            <header class="header">
+                <h2>Dashboard</h2>
+                <div class="date">Oct 11, 2023 - Nov 11, 2022</div>
+                <div class="admin-dropdown">
+                    <button class="dropdown-toggle">Admin ▼</button>
+                    <ul class="dropdown-menu">
+                        <li><a href="./profile/profile.php">Profile</a></li>
+                        <li><a href="#">Logout</a></li>
+                    </ul>
+                </div>
+            </header>
             <div class="content">
                 <h3>Riwayat Penjualan</h3>
                 <table class="table">
@@ -138,15 +140,6 @@
                             <td><span class="canceled">Canceled</span></td>
                             <td>₹200.00</td>
                         </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>Undangan Tahlil</td>
-                            <td>#25421</td>
-                            <td>Nov 1st, 2023</td>
-                            <td><img src="priyanka.jpg" alt="Priyanka"> Priyanka</td>
-                            <td><span class="delivered">Delivered</span></td>
-                            <td>₹200.00</td>
-                        </tr>
                     </tbody>
                 </table>
                 <div class="pagination">
@@ -165,4 +158,5 @@
     </div>
     <script src="https://kit.fontawesome.com/your-font-awesome-kit-id.js" crossorigin="anonymous"></script>
 </body>
+
 </html>
