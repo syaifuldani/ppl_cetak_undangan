@@ -1,0 +1,312 @@
+.container {
+    max-width: 1200vh; 
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.product-detail {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.image-gallery {
+    flex: 1;
+}
+
+.image-zoom {
+    width: 600px;
+    height: 600px;
+    border: 1px solid #ccc;
+    overflow: hidden;
+    position: relative;
+}
+
+#mainImage {
+    transition: transform 0.5s ease; /* Transisi saat zoom in dan zoom out */
+}
+
+.main-image img {
+    width: 100%;
+    height: 100%;
+}
+
+.thumbnail-images {
+    display: flex;
+    margin-top: 10px;
+}
+
+.thumbnail-images img {
+    width: 80px;
+    height: auto;
+    margin-right: 10px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+}
+
+.thumbnail-images img:hover {
+    border-color: #74C69D;
+}
+
+.product-info {
+    flex: 1;
+    padding-left: 10px;
+    max-width: 100%; /* Pastikan lebar tidak melebar */
+    overflow: hidden; 
+}
+
+.product-info h2 {
+    margin-top: 20px;
+}
+
+h1 {
+    margin-bottom: 10px;
+}
+
+.price {
+    font-size: 24px;
+    color: #28a745;
+    margin-bottom: 20px;
+}
+
+.description {
+    background-color: #f1f1f1;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    word-wrap: break-word;
+}
+
+.description p {
+    font-weight: none;
+    max-width: 100%;
+    overflow-wrap: break-word;
+}
+
+.quantity {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.quantity button {
+    padding: 10px;
+    background-color: #81d8ad;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    width: 30px;
+    text-align: center;
+}
+
+.quantity button:hover {
+    background-color: #74C69D;
+}
+
+.quantity input {
+    width: 50px;
+    text-align: center;
+    border: 1px solid #ccc;
+    margin: 0 10px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.order-btn {
+    background-color: #81d8ad;
+    text-align: center;
+    text-decoration: none;
+    margin-left: 10px;
+    color: white;
+    padding: 8px ;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    width: 100%;
+    border-radius: 5px;
+}
+
+.order-btn:hover {
+    background-color: #74C69D;;
+}
+
+
+/* Style Product */
+.product-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+    margin-bottom: 5%;
+    padding: 0 20px;
+}
+
+.product-card {
+    display: flex;
+    flex-direction: column; 
+    justify-content: space-between; 
+    border: 1px solid #ddd;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 3px;
+    max-width: 250px;
+    padding-bottom: 3%;
+    height: 100%;
+}
+
+.product-card .product {
+    border-radius: 3px 3px 0 0;
+    width: 100%;
+    height: 250px;
+}
+
+.product-card a{
+    text-decoration: none;
+}
+
+.product-name, .product-price {
+    text-align: left;
+    margin: 3%;
+}
+
+.product-price {
+    margin-top: auto;
+    justify-content: center;
+}
+
+.product-name {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.detail-button {
+    background-color: #81d8ad;
+    border-radius: 3px;
+    color: white;
+    border: none;
+    padding: 8px;
+    margin-right: 8px;
+    margin-left: 8px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    margin-top: auto; 
+    font-size: 1rem;
+}
+
+.detail-button:hover {
+    background-color: #74C69D;
+}
+
+.cart-icon {
+    width: 16px; 
+    height: 16px;
+}
+
+/* Ulasan Style */
+.reviews-product {
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 3px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-height: 700px;
+    overflow-x: hidden;
+    word-wrap: break-word;
+}
+
+.reviews {
+    margin-top: 20px;
+}
+
+h3 {
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.additional-info p, .reviews p {
+    font-size: 10px;
+}
+
+.review-item {
+    margin-top: 20px;
+}
+
+.review-item strong {
+    font-size: 18px;
+}
+
+.review-item p {
+    font-size: 15px;
+    color: #555;
+}
+
+.review-item .rating {
+    color: #ffcc00;
+}
+
+
+/* Overlay styling */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay-content {
+    background: white;
+    padding: 20px;
+    border-radius: 3px;
+    text-align: center;
+}
+
+.overlay-content p {
+    padding: 10px;
+}
+
+.checkmark-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.checkmark-circle {
+    background-color: #74C69D;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.checkmark {
+    color: white;
+    font-size: 24px;
+}
+
+.btn-lanjut {
+    background-color: #74C69D;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 3px;
+    display: inline-block;
+}
