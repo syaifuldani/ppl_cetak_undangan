@@ -133,7 +133,14 @@ $title = "Plee ART";
                             <td>#25425</td>
                             <td>Nov 8th, 2023</td>
                             <td>Kavin</td>
-                            <td>Delivered</td>
+                            <td>
+                                <select id="cars">
+                                    <option value="Terkirim">Terkirim</option>
+                                    <option value="Pengemasan">Pengemasan</option>
+                                    <option value="Selesai">Selesai</option>
+                                    <option value="Dibatalkan">Dibatalkan</option>
+                                </select>
+                            </td>
                             <td>₹200.00</td>
                         </tr>
                         <tr>
@@ -141,7 +148,14 @@ $title = "Plee ART";
                             <td>#25423</td>
                             <td>Nov 6th, 2023</td>
                             <td>Komal</td>
-                            <td>Cancelled</td>
+                            <td>
+                                <select id="cars">
+                                    <option value="Terkirim">Terkirim</option>
+                                    <option value="Pengemasan">Pengemasan</option>
+                                    <option value="Selesai">Selesai</option>
+                                    <option value="Dibatalkan">Dibatalkan</option>
+                                </select>
+                            </td>
                             <td>₹200.00</td>
                         </tr>
                         <!-- Add more rows as needed -->
