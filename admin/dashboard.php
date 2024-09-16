@@ -1,15 +1,20 @@
+<?php
+$title = "Plee ART";
+?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title><?= $title ?></title>
     <link rel="stylesheet" href="./style/style.css">
 </head>
+
 <body>
     <div class="container">
-    <div class="sidebar">
+        <div class="sidebar">
             <div class="logo">
                 <img src="./style/img/logo.png" alt="Logo">
                 <span>PLEE.ART</span>
@@ -17,26 +22,26 @@
             <ul>
                 <li>
                     <button class="dashboard-button">
-                    <a href="dashboard.php">
-                        <img src="./style/img/dashboard.png" alt="Logo">
-                        <span>Dashboard</span>
-                    </a>
+                        <a href="dashboard.php">
+                            <img src="./style/img/dashboard.png" alt="Logo">
+                            <span>Dashboard</span>
+                        </a>
                     </button>
                 </li>
                 <li>
                     <button class="dashboard-button">
-                    <a href="./product.php">
-                        <img src="./style/img/produk.png" alt="Logo">
-                        <span>All Product</span>
-                    </a>
+                        <a href="./product.php">
+                            <img src="./style/img/produk.png" alt="Logo">
+                            <span>All Product</span>
+                        </a>
                     </button>
                 </li>
                 <li>
                     <button class="dashboard-button">
-                    <a href="./orderlist.php">
-                        <img src="./style/img/order.png" alt="Logo">
-                        <span>Order List</span>
-                    </a>
+                        <a href="./orderlist.php">
+                            <img src="./style/img/order.png" alt="Logo">
+                            <span>Order List</span>
+                        </a>
                     </button>
                 </li>
             </ul>
@@ -51,18 +56,17 @@
         </div>
 
         <main class="main-content">
-        <header class="header">
-            <h2>Dashboard</h2>
-            <div class="date">Oct 11, 2023 - Nov 11, 2022</div>
-            <div class="admin-dropdown">
-                <button class="dropdown-toggle">Admin ▼</button>
-                <ul class="dropdown-menu">
-                    <li><a href="../profile/profile.php">Profile</a></li>
-                    <li><a href="#">Logout</a></li>
-                </ul>
-            </div>
-         </header>
-
+            <header class="header">
+                <h2>Dashboard</h2>
+                <div class="date">Oct 11, 2023 - Nov 11, 2022</div>
+                <div class="admin-dropdown">
+                    <button class="dropdown-toggle">Admin ▼</button>
+                    <ul class="dropdown-menu">
+                        <li><a href="../profile/profile.php">Profile</a></li>
+                        <li><a href="#">Logout</a></li>
+                    </ul>
+                </div>
+            </header>
 
             <section class="dashboard-cards">
                 <div class="card">
@@ -85,7 +89,7 @@
                     <button>Tahunan</button>
                 </div>
                 <div class="chart">
-                  
+
                 </div>
             </section>
 
@@ -145,4 +149,5 @@
         </main>
     </div>
 </body>
+
 </html>
