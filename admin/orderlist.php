@@ -42,9 +42,9 @@
             <div class="categories">
                 <h4>Categories</h4>
                 <ul>
-                    <li><a href="#">Undangan Pernikahan</a></li>
-                    <li><a href="#">Undangan Khitan</a></li>
-                    <li><a href="#">Undangan Tahlil</a></li>
+                    <li><a href="./undangan_pernikahan.php">Undangan Pernikahan</a></li>
+                    <li><a href="./undangan_khitan.php">Undangan Khitan</a></li>
+                    <li><a href="./undangan_tahlil.php">Undangan Tahlil</a></li>
                 </ul>
             </div>
         </div>
@@ -136,15 +136,6 @@
                             <td>Nov 1st, 2023</td>
                             <td><img src="sunita.jpg" alt="Sunita"> Sunita</td>
                             <td><span class="canceled">Canceled</span></td>
-                            <td>₹200.00</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>Undangan Tahlil</td>
-                            <td>#25421</td>
-                            <td>Nov 1st, 2023</td>
-                            <td><img src="priyanka.jpg" alt="Priyanka"> Priyanka</td>
-                            <td><span class="delivered">Delivered</span></td>
                             <td>₹200.00</td>
                         </tr>
                     </tbody>
