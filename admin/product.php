@@ -42,15 +42,15 @@
             <div class="categories">
                 <h4>Categories</h4>
                 <ul>
-                    <li><a href="#">Undangan Pernikahan</a></li>
-                    <li><a href="#">Undangan Khitan</a></li>
-                    <li><a href="#">Undangan Tahlil</a></li>
+                    <li><a href="./undangan_pernikahan.php">Undangan Pernikahan</a></li>
+                    <li><a href="./undangan_khitan.php">Undangan Khitan</a></li>
+                    <li><a href="./undangan_tahlil.php">Undangan Tahlil</a></li>
                 </ul>
             </div>
         </div>
         <main class="main-content">
         <header class="header">
-            <h2>Dashboard</h2>
+            <h2>Produk</h2>
             <div class="date">Oct 11, 2023 - Nov 11, 2022</div>
             <div class="admin-dropdown">
                 <button class="dropdown-toggle">Admin ▼</button>
@@ -191,20 +191,7 @@
                             <span>Stok: 1269</span>
                         </div>
                     </div>
-                </div>
-                <div class="product-item">
-                    <img src="./style/img/undangan1.jpg" alt="Undangan Pernikahan">
-                    <div class="product-details">
-                        <h3>Lorem Ipsum</h3>
-                        <p>Undangan Pernikahan</p>
-                        <p>Rp. 10.000</p>
-                        <p>Summary: Lorem ipsum is placeholder text commonly used in the graphic.</p>
-                        <div class="stats">
-                            <span>Terjual: 1269</span>
-                            <span>Stok: 1269</span>
-                        </div>
-                    </div>
-                </div>   
+                </div>  
                 <!-- Ulangi div ini untuk produk lainnya -->
             </section>
 

@@ -154,7 +154,6 @@ body {
 
 .recent-orders table {
     width: 100%;
-    border-collapse: collapse;
     background-color: white;
     padding: 20px;
     border-radius: 10px;
@@ -479,7 +478,8 @@ body {
 
 .main-content {
     flex-grow: 1;
-    padding: 20px;
+    padding: 50px;
+    background-color: #c1c1c1;
 }
 
 .header {
@@ -744,8 +744,8 @@ body {
 
 .main {
     flex: 1;
-    padding: 20px;
-    background-color: #a8fbff;
+    padding: 50px;
+    background-color: #c1c1c1;
 }
 
 .header {
@@ -776,19 +776,20 @@ body {
 }
 
 .content {
-    padding: 20px;
-    border: 1px solid #eee;
-    border-radius: 5px;
+    padding: 50px;
+    border: 15px solid #ffffff;
+    border-radius: 10px;
 }
 
 .content h3 {
     margin-bottom: 20px;
-    color: #333;
+    color: #000000;
 }
 
 .table {
     width: 100%;
     border-collapse: collapse;
+    background-color: #ccc;
 }
 
 .table th,

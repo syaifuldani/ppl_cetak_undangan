@@ -48,9 +48,9 @@ $title = "Plee ART";
             <div class="categories">
                 <h4>Categories</h4>
                 <ul>
-                    <li><a href="#">Undangan Pernikahan</a></li>
-                    <li><a href="#">Undangan Khitan</a></li>
-                    <li><a href="#">Undangan Tahlil</a></li>
+                    <li><a href="./undangan_pernikahan.php">Undangan Pernikahan</a></li>
+                    <li><a href="./undangan_khitan.php">Undangan Khitan</a></li>
+                    <li><a href="./undangan_tahlil.php">Undangan Tahlil</a></li>
                 </ul>
             </div>
         </div>
@@ -72,12 +72,10 @@ $title = "Plee ART";
                 <div class="card">
                     <h3>Total Orders</h3>
                     <p>1</p>
-                    <small>Compared to Oct 2023</small>
                 </div>
                 <div class="card">
-                    <h3>Total Orders</h3>
+                    <h3>Pesanan Selesai</h3>
                     <p>0</p>
-                    <small>Compared to Oct 2022</small>
                 </div>
             </section>
 
