@@ -6,22 +6,22 @@
 }
 
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: "Arial", sans-serif;
     background-color: #ffffff;
 }
 
 .container {
-    display: flex;  
+    display: flex;
     min-height: 100vh;
 }
 
 .sidebar {
     background-color: #2b2b2b;
-    color: rgb(125, 122,     122);
+    color: rgb(125, 122, 122);
     width: 100%;
     padding: 50px;
 }
-.p{
+.p {
     color: #1a1a1a;
 }
 .logo {
@@ -29,9 +29,8 @@ body {
     font-weight: bold;
     margin-bottom: 20px;
     align-content: center;
-    
 }
-.sidebar .logo span{
+.sidebar .logo span {
     color: rgb(0, 0, 0);
     font-size: 20px;
 }
@@ -162,7 +161,8 @@ body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.recent-orders th, .recent-orders td {
+.recent-orders th,
+.recent-orders td {
     padding: 10px;
     text-align: left;
     border-bottom: 1px solid #ddd;
@@ -205,7 +205,6 @@ body {
 .admin-dropdown {
     position: relative;
 }
-
 .dropdown-toggle {
     padding: 10px 15px;
     background-color: #007bff;
@@ -220,6 +219,10 @@ body {
 }
 
 /* Dropdown menu styles */
+.admin-dropdown {
+    position: relative;
+}
+
 .dropdown-menu {
     display: none;
     position: absolute;
@@ -232,6 +235,26 @@ body {
     padding: 0;
     margin: 10px 0 0 0;
     width: 150px;
+}
+
+.admin-dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu li {
+    padding: 10px;
+}
+
+.dropdown-menu li a {
+    text-decoration: none;
+    color: black;
+    display: block;
+    padding: 10px;
+}
+
+.dropdown-menu li a:hover {
+    background-color: #f0f0f0;
+    color: #0056b3;
 }
 
 .admin-dropdown:hover .dropdown-menu {
@@ -266,7 +289,7 @@ body {
 }
 
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: "Arial", sans-serif;
     background-color: #f4f4f4;
 }
 
@@ -412,7 +435,7 @@ body {
 }
 
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: "Arial", sans-serif;
     background-color: #f4f4f4;
 }
 
@@ -495,7 +518,7 @@ body {
     font-weight: bold;
 }
 
-.form-group input, 
+.form-group input,
 .form-group textarea {
     width: 100%;
     padding: 10px;
@@ -591,31 +614,38 @@ textarea {
 }
 
 /* Order of the form elements within the grid */
-.product-detail form > .form-group:nth-child(1) { /* Nama Produk */
+.product-detail form > .form-group:nth-child(1) {
+    /* Nama Produk */
     grid-row: 1;
 }
 
-.product-detail form > .form-group:nth-child(2) { /* Deskripsi */
+.product-detail form > .form-group:nth-child(2) {
+    /* Deskripsi */
     grid-row: 2;
 }
 
-.product-detail form > .form-group:nth-child(3) { /* Kategori */
+.product-detail form > .form-group:nth-child(3) {
+    /* Kategori */
     grid-row: 3;
 }
 
-.product-detail form > .form-group:nth-child(4) { /* Nama Brand */
+.product-detail form > .form-group:nth-child(4) {
+    /* Nama Brand */
     grid-row: 4;
 }
 
-.product-detail form > .form-group:nth-child(5) { /* Jumlah Stok */
+.product-detail form > .form-group:nth-child(5) {
+    /* Jumlah Stok */
     grid-row: 5;
 }
 
-.product-detail form > .form-group:nth-child(6) { /* Harga Produk */
+.product-detail form > .form-group:nth-child(6) {
+    /* Harga Produk */
     grid-row: 6;
 }
 
-.product-detail form > .form-group:nth-child(7) { /* Harga Jual */
+.product-detail form > .form-group:nth-child(7) {
+    /* Harga Jual */
     grid-row: 7;
 }
 
@@ -629,20 +659,18 @@ textarea {
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color:rgb(238 238 238);
+    background-color: rgb(238 238 238);
     height: 100%;
 }
 
 .container {
     display: flex;
     height: 100vh;
-    
 }
 
 .sidebar {
     width: 260px;
     background-color: #ffffff;
-
 }
 
 .logo {
