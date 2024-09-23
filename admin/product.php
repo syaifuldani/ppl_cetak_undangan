@@ -1,3 +1,8 @@
+<?php
+$jenishalaman = "Produk";
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,67 +15,28 @@
 
 <body>
     <div class="container">
-        <div class="sidebar">
-            <div class="logo">
-                <img src="./style/img/logo.png" alt="Logo">
-                <span>PLEE.ART</span>
-            </div>
-            <ul>
-                <li>
-                    <a href="./dashboard.php">
-                        <button class="dashboard-button">
-                            <img src="./style/img/dashboard.png" alt="Logo">
-                            <span>Dashboard</span>
-                        </button>
-                    </a>
-                </li>
-                <li>
-                    <a href="product.php">
-                        <button class="dashboard-button">
-                            <img src="./style/img/produk.png" alt="Logo">
-                            <span>All Product</span>
-                        </button>
-                    </a>
-                </li>
-                <li>
-                    <a href="./orderlist.php">
-                        <button class="dashboard-button">
-                            <img src="./style/img/order.png" alt="Logo">
-                            <span>Order List</span>
-                        </button>
-                    </a>
-                </li>
-            </ul>
-            <div class="categories">
-                <h4>Categories</h4>
-                <ul>
-                    <li><a href="./undangan_pernikahan.php">Undangan Pernikahan</a></li>
-                    <li><a href="./undangan_khitan.php">Undangan Khitan</a></li>
-                    <li><a href="./undangan_tahlil.php">Undangan Tahlil</a></li>
-                </ul>
-            </div>
-        </div>
+
+        <?php require "template/sidebar.php"; ?>
+
         <main class="main-content">
-            <header class="header">
-                <h2>Produk</h2>
-                <div class="date">Oct 11, 2023 - Nov 11, 2022</div>
-                <div class="admin-dropdown">
-                    <button class="dropdown-toggle">Admin ▼</button>
-                    <ul class="dropdown-menu">
-                        <li><a href="./profile.php">Profile</a></li>
-                        <li><a href="#">Logout</a></li>
-                    </ul>
-                </div>
-            </header>
+
+            <!-- Header Fix -->
+            <?php require "template/header.php"; ?>
+
+            <!-- Button untuk menambah barang -->
+            <div class="add-product-button">
+                <button onclick="window.location.href='tambah_barang.php'">Tambah Barang</button>
+            </div>
 
             <section class="product-list">
                 <div class="product-item">
                     <img src="./style/img/undangan1.jpg" alt="Undangan Pernikahan">
                     <div class="product-details">
-                        <h3>Lorem Ipsum</h3>
-                        <p>Undangan Pernikahan</p>
-                        <p>Rp. 10.000</p>
-                        <p>Summary: Lorem ipsum is placeholder text commonly used in the graphic.</p>
+                        <div class="product-main">
+                            <h3>Undangan Pernikahan</h3>
+                            <p>Rp. 1.300</p>
+                        </div>
+                        <!-- <p>Summary: Lorem ipsum is placeholder text commonly used in the graphic.</p> -->
                         <div class="stats">
                             <span>Terjual: 1269</span>
                             <span>Stok: 1269</span>
@@ -80,10 +46,11 @@
                 <div class="product-item">
                     <img src="./style/img/undangan1.jpg" alt="Undangan Pernikahan">
                     <div class="product-details">
-                        <h3>Lorem Ipsum</h3>
-                        <p>Undangan Pernikahan</p>
-                        <p>Rp. 10.000</p>
-                        <p>Summary: Lorem ipsum is placeholder text commonly used in the graphic.</p>
+                        <div class="product-main">
+                            <h3>Undangan Pernikahan</h3>
+                            <p>Rp. 1.300</p>
+                        </div>
+                        <!-- <p>Summary: Lorem ipsum is placeholder text commonly used in the graphic.</p> -->
                         <div class="stats">
                             <span>Terjual: 1269</span>
                             <span>Stok: 1269</span>
@@ -93,10 +60,11 @@
                 <div class="product-item">
                     <img src="./style/img/undangan1.jpg" alt="Undangan Pernikahan">
                     <div class="product-details">
-                        <h3>Lorem Ipsum</h3>
-                        <p>Undangan Pernikahan</p>
-                        <p>Rp. 10.000</p>
-                        <p>Summary: Lorem ipsum is placeholder text commonly used in the graphic.</p>
+                        <div class="product-main">
+                            <h3>Undangan Pernikahan</h3>
+                            <p>Rp. 1.300</p>
+                        </div>
+                        <!-- <p>Summary: Lorem ipsum is placeholder text commonly used in the graphic.</p> -->
                         <div class="stats">
                             <span>Terjual: 1269</span>
                             <span>Stok: 1269</span>
@@ -106,10 +74,11 @@
                 <div class="product-item">
                     <img src="./style/img/undangan1.jpg" alt="Undangan Pernikahan">
                     <div class="product-details">
-                        <h3>Lorem Ipsum</h3>
-                        <p>Undangan Pernikahan</p>
-                        <p>Rp. 10.000</p>
-                        <p>Summary: Lorem ipsum is placeholder text commonly used in the graphic.</p>
+                        <div class="product-main">
+                            <h3>Undangan Pernikahan</h3>
+                            <p>Rp. 1.300</p>
+                        </div>
+                        <!-- <p>Summary: Lorem ipsum is placeholder text commonly used in the graphic.</p> -->
                         <div class="stats">
                             <span>Terjual: 1269</span>
                             <span>Stok: 1269</span>
@@ -119,10 +88,11 @@
                 <div class="product-item">
                     <img src="./style/img/undangan1.jpg" alt="Undangan Pernikahan">
                     <div class="product-details">
-                        <h3>Lorem Ipsum</h3>
-                        <p>Undangan Pernikahan</p>
-                        <p>Rp. 10.000</p>
-                        <p>Summary: Lorem ipsum is placeholder text commonly used in the graphic.</p>
+                        <div class="product-main">
+                            <h3>Undangan Pernikahan</h3>
+                            <p>Rp. 1.300</p>
+                        </div>
+                        <!-- <p>Summary: Lorem ipsum is placeholder text commonly used in the graphic.</p> -->
                         <div class="stats">
                             <span>Terjual: 1269</span>
                             <span>Stok: 1269</span>
@@ -132,70 +102,19 @@
                 <div class="product-item">
                     <img src="./style/img/undangan1.jpg" alt="Undangan Pernikahan">
                     <div class="product-details">
-                        <h3>Lorem Ipsum</h3>
-                        <p>Undangan Pernikahan</p>
-                        <p>Rp. 10.000</p>
-                        <p>Summary: Lorem ipsum is placeholder text commonly used in the graphic.</p>
+                        <div class="product-main">
+                            <h3>Undangan Pernikahan</h3>
+                            <p>Rp. 1.300</p>
+                        </div>
+                        <!-- <p>Summary: Lorem ipsum is placeholder text commonly used in the graphic.</p> -->
                         <div class="stats">
                             <span>Terjual: 1269</span>
                             <span>Stok: 1269</span>
                         </div>
                     </div>
                 </div>
-                <div class="product-item">
-                    <img src="./style/img/undangan1.jpg" alt="Undangan Pernikahan">
-                    <div class="product-details">
-                        <h3>Lorem Ipsum</h3>
-                        <p>Undangan Pernikahan</p>
-                        <p>Rp. 10.000</p>
-                        <p>Summary: Lorem ipsum is placeholder text commonly used in the graphic.</p>
-                        <div class="stats">
-                            <span>Terjual: 1269</span>
-                            <span>Stok: 1269</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-item">
-                    <img src="./style/img/undangan1.jpg" alt="Undangan Pernikahan">
-                    <div class="product-details">
-                        <h3>Lorem Ipsum</h3>
-                        <p>Undangan Pernikahan</p>
-                        <p>Rp. 10.000</p>
-                        <p>Summary: Lorem ipsum is placeholder text commonly used in the graphic.</p>
-                        <div class="stats">
-                            <span>Terjual: 1269</span>
-                            <span>Stok: 1269</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-item">
-                    <img src="./style/img/undangan1.jpg" alt="Undangan Pernikahan">
-                    <div class="product-details">
-                        <h3>Lorem Ipsum</h3>
-                        <p>Undangan Pernikahan</p>
-                        <p>Rp. 10.000</p>
-                        <p>Summary: Lorem ipsum is placeholder text commonly used in the graphic.</p>
-                        <div class="stats">
-                            <span>Terjual: 1269</span>
-                            <span>Stok: 1269</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-item">
-                    <img src="./style/img/undangan1.jpg" alt="Undangan Pernikahan">
-                    <div class="product-details">
-                        <h3>Lorem Ipsum</h3>
-                        <p>Undangan Pernikahan</p>
-                        <p>Rp. 10.000</p>
-                        <p>Summary: Lorem ipsum is placeholder text commonly used in the graphic.</p>
-                        <div class="stats">
-                            <span>Terjual: 1269</span>
-                            <span>Stok: 1269</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- Ulangi div ini untuk produk lainnya -->
             </section>
+
 
             <div class="pagination">
                 <a href="#">1</a>

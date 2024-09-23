@@ -1,5 +1,6 @@
 <?php
 $title = "Plee ART";
+$jenishalaman = "Dashboard";
 ?>
 
 <!DOCTYPE html>
@@ -14,59 +15,12 @@ $title = "Plee ART";
 
 <body>
     <div class="container">
-        <div class="sidebar">
-            <div class="logo">
-                <img src="./style/img/logo.png" alt="Logo">
-                <span>PLEE.ART</span>
-            </div>
-            <ul>
-                <li>
-                    <a href="dashboard.php">
-                        <button class="dashboard-button">
-                            <img src="./style/img/dashboard.png" alt="Logo">
-                            <span>Dashboard</span>
-                        </button>
-                    </a>
-                </li>
-                <li>
-                    <a href="./product.php">
-                        <button class="dashboard-button">
-                            <img src="./style/img/produk.png" alt="Logo">
-                            <span>All Product</span>
-                        </button>
-                    </a>
-                </li>
-                <li>
-                    <a href="./orderlist.php">
-                        <button class="dashboard-button">
-                            <img src="./style/img/order.png" alt="Logo">
-                            <span>Order List</span>
-                        </button>
-                    </a>
-                </li>
-            </ul>
-            <div class="categories">
-                <h4>Categories</h4>
-                <ul>
-                    <li><a href="./undangan_pernikahan.php">Undangan Pernikahan</a></li>
-                    <li><a href="./undangan_khitan.php">Undangan Khitan</a></li>
-                    <li><a href="./undangan_tahlil.php">Undangan Tahlil</a></li>
-                </ul>
-            </div>
-        </div>
+
+        <?php require "template/sidebar.php"; ?>
 
         <main class="main-content">
-            <header class="header">
-                <h2>Dashboard</h2>
-                <div class="date">Oct 11, 2023 - Nov 11, 2022</div>
-                <div class="admin-dropdown">
-                    <button class="dropdown-toggle">Admin ▼</button>
-                    <ul class="dropdown-menu">
-                        <li><a href="../profile/profile.php">Profile</a></li>
-                        <li><a href="#">Logout</a></li>
-                    </ul>
-                </div>
-            </header>
+
+            <?php require "template/header.php"; ?>
 
             <section class="dashboard-cards">
                 <div class="card">
@@ -135,10 +89,12 @@ $title = "Plee ART";
                             <td>Kavin</td>
                             <td>
                                 <select id="cars">
-                                    <option value="Terkirim">Terkirim</option>
-                                    <option value="Pengemasan">Pengemasan</option>
-                                    <option value="Selesai">Selesai</option>
-                                    <option value="Dibatalkan">Dibatalkan</option>
+                                    <option value="perludibayar">Perlu Dibayar</option>
+                                    <option value="terkirim">Terkirim</option>
+                                    <option value="dikemas">Dikemas</option>
+                                    <option value="selesai">Selesai</option>
+                                    <option value="dibatalkan">Dibatalkan</option>
+                                    <option value="perludikirim">Perlu Dikirim</option>
                                 </select>
                             </td>
                             <td>₹200.00</td>
@@ -150,10 +106,12 @@ $title = "Plee ART";
                             <td>Komal</td>
                             <td>
                                 <select id="cars">
-                                    <option value="Terkirim">Terkirim</option>
-                                    <option value="Pengemasan">Pengemasan</option>
-                                    <option value="Selesai">Selesai</option>
-                                    <option value="Dibatalkan">Dibatalkan</option>
+                                    <option value="perludibayar">Perlu Dibayar</option>
+                                    <option value="terkirim">Terkirim</option>
+                                    <option value="dikemas">Dikemas</option>
+                                    <option value="selesai">Selesai</option>
+                                    <option value="dibatalkan">Dibatalkan</option>
+                                    <option value="perludikirim">Perlu Dikirim</option>
                                 </select>
                             </td>
                             <td>₹200.00</td>

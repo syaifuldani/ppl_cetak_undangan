@@ -14,7 +14,7 @@
     }
 
     .container {
-        max-width: 800px;
+        max-width: 1000px;
         margin: 50px auto;
         background-color: #fff;
         padding: 30px;
@@ -44,8 +44,8 @@
     }
 
     .profile-pic {
-        width: 100px;
-        height: 100px;
+        width: 150px;
+        height: 150px;
         border-radius: 50%;
         overflow: hidden;
         margin-bottom: 10px;
@@ -158,14 +158,11 @@
 </head>
 
 <body>
-    <header class="header">
-        <h1>Welcome, Amanda</h1>
-        <a href="dashboard.php">
-            <h3>Kembali</h3>
-        </a>
-    </header>
+    <a href="dashboard.php">
+        <h3>Kembali</h3>
+    </a>
     <div class="container">
-        <h1>Your Profile</h1>
+        <h1>Profil anda</h1>
         <div class="content-wrapper">
             <div class="profile-info">
                 <div class="profile-pic">

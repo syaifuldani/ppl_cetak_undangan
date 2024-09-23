@@ -1,65 +1,27 @@
+<?php
+$title = "Undangan Pernikahan";
+$jenishalaman = "Undangan Pernikahan";
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Products</title>
+    <title><?= $title ?></title>
     <link rel="stylesheet" href="./style/style.css">
 </head>
+
 <body>
     <div class="container">
-    <div class="sidebar">
-            <div class="logo">
-                <img src="./style/img/logo.png" alt="Logo">
-                <span>PLEE.ART</span>
-            </div>
-            <ul>
-                <li>
-                    <button class="dashboard-button">
-                    <a href="./dashboard.php">
-                        <img src="./style/img/dashboard.png" alt="Logo">
-                        <span>Dashboard</span>
-                    </a>
-                    </button>
-                </li>
-                <li>
-                    <button class="dashboard-button">
-                    <a href="product.php">
-                        <img src="./style/img/produk.png" alt="Logo">
-                        <span>All Product</span>
-                    </a>
-                    </button>
-                </li>
-                <li>
-                    <button class="dashboard-button">
-                    <a href="./orderlist.php">
-                        <img src="./style/img/order.png" alt="Logo">
-                        <span>Order List</span>
-                    </a>
-                    </button>
-                </li>
-            </ul>
-            <div class="categories">
-                <h4>Categories</h4>
-                <ul>
-                    <li><a href="undangan_pernikahan.php">Undangan Pernikahan</a></li>
-                    <li><a href="./undangan_khitan.php">Undangan Khitan</a></li>
-                    <li><a href="./undangan_tahlil.php">Undangan Tahlil</a></li>
-                </ul>
-            </div>
-        </div>
+
+        <?php require "template/sidebar.php"; ?>
+
         <main class="main-content">
-        <header class="header">
-            <h2>Undangan Pernikahan</h2>
-            <div class="date">Oct 11, 2023 - Nov 11, 2022</div>
-            <div class="admin-dropdown">
-                <button class="dropdown-toggle">Admin ▼</button>
-                <ul class="dropdown-menu">
-                    <li><a href="./profile.php">Profile</a></li>
-                    <li><a href="#">Logout</a></li>
-                </ul>
-            </div>
-         </header>
+
+            <?php require "template/header.php"; ?>
 
             <section class="product-list">
                 <div class="product-item">
@@ -191,7 +153,7 @@
                             <span>Stok: 1269</span>
                         </div>
                     </div>
-                </div>  
+                </div>
                 <!-- Ulangi div ini untuk produk lainnya -->
             </section>
 
@@ -207,4 +169,5 @@
         </main>
     </div>
 </body>
+
 </html>

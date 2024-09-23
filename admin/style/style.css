@@ -77,25 +77,40 @@ body {
     -ms-border-radius: 5px;
     -o-border-radius: 5px;
 }
+
+.dashboard-button span {
+    margin: 0rem 1rem;
+}
+
 .main-content {
     flex-grow: 1;
     padding: 20px;
 }
 
+/* Header Styles */
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: #fff; /* Tambahkan background agar menutupi elemen di bawah saat scroll */
+    padding: 10px 20px;
+    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+    width: calc(
+        100% - 250px
+    ); /* Menyesuaikan lebar header agar tidak menutupi sidebar */
+    position: fixed;
+    top: 0;
+    left: 258px; /* Sesuaikan dengan lebar sidebar */
+    z-index: 1000; /* Pastikan header berada di atas elemen lain */
 }
 
 .header .date {
     font-size: 14px;
     color: #666;
-    margin-left: auto; /* Mendorong elemen ke kanan */
 }
 
 .header .admin-dropdown button {
-    background-color: #f4f4f4;
+    /* background-color: #f4f4f4; */
     border: 1px solid #ccc;
     padding: 10px;
     cursor: pointer;
@@ -105,6 +120,7 @@ body {
     display: flex;
     justify-content: flex-start;
     margin: 20px 10;
+    margin-top: 2rem;
 }
 
 .card {
@@ -148,7 +164,7 @@ body {
 }
 
 .chart canvas {
-    width: 650px !important; /* Fixed width */
+    width: 550px !important; /* Fixed width */
     height: 360px !important; /* Fixed height */
     background-color: #f9f9f9; /* Optional background color for visibility */
     padding: 10px;
@@ -219,27 +235,6 @@ body {
     background-color: #f9f9f9;
 }
 /* Drop down menu */
-/* General header styles */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
-
-.header h2 {
-    margin: 0;
-    font-size: 24px;
-}
-
-.header .date {
-    font-size: 14px;
-    color: #666;
-}
 
 .admin-dropdown {
     position: relative;
@@ -374,17 +369,6 @@ body {
     box-sizing: border-box;
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.header h2 {
-    font-size: 24px;
-}
-
 .admin-dropdown button,
 .add-product {
     background-color: #007bff;
@@ -397,11 +381,12 @@ body {
 .add-product {
     background-color: #28a745;
 }
-
 .product-list {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 20px;
+    margin-top: 2rem; /* Ruang untuk fixed header */
+    /* justify-content: center; Pusatkan konten jika jumlah card sedikit */
 }
 
 .product-item {
@@ -412,10 +397,9 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    -webkit-border-radius: 8px;
-    -moz-border-radius: 8px;
-    -ms-border-radius: 8px;
-    -o-border-radius: 8px;
+    max-width: 320px; /* Batasan lebar maksimal untuk card */
+    width: 100%; /* Pastikan card responsif dengan lebar 100% */
+    /* margin: 0 auto;   Pusatkan jika hanya ada satu card */
 }
 
 .product-item img {
@@ -426,17 +410,39 @@ body {
 
 .product-details {
     text-align: center;
+}
+
+.product-main {
+    padding: 10px 0px 0px 0px;
+    /* border: #000000 solid 1px; */
+}
+
+.stats {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
     margin-top: 10px;
+    font-size: 14px;
 }
 
-.product-details h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .product-item {
+        max-width: 100%; /* Lebarkan card ke seluruh layar pada perangkat kecil */
+    }
 }
 
-.product-details p {
-    margin-bottom: 10px;
-    color: #666;
+.add-product-button {
+    margin-top: 1.4rem; /* Ruang untuk fixed header */
+    padding: 20px 0px 0px;
+}
+
+.add-product-button button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 8px;
+    color: white;
 }
 
 .stats {
@@ -520,30 +526,12 @@ body {
     background-color: #b9dbfb;
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.header h2 {
-    font-size: 24px;
-}
-
 .admin-dropdown button {
     background-color: #007bff;
     color: white;
     border: none;
     padding: 10px;
     cursor: pointer;
-}
-
-.product-detail form {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 20px;
-    align-items: flex-start;
 }
 
 .form-group {
@@ -579,13 +567,46 @@ textarea {
 }
 
 .product-gallery {
+    flex: 1; /* Product gallery mengambil lebih sedikit ruang */
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
-.product-gallery label {
-    display: block;
+.product-gallery img {
+    max-width: 100%;
     margin-bottom: 10px;
-    font-weight: bold;
+}
+
+.image-upload input {
+    display: block;
+    margin: 10px auto;
+}
+
+.button-group {
+    display: flex;
+    gap: 15px;
+}
+
+.button-group button {
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+    .product-detail {
+        flex-direction: column;
+    }
+
+    .product-detail form,
+    .product-gallery {
+        width: 100%;
+    }
+
+    .price-group {
+        flex-direction: column;
+    }
 }
 
 .image-upload {
@@ -643,56 +664,36 @@ textarea {
     color: white;
 }
 
-/* Adjust the order of form elements */
+/* CSS Tambah barang */
+
+.product-detail {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px; /* Jarak antara form dan product gallery */
+}
+
 .product-detail form {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
+    flex: 2; /* Form mengambil lebih banyak ruang */
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Jarak antar form-group */
+    margin-top: 2.5rem;
+}
+
+.product-detail .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.price-group {
+    display: flex;
     gap: 20px;
-    align-items: flex-start;
 }
 
-/* Order of the form elements within the grid */
-.product-detail form > .form-group:nth-child(1) {
-    /* Nama Produk */
-    grid-row: 1;
+.price-field {
+    flex: 1;
 }
 
-.product-detail form > .form-group:nth-child(2) {
-    /* Deskripsi */
-    grid-row: 2;
-}
-
-.product-detail form > .form-group:nth-child(3) {
-    /* Kategori */
-    grid-row: 3;
-}
-
-.product-detail form > .form-group:nth-child(4) {
-    /* Nama Brand */
-    grid-row: 4;
-}
-
-.product-detail form > .form-group:nth-child(5) {
-    /* Jumlah Stok */
-    grid-row: 5;
-}
-
-.product-detail form > .form-group:nth-child(6) {
-    /* Harga Produk */
-    grid-row: 6;
-}
-
-.product-detail form > .form-group:nth-child(7) {
-    /* Harga Jual */
-    grid-row: 7;
-}
-
-/* Responsive adjustments for smaller screens */
-@media screen and (max-width: 768px) {
-    .product-detail form {
-        grid-template-columns: 1fr; /* Stack form elements vertically */
-    }
-}
 /* Orderlist stylesheet */
 body {
     margin: 0;
@@ -787,23 +788,6 @@ body {
     background-color: #9ac8f4;
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.header h2 {
-    margin: 0;
-    color: #333;
-}
-
-.header span {
-    font-size: 14px;
-    color: #666;
-}
-
 .date {
     display: flex;
     align-items: center;
@@ -814,16 +798,21 @@ body {
     color: #666;
 }
 
+/* Order List */
+
 .content {
-    padding: 50px;
     border: 15px solid #ffffff;
     border-radius: 10px;
+    margin-top: 1.7rem;
+    padding: 20px;
 }
 
 .content h3 {
     margin-bottom: 20px;
     color: #000000;
 }
+
+/* EndOrder List */
 
 .table {
     width: 100%;
