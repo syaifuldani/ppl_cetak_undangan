@@ -801,21 +801,37 @@ body {
 /* Order List */
 
 .content {
+    width: 100%;
+    height: 600px;
     border: 15px solid #ffffff;
     border-radius: 10px;
     margin-top: 1.7rem;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
 }
 
+/* Sticky heading */
 .content h3 {
+    position: sticky;
+    top: 0;
+    /* background-color: #fff; */
+    z-index: 10;
     margin-bottom: 20px;
-    color: #000000;
+    padding: 10px 0;
+    border-bottom: 2px solid #eee;
 }
 
-/* EndOrder List */
+/* Table Styling (optional to match the previous style) */
+.table-wrapper {
+    max-width: 100%; /* Prevent overflow horizontally */
+    overflow-x: auto; /* Ensure horizontal scroll for table overflow */
+    /* margin-bottom: 20px; */
+}
 
 .table {
-    width: 100%;
+    width: 100%; /* Ensure table takes full width */
     border-collapse: collapse;
     background-color: #ccc;
 }
@@ -833,9 +849,9 @@ body {
 }
 
 .table td img {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    /* border-radius: 50%; */
     margin-right: 10px;
 }
 
@@ -844,6 +860,15 @@ body {
     border-radius: 20px;
     font-size: 12px;
     font-weight: bold;
+}
+
+/* Sticky table header */
+.table thead th {
+    position: sticky;
+    top: 0;
+    background-color: #f2f2f2; /* Same background as table */
+    z-index: 5; /* Ensure it's on top */
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); /* Small shadow for clarity */
 }
 
 .delivered {
@@ -856,16 +881,18 @@ body {
     color: #fff;
 }
 
+/* Pagination Styling */
+/* Pagination */
 .pagination {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 20px;
+    text-align: center;
+    padding: 10px 0;
 }
 
 .pagination ul {
     list-style: none;
     padding: 0;
     margin: 0;
+    display: inline-block;
 }
 
 .pagination ul li {
@@ -875,12 +902,11 @@ body {
     border: 1px solid #eee;
     border-radius: 20px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
 .pagination ul li.active {
     background-color: #007bff;
-    color: #fff;
+    color: white;
 }
 
 .pagination ul li a {
@@ -888,8 +914,43 @@ body {
     color: #333;
 }
 
-.pagination ul li a:hover {
-    color: #fff;
+/* Ensure overflow hidden for table content, not pagination */
+.content .table-wrapper {
+    max-height: 100%; /* Take up available space */
+    overflow-y: auto; /* Enable scrolling inside the table wrapper */
 }
 
-/* Profile stylesheet */
+/* Aksi Button */
+/* Styling for the action buttons */
+.aksi {
+    display: flex; /* To ensure buttons are aligned horizontally */
+    gap: 10px; /* Adds space between the buttons */
+}
+
+.aksi button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.edit-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+.edit-btn:hover {
+    background-color: #0056b3;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
+/* EndOrder List */
