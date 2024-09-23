@@ -54,7 +54,7 @@ var_dump($_SESSION);
     <div class="product-container">
       <div class="product-card">
         <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-        <p class="product-name">Undangan Kontol Memk</p>
+        <p class="product-name">Undangan Raya 36</p>
         <div class="description">
           <h4>Deskripsi Produk</h4>
           <p>
@@ -69,7 +69,7 @@ var_dump($_SESSION);
       </div>
       <div class="product-card">
         <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-        <p class="product-name">Undangan Kontol Memk</p>
+        <p class="product-name">Undangan Raya 36</p>
         <div class="description">
           <h4>Deskripsi Produk</h4>
           <p>
@@ -84,7 +84,7 @@ var_dump($_SESSION);
       </div>
       <div class="product-card">
         <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-        <p class="product-name">Undangan Kontol Memk</p>
+        <p class="product-name">Undangan Raya 36</p>
         <div class="description">
           <h4>Deskripsi Produk</h4>
           <p>
@@ -99,7 +99,7 @@ var_dump($_SESSION);
       </div>
       <div class="product-card">
         <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-        <p class="product-name">Undangan Kontol Memk</p>
+        <p class="product-name">Undangan Raya 36</p>
         <div class="description">
           <h4>Deskripsi Produk</h4>
           <p>
@@ -114,7 +114,7 @@ var_dump($_SESSION);
       </div>
       <div class="product-card">
         <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-        <p class="product-name">Undangan Kontol Memk</p>
+        <p class="product-name">Undangan Raya 36</p>
         <div class="description">
           <h4>Deskripsi Produk</h4>
           <p>
@@ -129,7 +129,7 @@ var_dump($_SESSION);
       </div>
       <div class="product-card">
         <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-        <p class="product-name">Undangan Kontol Memk</p>
+        <p class="product-name">Undangan Raya 36</p>
         <div class="description">
           <h4>Deskripsi Produk</h4>
           <p>
@@ -144,7 +144,7 @@ var_dump($_SESSION);
       </div>
       <div class="product-card">
         <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-        <p class="product-name">Undangan Kontol Memk</p>
+        <p class="product-name">Undangan Raya 36</p>
         <div class="description">
           <h4>Deskripsi Produk</h4>
           <p>
@@ -159,7 +159,7 @@ var_dump($_SESSION);
       </div>
       <div class="product-card">
         <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-        <p class="product-name">Undangan Kontol Memk</p>
+        <p class="product-name">Undangan Raya 36</p>
         <div class="description">
           <h4>Deskripsi Produk</h4>
           <p>

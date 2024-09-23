@@ -24,18 +24,21 @@
         <h2>Social Media & Contact</h2>
         <ul>
             <li>
-                <a href="">
+                <!-- Link ke Instagram -->
+                <a href="https://www.instagram.com/photostice_" target="_blank">
                     <img src="../resources/img/icons/instagram.png" alt="Instagram"> Plee.Art
                 </a>
             </li>
             <li>
-                <a href="">
-                    <img src="../resources/img/icons/tweeter.png" alt="Email"> Plee.Art
+                <!-- Link ke Twitter -->
+                <a href="https://twitter.com/plee_art" target="_blank">
+                    <img src="../resources/img/icons/tweeter.png" alt="Twitter"> Plee.Art
                 </a>
             </li>
             <li>
-                <a href="">
-                    <img src="../resources/img/icons/whatsapp.png" alt="WhatsApp"> 087853383254
+                <!-- Link ke WhatsApp dengan pesan awal -->
+                <a href="https://wa.me/6287853338254?text=Halo%20saya%20tertarik%20dengan%20produk%20anda!" target="_blank">
+                    <img src="../resources/img/icons/whatsapp.png" alt="WhatsApp"> 087853338254
                 </a>
             </li>
         </ul>
