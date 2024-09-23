@@ -1,3 +1,7 @@
+<?php
+include '../databases/index.php'; // Panggil file koneksi database
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -48,7 +52,7 @@
     <div class="product-container">
       <div class="product-card">
         <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-        <p class="product-name">Undangan Kontol Memk</p>
+        <p class="product-name">Undangan Raya 36</p>
         <div class="description">
           <h4>Deskripsi Produk</h4>
           <p>
@@ -62,7 +66,7 @@
       </div>
       <div class="product-card">
         <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-        <p class="product-name">Undangan Kontol Memk</p>
+        <p class="product-name">Undangan Raya 36</p>
         <div class="description">
           <h4>Deskripsi Produk</h4>
           <p>
@@ -76,7 +80,7 @@
       </div>
       <div class="product-card">
         <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-        <p class="product-name">Undangan Kontol Memk</p>
+        <p class="product-name">Undangan Raya 36</p>
         <div class="description">
           <h4>Deskripsi Produk</h4>
           <p>
@@ -90,7 +94,7 @@
       </div>
       <div class="product-card">
         <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-        <p class="product-name">Undangan Kontol Memk</p>
+        <p class="product-name">Undangan Raya 36</p>
         <div class="description">
           <h4>Deskripsi Produk</h4>
           <p>
@@ -104,7 +108,7 @@
       </div>
       <div class="product-card">
         <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-        <p class="product-name">Undangan Kontol Memk</p>
+        <p class="product-name">Undangan Raya 36</p>
         <div class="description">
           <h4>Deskripsi Produk</h4>
           <p>
@@ -118,7 +122,7 @@
       </div>
       <div class="product-card">
         <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-        <p class="product-name">Undangan Kontol Memk</p>
+        <p class="product-name">Undangan Raya 36</p>
         <div class="description">
           <h4>Deskripsi Produk</h4>
           <p>
@@ -132,7 +136,7 @@
       </div>
       <div class="product-card">
         <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-        <p class="product-name">Undangan Kontol Memk</p>
+        <p class="product-name">Undangan Raya 36</p>
         <div class="description">
           <h4>Deskripsi Produk</h4>
           <p>
@@ -146,7 +150,7 @@
       </div>
       <div class="product-card">
         <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-        <p class="product-name">Undangan Kontol Memk</p>
+        <p class="product-name">Undangan Raya 36</p>
         <div class="description">
           <h4>Deskripsi Produk</h4>
           <p>
