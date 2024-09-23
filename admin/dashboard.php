@@ -1,6 +1,17 @@
 <?php
-$title = "Plee ART";
+session_start();
+
+// Cek apakah pengguna sudah login
+if (!isset($_SESSION['user_id'])) {
+    // Jika tidak ada session login, redirect ke halaman login
+    header("Location: login_admin.php");
+    exit();
+}
+
+// Data dari session setelah login
+$title = "PleeART";
 $jenishalaman = "Dashboard";
+$user_email = $_SESSION['user_email']; // Email user yang diambil dari session
 ?>
 
 <!DOCTYPE html>
