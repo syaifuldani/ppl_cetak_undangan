@@ -1,3 +1,32 @@
+<?php
+session_start();
+require 'config.php';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Ambil nilai dari form
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    // Query untuk memeriksa user di database
+    $sql = "SELECT * FROM users WHERE email = :email";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':email', $email);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Jika user ditemukan dan password cocok
+    if ($user && password_verify($password, $user['password'])) {
+        // Buat session
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['user_email'] = $user['email'];
+        header("Location: index.php"); // Redirect ke halaman dashboard
+        exit();
+    } else {
+        echo "Email atau password salah!";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +42,7 @@
         </div>
         <div class="form-section">
             <h2>Login</h2>
-            <form action="#" method="POST">
+            <form action="login.php" method="POST">
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" required>
                 
