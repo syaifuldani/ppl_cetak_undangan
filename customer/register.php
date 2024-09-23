@@ -1,9 +1,10 @@
 <?php
 session_start();
-require 'config.php'; // Koneksi ke database
+require '../config/connection.php'; // Koneksi ke database
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Ambil data dari form
+    $name = $_POST['name'];
     $email = $_POST['email'];
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm-password'];
@@ -30,8 +31,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
     // Simpan data pengguna baru ke database
-    $sql = "INSERT INTO users (email, password) VALUES (:email, :password)";
+    $sql = "INSERT INTO users (nama_lengkap, email, password) VALUES (:name,:email, :password)";
     $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':name', $name);
     $stmt->bindParam(':email', $email);
     $stmt->bindParam(':password', $hashed_password);
 
@@ -49,12 +51,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Postcard Register Form</title>
     <link rel="stylesheet" href="../resources/css/loginregis.css">
 </head>
+
 <body>
     <div class="container">
         <div class="image-section">
@@ -63,19 +67,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="form-section">
             <h2>Register</h2>
             <form action="register.php" method="POST">
+                <label for="name">Nama Lengkap</label>
+                <input type="name" id="name" name="name" required>
+
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" required>
-                
+
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required>
-                
+
                 <label for="confirm-password">Repeat Password</label>
                 <input type="password" id="confirm-password" name="confirm-password" required>
-                
+
                 <button type="submit">Register</button>
             </form>
             <p>Sudah punya akun? <a href="login.php">Login sini</a></p>
         </div>
     </div>
 </body>
+
 </html>

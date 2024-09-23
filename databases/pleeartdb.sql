@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 16 Sep 2024 pada 17.41
--- Versi server: 10.4.28-MariaDB
--- Versi PHP: 8.2.4
+-- Generation Time: Sep 23, 2024 at 04:38 PM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.1.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `carts`
+-- Table structure for table `carts`
 --
 
 CREATE TABLE `carts` (
@@ -37,7 +37,7 @@ CREATE TABLE `carts` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `custom_design`
+-- Table structure for table `custom_design`
 --
 
 CREATE TABLE `custom_design` (
@@ -50,14 +50,14 @@ CREATE TABLE `custom_design` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `orders`
+-- Table structure for table `orders`
 --
 
 CREATE TABLE `orders` (
   `order_id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `tanggal_pemesanan` timestamp NOT NULL DEFAULT current_timestamp(),
-  `status_pemesanan` enum('pending','belum dibayar','sedang diproses','dikirim','selesai','canceled') DEFAULT 'pending',
+  `status_pemesanan` enum('perludibayar','terkirim','dikemas','selesai','dibatalkan','perludikirim') DEFAULT 'perludibayar',
   `total_harga` decimal(10,2) NOT NULL,
   `metode_pembayaran` enum('transfer bank','e-wallet','lainnya') DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
@@ -66,7 +66,7 @@ CREATE TABLE `orders` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `order_items`
+-- Table structure for table `order_items`
 --
 
 CREATE TABLE `order_items` (
@@ -81,7 +81,7 @@ CREATE TABLE `order_items` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `payments`
+-- Table structure for table `payments`
 --
 
 CREATE TABLE `payments` (
@@ -96,7 +96,7 @@ CREATE TABLE `payments` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `products`
+-- Table structure for table `products`
 --
 
 CREATE TABLE `products` (
@@ -114,7 +114,7 @@ CREATE TABLE `products` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `shipments`
+-- Table structure for table `shipments`
 --
 
 CREATE TABLE `shipments` (
@@ -130,7 +130,7 @@ CREATE TABLE `shipments` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -145,11 +145,18 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`user_id`, `nama_lengkap`, `email`, `password`, `alamat`, `nomor_telepon`, `jenis_pengguna`, `created_at`) VALUES
+(0, 'dani', 'test@gmail.com', '$2y$10$wFnCuadsMFo8.o/7QST4B.bQgm7cxAS/CYs9Jq5h7iguukdetNZ86', '', NULL, 'admin', '2024-09-23 14:35:01');
+
+--
 -- Indexes for dumped tables
 --
 
 --
--- Indeks untuk tabel `carts`
+-- Indexes for table `carts`
 --
 ALTER TABLE `carts`
   ADD PRIMARY KEY (`cart_id`),
@@ -157,7 +164,7 @@ ALTER TABLE `carts`
   ADD KEY `carts_ibfk_1` (`user_id`);
 
 --
--- Indeks untuk tabel `custom_design`
+-- Indexes for table `custom_design`
 --
 ALTER TABLE `custom_design`
   ADD PRIMARY KEY (`custom_design_id`),
@@ -165,14 +172,14 @@ ALTER TABLE `custom_design`
   ADD KEY `FK_custom_design_ibfk_2` (`order_id`);
 
 --
--- Indeks untuk tabel `orders`
+-- Indexes for table `orders`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`order_id`),
   ADD KEY `orders_ibfk_1` (`user_id`);
 
 --
--- Indeks untuk tabel `order_items`
+-- Indexes for table `order_items`
 --
 ALTER TABLE `order_items`
   ADD PRIMARY KEY (`detail_id`),
@@ -180,70 +187,70 @@ ALTER TABLE `order_items`
   ADD KEY `FK_order_items_ibfk_2` (`product_id`);
 
 --
--- Indeks untuk tabel `payments`
+-- Indexes for table `payments`
 --
 ALTER TABLE `payments`
   ADD PRIMARY KEY (`payment_id`),
   ADD KEY `payments_ibfk_1` (`order_id`);
 
 --
--- Indeks untuk tabel `products`
+-- Indexes for table `products`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`product_id`);
 
 --
--- Indeks untuk tabel `shipments`
+-- Indexes for table `shipments`
 --
 ALTER TABLE `shipments`
   ADD PRIMARY KEY (`shipment_id`),
   ADD KEY `shipments_ibfk_1` (`order_id`);
 
 --
--- Indeks untuk tabel `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`);
 
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Constraints for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `carts`
+-- Constraints for table `carts`
 --
 ALTER TABLE `carts`
   ADD CONSTRAINT `FK_carts_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`),
   ADD CONSTRAINT `carts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 --
--- Ketidakleluasaan untuk tabel `custom_design`
+-- Constraints for table `custom_design`
 --
 ALTER TABLE `custom_design`
   ADD CONSTRAINT `FK_custom_design_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
   ADD CONSTRAINT `FK_custom_design_ibfk_2` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`);
 
 --
--- Ketidakleluasaan untuk tabel `orders`
+-- Constraints for table `orders`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 --
--- Ketidakleluasaan untuk tabel `order_items`
+-- Constraints for table `order_items`
 --
 ALTER TABLE `order_items`
   ADD CONSTRAINT `FK_order_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`),
   ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`);
 
 --
--- Ketidakleluasaan untuk tabel `payments`
+-- Constraints for table `payments`
 --
 ALTER TABLE `payments`
   ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`);
 
 --
--- Ketidakleluasaan untuk tabel `shipments`
+-- Constraints for table `shipments`
 --
 ALTER TABLE `shipments`
   ADD CONSTRAINT `shipments_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`);
