@@ -1,5 +1,7 @@
 <?php
-include '../databases/index.php'; // Panggil file koneksi database
+session_start();
+
+var_dump($_SESSION);
 ?>
 
 <!DOCTYPE html>
@@ -8,7 +10,7 @@ include '../databases/index.php'; // Panggil file koneksi database
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Navbar</title>
+  <title>Home</title>
   <link rel="stylesheet" href="../resources/css/indexhomecsmr.css">
   <link rel="stylesheet" href="../resources/css/navbar.css">
 </head>
@@ -60,7 +62,8 @@ include '../databases/index.php'; // Panggil file koneksi database
           </p>
         </div>
         <p class="product-price">Rp. x.xxx,xx</p>
-        <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png" alt="">
+        <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
+            alt="">
           <p>Lihat Detail</p>
         </a>
       </div>
@@ -74,7 +77,8 @@ include '../databases/index.php'; // Panggil file koneksi database
           </p>
         </div>
         <p class="product-price">Rp. x.xxx,xx</p>
-        <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png" alt="">
+        <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
+            alt="">
           <p>Lihat Detail</p>
         </a>
       </div>
@@ -88,7 +92,8 @@ include '../databases/index.php'; // Panggil file koneksi database
           </p>
         </div>
         <p class="product-price">Rp. x.xxx,xx</p>
-        <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png" alt="">
+        <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
+            alt="">
           <p>Lihat Detail</p>
         </a>
       </div>
@@ -102,7 +107,8 @@ include '../databases/index.php'; // Panggil file koneksi database
           </p>
         </div>
         <p class="product-price">Rp. x.xxx,xx</p>
-        <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png" alt="">
+        <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
+            alt="">
           <p>Lihat Detail</p>
         </a>
       </div>
@@ -116,7 +122,8 @@ include '../databases/index.php'; // Panggil file koneksi database
           </p>
         </div>
         <p class="product-price">Rp. x.xxx,xx</p>
-        <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png" alt="">
+        <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
+            alt="">
           <p>Lihat Detail</p>
         </a>
       </div>
@@ -130,7 +137,8 @@ include '../databases/index.php'; // Panggil file koneksi database
           </p>
         </div>
         <p class="product-price">Rp. x.xxx,xx</p>
-        <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png" alt="">
+        <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
+            alt="">
           <p>Lihat Detail</p>
         </a>
       </div>
@@ -144,7 +152,8 @@ include '../databases/index.php'; // Panggil file koneksi database
           </p>
         </div>
         <p class="product-price">Rp. x.xxx,xx</p>
-        <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png" alt="">
+        <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
+            alt="">
           <p>Lihat Detail</p>
         </a>
       </div>
@@ -158,7 +167,8 @@ include '../databases/index.php'; // Panggil file koneksi database
           </p>
         </div>
         <p class="product-price">Rp. x.xxx,xx</p>
-        <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png" alt="">
+        <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
+            alt="">
           <p>Lihat Detail</p>
         </a>
       </div>
