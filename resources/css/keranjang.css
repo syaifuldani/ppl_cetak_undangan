@@ -1,0 +1,116 @@
+h1 {
+    color: #333;
+}
+
+.table {
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+td.product {
+    align-items: center;
+}
+
+.product-image {
+    width: 50px;
+    height: 50px;
+    margin-right: 15px;
+    border-radius: 5px;
+}
+
+.forms {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+form {
+    width: 48%;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+input[type="text"], input[type="date"], input[type="tel"], textarea {
+    width: 100%;
+    padding: 8px;   
+}
+
+/* Styling for quantity buttons and input */
+.quantity {
+    display: flex;
+    align-items: center;
+}
+
+.quantity-btn {
+    background-color: #ddd;
+    border: none;
+    padding: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+}
+
+.quantity-btn:hover {
+    background-color: #bbb;
+}
+
+.quantity-input {
+    text-align: center;
+    border: 1px solid #ddd;
+    margin: 0 5px;
+    font-size: 16px;
+}
+
+.buttons button {
+    padding: 10px 20px;
+    margin-right: 20px;
+    background-color: blue;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.buttons button:hover {
+    opacity: 0.8;
+}
+/* Styling for delete button */
+.delete-btn {
+    background-color: #e74c3c; /* Warna merah terang */
+    color: white; /* Warna teks putih */
+    border: none; /* Tanpa border */
+    padding: 8px 12px; /* Padding agar lebih besar dan mudah di-klik */
+    cursor: pointer; /* Ganti kursor menjadi pointer saat hover */
+    border-radius: 5px; /* Membuat sudut tombol menjadi bulat */
+    font-size: 14px; /* Ukuran font yang pas */
+    margin-left: 10px; /* Memberi jarak dengan elemen sebelahnya */
+    transition: background-color 0.3s ease; /* Smooth transition saat hover */
+}
+
+.delete-btn:hover {
+    background-color: #c0392b; /* Warna lebih gelap saat di-hover */
+}
+
+.delete-btn:active {
+    background-color: #a93226; /* Warna lebih gelap lagi saat di-klik */
+    transform: scale(0.98); /* Efek sedikit mengecil saat diklik untuk feedback visual */
+}
+
+.delete-btn:focus {
+    outline: none; /* Hilangkan outline default pada tombol */
+}
