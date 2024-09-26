@@ -20,6 +20,8 @@ body {
     padding: 10px 20px;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
     position: relative;
+    position: fixed;
+    width: 100%;
     z-index: 2;
 }
 
@@ -170,6 +172,7 @@ body {
 
 .sign-in {
     background-color: #74C69D;
+    color: white;
 }
 
 .sign-in:hover, .register:hover {

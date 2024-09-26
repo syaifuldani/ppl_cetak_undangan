@@ -3,6 +3,10 @@
 }
 
 .content {
+    padding-top: 100px;
+}
+
+.content-detail {
     display: flex;
     justify-content: center;
     align-items: flex-start;

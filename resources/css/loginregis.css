@@ -15,14 +15,14 @@ body {
 
 .container {
     display: flex;
-    width: 1000px;
+    max-width: 1000px;
     border: 1px solid #ccc;
     background-color: #fff;
     border-radius: 5px;
 }
 
 .image-section {
-    width: 60%;
+    width: 100%;
 }
 
 .image-section img {
