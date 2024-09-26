@@ -1,8 +1,8 @@
 <?php
 session_start();
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php"); // Jika belum login, redirect ke halaman login
-    exit();
+  header("Location: index.php"); // Jika belum login, redirect ke halaman login
+  exit();
 }
 ?>
 <!DOCTYPE html>
@@ -28,9 +28,11 @@ if (!isset($_SESSION['user_id'])) {
       <h1>Selamat datang di layanan Cetak Undangan Online kami!</h1>
       <p>
         Kami menyediakan berbagai template undangan yang siap Anda pilih sesuai dengan acara spesial Anda.
-        Mulai dari undangan pernikahan yang elegan, undangan khitanan yang penuh makna, walimatul ursy yang istimewa,
+        Mulai dari undangan pernikahan yang elegan, undangan khitanan yang penuh makna, walimatul ursy yang
+        istimewa,
         hingga undangan untuk acara tahlil dan kirim doa yang khusyuk, serta undangan ulang tahun yang meriah.
-        Pilih desain favorit Anda, tambahkan detail acara, dan biarkan kami mencetak serta mengirimkannya langsung ke alamat Anda.
+        Pilih desain favorit Anda, tambahkan detail acara, dan biarkan kami mencetak serta mengirimkannya
+        langsung ke alamat Anda.
         Proses mudah, hasil memukau!
       </p>
     </section>
@@ -93,21 +95,24 @@ if (!isset($_SESSION['user_id'])) {
           <img src="../resources/img/icons/checkaction.png" alt="Pilih Undangan" class="icon">
           <div class="text">
             <h3>Pilih Undangan</h3>
-            <p>Mulai Pesanan Anda dengan Langkah Mudah! Pilih desain undangan yang sesuai dengan acara Anda dari berbagai template yang kami sediakan.</p>
+            <p>Mulai Pesanan Anda dengan Langkah Mudah! Pilih desain undangan yang sesuai dengan acara Anda
+              dari berbagai template yang kami sediakan.</p>
           </div>
         </div>
         <div class="step">
           <img src="../resources/img/icons/cartaction.png" alt="Tambahkan ke Keranjang Belanja" class="icon">
           <div class="text">
             <h3>Tambahkan ke Keranjang Belanja</h3>
-            <p>Isi semua detail penting, seperti nama, tanggal acara, dan pesan khusus yang ingin dicantumkan di undangan. Jangan lupa untuk memasukkan alamat pengiriman.</p>
+            <p>Isi semua detail penting, seperti nama, tanggal acara, dan pesan khusus yang ingin
+              dicantumkan di undangan. Jangan lupa untuk memasukkan alamat pengiriman.</p>
           </div>
         </div>
         <div class="step">
           <img src="../resources/img/icons/payaction.png" alt="Pilih Metode Pembayaran" class="icon">
           <div class="text">
             <h3>Pilih Metode Pembayaran</h3>
-            <p>Pilih berbagai metode pembayaran yang Anda inginkan dan tunggu pesanan Anda sampai sesuai alamat tujuan.</p>
+            <p>Pilih berbagai metode pembayaran yang Anda inginkan dan tunggu pesanan Anda sampai sesuai
+              alamat tujuan.</p>
           </div>
         </div>
       </div>
