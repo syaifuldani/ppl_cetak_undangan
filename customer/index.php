@@ -54,7 +54,7 @@ session_start();
     <div class="product-container">
       <div class="product-card">
         <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-        <p class="product-name">Undangan Kontol Memk</p>
+        <p class="product-name">Undangan Raya 36</p>
         <div class="description">
           <h4>Deskripsi Produk</h4>
           <p>
@@ -69,7 +69,7 @@ session_start();
       </div>
       <div class="product-card">
         <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-        <p class="product-name">Undangan Kontol Memk</p>
+        <p class="product-name">Undangan Raya 36</p>
         <div class="description">
           <h4>Deskripsi Produk</h4>
           <p>
@@ -84,7 +84,82 @@ session_start();
       </div>
       <div class="product-card">
         <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-        <p class="product-name">Undangan Kontol Memk</p>
+        <p class="product-name">Undangan Raya 36</p>
+        <div class="description">
+          <h4>Deskripsi Produk</h4>
+          <p>
+            kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+          </p>
+        </div>
+        <p class="product-price">Rp. x.xxx,xx</p>
+        <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
+            alt="">
+          <p>Lihat Detail</p>
+        </a>
+      </div>
+      <div class="product-card">
+        <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
+        <p class="product-name">Undangan Raya 36</p>
+        <div class="description">
+          <h4>Deskripsi Produk</h4>
+          <p>
+            kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+          </p>
+        </div>
+        <p class="product-price">Rp. x.xxx,xx</p>
+        <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
+            alt="">
+          <p>Lihat Detail</p>
+        </a>
+      </div>
+      <div class="product-card">
+        <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
+        <p class="product-name">Undangan Raya 36</p>
+        <div class="description">
+          <h4>Deskripsi Produk</h4>
+          <p>
+            kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+          </p>
+        </div>
+        <p class="product-price">Rp. x.xxx,xx</p>
+        <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
+            alt="">
+          <p>Lihat Detail</p>
+        </a>
+      </div>
+      <div class="product-card">
+        <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
+        <p class="product-name">Undangan Raya 36</p>
+        <div class="description">
+          <h4>Deskripsi Produk</h4>
+          <p>
+            kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+          </p>
+        </div>
+        <p class="product-price">Rp. x.xxx,xx</p>
+        <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
+            alt="">
+          <p>Lihat Detail</p>
+        </a>
+      </div>
+      <div class="product-card">
+        <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
+        <p class="product-name">Undangan Raya 36</p>
+        <div class="description">
+          <h4>Deskripsi Produk</h4>
+          <p>
+            kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+          </p>
+        </div>
+        <p class="product-price">Rp. x.xxx,xx</p>
+        <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
+            alt="">
+          <p>Lihat Detail</p>
+        </a>
+      </div>
+      <div class="product-card">
+        <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
+        <p class="product-name">Undangan Raya 36</p>
         <div class="description">
           <h4>Deskripsi Produk</h4>
           <p>

@@ -53,7 +53,7 @@
                 <h2>Cepat, Mudah, dan Personal Ciptakan Undangan yang Menginspirasi</h2>
                 <div class="nav-buttons">
                     <a href="javascript:void(0);" onclick="showPreviousLayout()">&#10229; Kembali</a>
-                    <a href="customer/index.php" onclick="showNextLayout()">Lanjut &#10230;</a>
+                    <a href="customer/dashboard.php" onclick="showNextLayout()">Lanjut &#10230;</a>
                 </div>
             </div>
         </div>
