@@ -5,7 +5,7 @@
         <button class="dropdown-toggle">Admin ▼</button>
         <ul class="dropdown-menu">
             <li><a href=".\profile.php">Profile</a></li>
-            <li><a href="#">Logout</a></li>
+            <li><a href="./process/logout.php">Logout</a></li>
         </ul>
     </div>
 </header>

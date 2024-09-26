@@ -1,6 +1,17 @@
 <?php
-$title = "Plee ART";
+session_start();
+
+// Cek apakah pengguna sudah login
+if (!isset($_SESSION['user_id'])) {
+    // Jika tidak ada session login, redirect ke halaman login
+    header("Location: login_admin.php");
+    exit();
+}
+
+// Data dari session setelah login
+$title = "PleeART";
 $jenishalaman = "Dashboard";
+$user_email = $_SESSION['user_email']; // Email user yang diambil dari session
 ?>
 
 <!DOCTYPE html>
@@ -10,6 +21,7 @@ $jenishalaman = "Dashboard";
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title ?></title>
+    <link rel="icon" href="resources/img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="./style/style.css">
 </head>
 
