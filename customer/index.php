@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-var_dump($_SESSION);
+// var_dump($_SESSION);
 ?>
 
 <!DOCTYPE html>
@@ -97,81 +97,6 @@ var_dump($_SESSION);
           <p>Lihat Detail</p>
         </a>
       </div>
-      <div class="product-card">
-        <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-        <p class="product-name">Undangan Kontol Memk</p>
-        <div class="description">
-          <h4>Deskripsi Produk</h4>
-          <p>
-            kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-          </p>
-        </div>
-        <p class="product-price">Rp. x.xxx,xx</p>
-        <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
-            alt="">
-          <p>Lihat Detail</p>
-        </a>
-      </div>
-      <div class="product-card">
-        <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-        <p class="product-name">Undangan Kontol Memk</p>
-        <div class="description">
-          <h4>Deskripsi Produk</h4>
-          <p>
-            kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-          </p>
-        </div>
-        <p class="product-price">Rp. x.xxx,xx</p>
-        <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
-            alt="">
-          <p>Lihat Detail</p>
-        </a>
-      </div>
-      <div class="product-card">
-        <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-        <p class="product-name">Undangan Kontol Memk</p>
-        <div class="description">
-          <h4>Deskripsi Produk</h4>
-          <p>
-            kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-          </p>
-        </div>
-        <p class="product-price">Rp. x.xxx,xx</p>
-        <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
-            alt="">
-          <p>Lihat Detail</p>
-        </a>
-      </div>
-      <div class="product-card">
-        <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-        <p class="product-name">Undangan Kontol Memk</p>
-        <div class="description">
-          <h4>Deskripsi Produk</h4>
-          <p>
-            kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-          </p>
-        </div>
-        <p class="product-price">Rp. x.xxx,xx</p>
-        <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
-            alt="">
-          <p>Lihat Detail</p>
-        </a>
-      </div>
-      <div class="product-card">
-        <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-        <p class="product-name">Undangan Kontol Memk</p>
-        <div class="description">
-          <h4>Deskripsi Produk</h4>
-          <p>
-            kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-          </p>
-        </div>
-        <p class="product-price">Rp. x.xxx,xx</p>
-        <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
-            alt="">
-          <p>Lihat Detail</p>
-        </a>
-      </div>
 
       <!-- Tambahkan produk lainnya sesuai kebutuhan -->
     </div>
@@ -184,6 +109,23 @@ var_dump($_SESSION);
 
   <script src="../resources/js/slides.js"></script>
   <script src="../resources/js/burgersidebar.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const dropdownToggle = document.querySelector('.dropdown-toggle');
+      const dropdownMenu = document.querySelector('.dropdown-menu');
+
+      dropdownToggle.addEventListener('click', function () {
+        dropdownMenu.classList.toggle('show');
+      });
+
+      // Close dropdown if clicked outside
+      window.addEventListener('click', function (e) {
+        if (!dropdownToggle.contains(e.target)) {
+          dropdownMenu.classList.remove('show');
+        }
+      });
+    });
+  </script>
 </body>
 
 </html>

@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Buat session
         $_SESSION['user_id'] = $user['user_id'];
         $_SESSION['user_email'] = $user['email'];
+        $_SESSION['user_name'] = $user['nama_lengkap'];
         header("Location: index.php"); // Redirect ke halaman dashboard
         exit();
     } else {
