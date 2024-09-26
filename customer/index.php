@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-var_dump($_SESSION);
+// var_dump($_SESSION);
 ?>
 
 <!DOCTYPE html>
@@ -184,6 +184,23 @@ var_dump($_SESSION);
 
   <script src="../resources/js/slides.js"></script>
   <script src="../resources/js/burgersidebar.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const dropdownToggle = document.querySelector('.dropdown-toggle');
+      const dropdownMenu = document.querySelector('.dropdown-menu');
+
+      dropdownToggle.addEventListener('click', function () {
+        dropdownMenu.classList.toggle('show');
+      });
+
+      // Close dropdown if clicked outside
+      window.addEventListener('click', function (e) {
+        if (!dropdownToggle.contains(e.target)) {
+          dropdownMenu.classList.remove('show');
+        }
+      });
+    });
+  </script>
 </body>
 
 </html>

@@ -44,7 +44,31 @@
 </div>
 
 <div class="user-options">
-    <a href="#" class="cart"><img src="../resources/img/icons/shoppingcart.png" alt=""></a>
-    <a href="login.php" class="sign-in">Sign in</a>
-    <a href="register.php" class="register">Register</a>
+    <a href="#" class="cart">
+        <img src="../resources/img/icons/shoppingcart.png" alt="Cart">
+    </a>
+
+    <?php if (isset($_SESSION['user_id'])): ?>
+        <!-- If user is logged in, show profile icon -->
+        <div class="customer-dropdown">
+            <img src="../resources/img/profiledefault.png" alt="Profile" class="profile-photo dropdown-toggle">
+
+            <ul class="dropdown-menu">
+                <!-- Add user info (name and email) here -->
+                <li class="user-info">
+                    <strong><?= $_SESSION['user_name']; ?></strong><br>
+                    <small><?= $_SESSION['user_email']; ?></small>
+                </li>
+                <hr> <!-- Optional: Add a horizontal line to separate user info from options -->
+
+                <li><a href="profile.php">Profile</a></li>
+                <li><a href="logout.php">Logout</a></li>
+            </ul>
+        </div>
+
+    <?php else: ?>
+        <!-- If user is not logged in, show Sign in and Register links -->
+        <a href="login.php" class="sign-in">Sign in</a>
+        <a href="register.php" class="register">Register</a>
+    <?php endif; ?>
 </div>
