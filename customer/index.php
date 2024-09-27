@@ -53,31 +53,31 @@ session_start();
             <h2>Pesan Undangan Menakjubkan dengan Mudah!</h2>
             <div class="product-grid">
                 <div class="product-card-dsbrd">
-                    <a href="#">
+                    <a href="undangan_pernikahan.php">
                         <img src="../resources/img/homeimg/pernikahan.jpg" alt="Undangan Pernikahan">
                         <p>Undangan Pernikahan</p>
                     </a>
                 </div>
                 <div class="product-card-dsbrd">
-                    <a href="#">
+                    <a href="undangan_khitanan.php">
                         <img src="../resources/img/homeimg/khitanan.jpeg" alt="Undangan Khitan">
                         <p>Undangan Khitan laki-laki</p>
                     </a>
                 </div>
                 <div class="product-card-dsbrd">
-                    <a href="#">
+                    <a href="undangan_walimatul.php">
                         <img src="../resources/img/homeimg/walimatul.jpg" alt="Undangan Walimah">
                         <p>Undangan Walimatul</p>
                     </a>
                 </div>
                 <div class="product-card-dsbrd">
-                    <a href="#">
+                    <a href="undangan_tahlilkirimdoa.php">
                         <img src="../resources/img/homeimg/tahlilkirimdoa.jpg" alt="Undangan Tahlil & Doa">
                         <p>Undangan Tahlil & Doa</p>
                     </a>
                 </div>
                 <div class="product-card-dsbrd">
-                    <a href="#">
+                    <a href="undangan_ulangtahun.php">
                         <img src="../resources/img/homeimg/ulangtahun.jpeg" alt="Undangan Ulang Tahun">
                         <p>Undangan Ulang Tahun</p>
                     </a>

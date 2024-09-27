@@ -13,7 +13,6 @@
 .hero h1 {
     margin-top: 50px;
     font-size: 36px;
-    color: #28a745;
     margin-bottom: 20px;
 }
 
@@ -167,6 +166,7 @@
 /* Style Product */
 .product-container {
     padding-top: 100px;
+    margin-bottom: 100px;
 }
 .product-content {
     display: grid;
@@ -195,6 +195,7 @@
     background-color: #f1f1f1;
     padding: 10px;
     text-align: left;
+    min-height: 100px;
     max-height: 100px;
     overflow-x: hidden;
     word-wrap: break-word;
@@ -227,11 +228,11 @@
 
 .product-name {
     font-weight: bold;
-    font-size: 2rem;
+    font-size: 1.5rem;
 }
 
 .detail-button {
-    background-color: #81d8ad;
+    background-color: #74C69D;
     border-radius: 3px;
     color: white;
     border: none;
@@ -242,7 +243,7 @@
 }
 
 .detail-button:hover {
-    background-color: #74C69D;
+    background-color: #60a482;
 }
 
 .cart-icon {

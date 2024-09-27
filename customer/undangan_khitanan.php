@@ -21,7 +21,7 @@
       <div class="product-content">
         <div class="product-card">
           <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-          <p class="product-name">Undangan Kontol Memk</p>
+          <p class="product-name">Undangan Khitanan</p>
           <div class="description">
             <h4>Deskripsi Produk</h4>
             <p>
@@ -35,7 +35,7 @@
         </div>
         <div class="product-card">
           <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-          <p class="product-name">Undangan Kontol Memk</p>
+          <p class="product-name">Undangan Khitanan</p>
           <div class="description">
             <h4>Deskripsi Produk</h4>
             <p>
@@ -49,7 +49,7 @@
         </div>
         <div class="product-card">
           <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-          <p class="product-name">Undangan Kontol Memk</p>
+          <p class="product-name">Undangan Khitanan</p>
           <div class="description">
             <h4>Deskripsi Produk</h4>
             <p>
@@ -63,7 +63,7 @@
         </div>
         <div class="product-card">
           <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-          <p class="product-name">Undangan Kontol Memk</p>
+          <p class="product-name">Undangan Khitanan</p>
           <div class="description">
             <h4>Deskripsi Produk</h4>
             <p>
@@ -77,7 +77,7 @@
         </div>
         <div class="product-card">
           <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-          <p class="product-name">Undangan Kontol Memk</p>
+          <p class="product-name">Undangan Khitanan</p>
           <div class="description">
             <h4>Deskripsi Produk</h4>
             <p>
@@ -93,7 +93,7 @@
         </div>
         <div class="product-card">
           <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-          <p class="product-name">Undangan Kontol Memk</p>
+          <p class="product-name">Undangan Khitanan</p>
           <div class="description">
             <h4>Deskripsi Produk</h4>
             <p>
@@ -107,7 +107,7 @@
         </div>
         <div class="product-card">
           <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-          <p class="product-name">Undangan Kontol Memk</p>
+          <p class="product-name">Undangan Khitanan</p>
           <div class="description">
             <h4>Deskripsi Produk</h4>
             <p>
@@ -121,7 +121,7 @@
         </div>
         <div class="product-card">
           <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-          <p class="product-name">Undangan Kontol Memk</p>
+          <p class="product-name">Undangan Khitanan</p>
           <div class="description">
             <h4>Deskripsi Produk</h4>
             <p>
