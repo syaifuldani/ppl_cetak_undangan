@@ -31,14 +31,12 @@
 }
 
 .search {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
     margin: 40px 0;
-}
-
-.search button {
-    border: none;
-    text-align: center;
-    cursor: pointer;
 }
 
 .image img{
@@ -58,23 +56,33 @@
     margin-bottom: 20px;
 }
 
-.search input {
+.search form {
+    display: flex;
+    justify-content: left;
     padding: 10px;
-    width: 400px;
-    border: 2px solid #ddd;
+    width: 400px; /* Lebar awal form */
+    border: 2px solid #7D93BA;
     border-radius: 50px;
     font-size: 16px;
+    overflow: hidden; /* Mencegah elemen di dalam meluap */
+    transition: width 0.3s ease; /* Menambahkan transisi pada lebar form */
 }
 
-.search button {
-    background-color: transparent;
+.search form input[type="text"] {
+    font-size: 1rem;
+    padding-left: 15px;
+    padding-right: 10px; /* Spasi di sebelah kanan */
     border: none;
-    background-color: white;
-    padding: 6px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 18px;
+    outline: none;
+    background: transparent;
+    width: 100%; /* Lebar input mengikuti lebar form */
 }
+
+/* Efek melebar pada form ketika input di dalamnya fokus */
+.search form:focus-within {
+    width: 500px; /* Lebar form ketika difokuskan */
+}
+
 
 /* Product Section */
 .products {
@@ -88,11 +96,11 @@
 
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Mengatur grid responsif */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
   gap: 20px;
   padding: 20px;
   width: 100%;
-  max-width: 1200px; /* Batas maksimal lebar grid */
+  max-width: 1200px; 
 }
 
 .product-card-dsbrd {
@@ -163,6 +171,7 @@
     height: auto;
 }
 
+
 /* Style Product */
 .product-container {
     padding-top: 100px;
@@ -232,7 +241,7 @@
 }
 
 .detail-button {
-    background-color: #74C69D;
+    background-color: #7D93BA;
     border-radius: 3px;
     color: white;
     border: none;
@@ -243,7 +252,7 @@
 }
 
 .detail-button:hover {
-    background-color: #60a482;
+    background-color: #2980b9;
 }
 
 .cart-icon {
@@ -257,10 +266,11 @@
     color: white;
 }
 
+
 /* Footer Styling */
 .footer {
     margin-top: 5%;
-    background-color: #74C69D;
+    background-color: #7D93BA;
     color: white;
     padding: 30px 300px;
     font-family: Arial, sans-serif;

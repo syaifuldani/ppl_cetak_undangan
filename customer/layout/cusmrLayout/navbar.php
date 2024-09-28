@@ -6,8 +6,10 @@
 <div class="center-items">
     <ul class="nav-links">
         <div class="search-bar">
-            <input type="text" placeholder="Cari">
-            <button type="submit"><img src="../resources/img/icons/search.png" alt=""></button>
+            <form action="" class="search-input">
+                <label><img src="../resources/img/icons/search.png" alt=""></label>
+                <input type="text" placeholder="Cari">
+            </form>
         </div>
         <li><a href="dashboard.php" class="home">Home</a></li>
         <li class="dropdown">
@@ -38,8 +40,8 @@
                 </a>
             </div>
         </li>
-        <li><a href="#" class="links">About Us</a></li>
-        <li><a href="#" class="links">Contact</a></li>
+        <li><a href="service/aboutus.php" class="links">About Us</a></li>
+        <li><a href="service/contact.php" class="links">Contact</a></li>
     </ul>
 </div>
 

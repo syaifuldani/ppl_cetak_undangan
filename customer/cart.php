@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Keranjang Anda</title>
+    <title>Keranjang</title>
     <link rel="stylesheet" href="../resources/css/cart.css">
     <link rel="stylesheet" href="../resources/css/navbar.css">
 </head>
@@ -27,7 +27,7 @@
                                     Product
                                 </th>
                                 <th>
-                                    Harga Per 1 Kertas
+                                    Harga Per Kertas
                                 </th>
                                 <th>
                                     Jumlah
@@ -66,14 +66,13 @@
                                     </a>
                                 </td>
                             </tr>
-                            <tr>
                         </tbody>
                     </table>
                     <div class="update-cart-btn">
                         <a href="#" class="update-cart-btn">Perbarui Keranjang</a>
                     </div>
                     <div class="warning-message">
-                        Wajib Lengkapi Data Undangan dan Data Pengiriman Anda!!
+                        Lengkapi Data Undangan dan Data Pengiriman Anda!!
                     </div>
                     <div class="form-section">
                         <div class="form-group">
@@ -103,28 +102,6 @@
                                 Alamat: Jl. A Yani No. 123, RT 02/RW 03, Dsn.Sumberjo Ds.Sumbertanggul Kec. Mojosari Kab. Mojokerto, 41382 <br>
                                 Patokan: Rumah warna putih depannya ada pohon sawo.
                             </p>
-                            <p class="choose delivery">
-                                Pilih Jasa Pengiriman:
-                            </p>
-                            <div class="shipping-options">
-                                <input type="radio" id="jne" name="shipping" value="JNE">
-                                <label for="jne">
-                                    <img src="../resources/img/icons/jne-logos.png" alt="JNE">
-                                    JNE Express
-                                </label>
-
-                                <input type="radio" id="jnt" name="shipping" value="JNT">
-                                <label for="jnt">
-                                    <img src="../resources/img/icons/jnt-logos.png" alt="J&T">
-                                    J&T Express
-                                </label>
-
-                                <input type="radio" id="shopee" name="shipping" value="Shopee">
-                                <label for="shopee">
-                                    <img src="../resources/img/icons/spx-logos.png" alt="Shopee Express">
-                                    Shopee Express
-                                </label>
-                            </div>
                         </div>
                         <button class="pay-btn">Bayar Sekarang</button>
                     </div>
@@ -139,14 +116,14 @@
                                     <img src="../resources/img/icons/li-caption.png" alt="">
                                     <span>05/09/2024</span>
                                 </div>
-                                <a href="#">Lihat Detail →</a>
+                                <a href="#">Lihat →</a>
                             </li>
                             <li>
                                 <div class="information">
                                     <img src="../resources/img/icons/li-caption.png" alt="">
                                     <span>05/09/2024</span>
                                 </div>
-                                <a href="#">Lihat Detail →</a>
+                                <a href="#">Lihat →</a>
                             </li>
                         </ul>
                     </div>

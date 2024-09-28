@@ -53,28 +53,36 @@ body {
 .search-bar {
     display: flex;
     align-items: center;
-    margin-right: 20px;
 }
 
-.search-bar input {
-    padding: 8px 12px;
-    border-radius: 20px;
-    border: 1px solid #74c69d;
-    outline: none;
-    width: 200px;
-    transition: width 0.4s ease;
+.search-bar form {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    width: auto; 
+    border: 2px solid #7D93BA;
+    border-radius: 50px;
+    font-size: 16px;
+    overflow: hidden; 
+    transition: width 0.3s ease; 
 }
 
-.search-bar input:focus {
-    width: 300px;
-}
-
-.search-bar button {
-    background-color: transparent;
+.search-bar form input[type="text"] {
+    font-size: 14px;
+    padding-right: 5px;
     border: none;
-    margin-left: -30px;
-    cursor: pointer;
-    font-size: 18px;
+    outline: none;
+    background: transparent;
+    width: 150px;
+    transition: width 0.3s ease; 
+}
+
+.search-bar form input[type="text"]:focus {
+    width: 180px;
+}
+
+.search-bar form label {
+    margin-right: 10px; 
 }
 
 .nav-links {
@@ -109,7 +117,7 @@ body {
     left: 0; 
     width: 0; 
     height: 2px;
-    background-color: #74c69d;
+    background-color: #7D93BA;
     transition: width 0.5s ease; 
 }
 
@@ -118,7 +126,7 @@ body {
 }
 
 .nav-links .home:hover {
-    background-color: #74c69d;
+    background-color: #7D93BA;
     color: white;
     border-radius: 3px;
 }
@@ -151,7 +159,7 @@ body {
 
 .dropdown-content a:hover {
     color: white;
-    background-color: #74C69D;
+    background-color: #7D93BA;
 }
 
 .dropdown:hover .dropdown-content {
@@ -187,7 +195,7 @@ body {
 }
 
 .cart-count {
-    background-color: #00c853;
+    background-color: #7D93BA;
     color: #fff;
     border-radius: 50%;
     padding: 3px 6px;
@@ -255,7 +263,7 @@ body {
 .cart-btn a {
     text-decoration: none;
     padding: 8px;
-    background-color: #74C69D;
+    background-color: #7D93BA;
     color: #fff;
     font-size: 16px;
     border-radius: 5px;
@@ -265,7 +273,7 @@ body {
 }
 
 .cart-btn a:hover {
-    background-color: #60a482;
+    background-color: #2980b9;
 }
 
 
@@ -283,7 +291,7 @@ body {
 }
 
 .user-options .profile img {
-    border-radius: 50%; /* Make the profile icon round */
+    border-radius: 50%; 
 }
 
 .sign-in,
@@ -301,17 +309,17 @@ body {
 }
 
 .sign-in {
-    background-color: #74c69d;
+    background-color: #7D93BA;
     color: white;
 }
 
 .sign-in:hover {
-    background-color: #74c69d;
+    background-color: #7D93BA;
     color: black;
 }
 
 .register:hover {
-    background-color: #74c69d;
+    background-color: #7D93BA;
     color: white;
 }
 

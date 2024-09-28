@@ -49,7 +49,7 @@
         <ul>
             <li>
                 <a href="">
-                    <p>Beri ulasan Anda untuk Toko Kami &raquo;</p>
+                    <p>Beri ulasan Anda untuk Toko Kami <br> &raquo;&raquo;&raquo;</p>
                 </a>
             </li>
         </ul>

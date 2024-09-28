@@ -1,7 +1,7 @@
 .content {
     max-width: 1200px;
-    margin: 0 auto; /* Untuk center konten */
-    padding: 20px; /* Margin padding dari konten */
+    margin: 0 auto; 
+    padding: 20px; 
     padding-top: 100px;
 }
 
@@ -55,7 +55,7 @@ th, td {
 }
 
 th {
-    border-bottom: 3px solid #74C69D;
+    border-bottom: 3px solid #7D93BA;
 }
 
 td {
@@ -85,7 +85,7 @@ td p {
 }
 
 .quantity-control button {
-    background-color: #74C69D;
+    background-color: #7D93BA;
     border: none;
     padding: 5px 10px;
     cursor: pointer;
@@ -95,7 +95,7 @@ td p {
 }
 
 .quantity-control button:hover {
-    background-color: #60a482;
+    background-color: #2980b9;
 }
 
 
@@ -109,20 +109,21 @@ td p {
 
 /* Tombol perbarui keranjang */
 .update-cart-btn {
-    margin-top: 30px; 
+    margin-top: 10px; 
 }
 
 .update-cart-btn a {
-    background-color: #74C69D; 
-    padding: 5px;
+    background-color: #7D93BA; 
+    padding: 8px;
     color: #fff;
     border-radius: 5px;
     cursor: pointer; 
     text-decoration: none;
+    font-size: 14px;
 }
 
 .update-cart-btn a:hover {
-    background-color: #60a482;
+    background-color: #2980b9;
 }
 
 .warning-message {
@@ -157,6 +158,12 @@ td p {
 .order-history .information {
     display: flex;
     text-align: center;
+
+}
+
+ul li a {
+    color: #007bff;
+    text-decoration: none;
 }
 
 .form-section h3 {
@@ -239,7 +246,7 @@ td p {
 }
 
 .pay-btn {
-    background-color: #74C69D;
+    background-color: #7D93BA;
     color: #fff;
     padding: 15px;
     border: none;
@@ -250,5 +257,5 @@ td p {
 }
 
 .pay-btn:hover {
-    background-color: #60a482;
+    background-color: #2980b9;
 }

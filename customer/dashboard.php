@@ -42,9 +42,9 @@ if (!isset($_SESSION['user_id'])) {
       <section class="search">
         <h2>Temukan Beragam Desain Undangan Elegan</h2>
         <p>Pesan Sekarang, Kami Kirimkan ke Alamat Anda</p>
-        <form action="" class="search">
+        <form action="" class="search-input">
+          <label><img src="../resources/img/icons/search.png" alt=""></label>
           <input type="text" placeholder="Cari undanganMu">
-          <button type="submit"><img src="../resources/img/icons/search.png" alt=""></img></button>
         </form>
       </section>
       <div class="image">
