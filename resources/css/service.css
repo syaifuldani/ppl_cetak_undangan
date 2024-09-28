@@ -1,0 +1,97 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.about-us-container {
+    max-width: 1000px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.about-us-content {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.image-container {
+    flex: 1;
+    text-align: center;
+}
+
+.logo-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.text-content {
+    flex: 2;
+}
+
+h2 {
+    color: #333;
+    margin-top: 0;
+}
+
+h3 {
+    color: #555;
+}
+
+p {
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+ul {
+    padding-left: 20px;
+    margin-bottom: 20px;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+.back-button {
+    display: inline-block;
+    margin-top: 20px; 
+    padding: 10px 20px;
+    background-color: #7D93BA; 
+    color: #fff; 
+    text-decoration: none; 
+    border-radius: 5px; 
+    font-size: 16px;
+    transition: background-color 0.3s ease; 
+}
+
+.back-button:hover {
+    background-color: #2980b9;
+}
+
+@media (max-width: 768px) {
+    .about-us-content {
+        flex-direction: column;
+    }
+
+    .image-container,
+    .text-content {
+        flex: none;
+    }
+}
+
+
+/* Contact Style */

@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+  header("Location: index.php"); // Jika belum login, redirect ke halaman login
+  exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,7 +29,7 @@
       <div class="product-content">
         <div class="product-card">
           <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-          <p class="product-name">Undangan Kontol Memk</p>
+          <p class="product-name">Undangan Blanko Pernikahan</p>
           <div class="description">
             <h4>Deskripsi Produk</h4>
             <p>
@@ -35,7 +43,7 @@
         </div>
         <div class="product-card">
           <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-          <p class="product-name">Undangan Kontol Memk</p>
+          <p class="product-name">Undangan Blanko Pernikahan</p>
           <div class="description">
             <h4>Deskripsi Produk</h4>
             <p>
@@ -49,7 +57,7 @@
         </div>
         <div class="product-card">
           <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-          <p class="product-name">Undangan Kontol Memk</p>
+          <p class="product-name">Undangan Blanko Pernikahan</p>
           <div class="description">
             <h4>Deskripsi Produk</h4>
             <p>
@@ -63,7 +71,7 @@
         </div>
         <div class="product-card">
           <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-          <p class="product-name">Undangan Kontol Memk</p>
+          <p class="product-name">Undangan Blanko Pernikahan</p>
           <div class="description">
             <h4>Deskripsi Produk</h4>
             <p>
@@ -77,7 +85,7 @@
         </div>
         <div class="product-card">
           <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-          <p class="product-name">Undangan Kontol Memk</p>
+          <p class="product-name">Undangan Blanko Pernikahan</p>
           <div class="description">
             <h4>Deskripsi Produk</h4>
             <p>
@@ -93,7 +101,7 @@
         </div>
         <div class="product-card">
           <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-          <p class="product-name">Undangan Kontol Memk</p>
+          <p class="product-name">Undangan Blanko Pernikahan</p>
           <div class="description">
             <h4>Deskripsi Produk</h4>
             <p>
@@ -107,7 +115,7 @@
         </div>
         <div class="product-card">
           <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-          <p class="product-name">Undangan Kontol Memk</p>
+          <p class="product-name">Undangan Blanko Pernikahan</p>
           <div class="description">
             <h4>Deskripsi Produk</h4>
             <p>
@@ -121,7 +129,7 @@
         </div>
         <div class="product-card">
           <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-          <p class="product-name">Undangan Kontol Memk</p>
+          <p class="product-name">Undangan Blanko Pernikahan</p>
           <div class="description">
             <h4>Deskripsi Produk</h4>
             <p>

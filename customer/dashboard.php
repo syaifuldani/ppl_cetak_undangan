@@ -17,7 +17,7 @@ if (!isset($_SESSION['user_id'])) {
 </head>
 
 <body>
-  <div class="container">
+  <div class="container" id="container">
     <!-- Navbar -->
     <nav class="navbar">
       <?php include 'layout/cusmrLayout/navbar.php'; ?>
@@ -42,9 +42,9 @@ if (!isset($_SESSION['user_id'])) {
       <section class="search">
         <h2>Temukan Beragam Desain Undangan Elegan</h2>
         <p>Pesan Sekarang, Kami Kirimkan ke Alamat Anda</p>
-        <form action="" class="search">
+        <form action="" class="search-input">
+          <label><img src="../resources/img/icons/search.png" alt=""></label>
           <input type="text" placeholder="Cari undanganMu">
-          <button type="submit"><img src="../resources/img/icons/search.png" alt=""></img></button>
         </form>
       </section>
       <div class="image">
@@ -57,31 +57,31 @@ if (!isset($_SESSION['user_id'])) {
       <h2>Pesan Undangan Menakjubkan dengan Mudah!</h2>
       <div class="product-grid">
         <div class="product-card-dsbrd">
-          <a href="#">
+          <a href="undangan_pernikahan.php">
             <img src="../resources/img/homeimg/pernikahan.jpg" alt="Undangan Pernikahan">
             <p>Undangan Pernikahan</p>
           </a>
         </div>
         <div class="product-card-dsbrd">
-          <a href="#">
+          <a href="undangan_khitanan.php">
             <img src="../resources/img/homeimg/khitanan.jpeg" alt="Undangan Khitan">
             <p>Undangan Khitan</p>
           </a>
         </div>
         <div class="product-card-dsbrd">
-          <a href="#">
+          <a href="undangan_walimatul.php">
             <img src="../resources/img/homeimg/walimatul.jpg" alt="Undangan Walimah">
             <p>Undangan Walimatul</p>
           </a>
         </div>
         <div class="product-card-dsbrd">
-          <a href="#">
+          <a href="undangan_tahlilkirimdoa.php">
             <img src="../resources/img/homeimg/tahlilkirimdoa.jpg" alt="Undangan Tahlil & Doa">
             <p>Undangan Tahlil & Doa</p>
           </a>
         </div>
         <div class="product-card-dsbrd">
-          <a href="#">
+          <a href="undangan_ulangtahun.php">
             <img src="../resources/img/homeimg/ulangtahun.jpeg" alt="Undangan Ulang Tahun">
             <p>Undangan Ulang Tahun</p>
           </a>
