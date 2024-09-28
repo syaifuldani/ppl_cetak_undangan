@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Buat session untuk user baru
         $_SESSION['user_id'] = $pdo->lastInsertId();
         $_SESSION['user_email'] = $email;
-        header("Location: dashboard.php"); // Redirect ke dashboard setelah registrasi sukses
+        header("Location: login.php"); // Redirect ke dashboard setelah registrasi sukses
         exit();
     } else {
         echo "Terjadi kesalahan saat registrasi!";
