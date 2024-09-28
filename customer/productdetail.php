@@ -48,7 +48,7 @@ session_start();
                         <div class="description">
                             <h4>Deskripsi Produk</h4>
                             <p>
-                                kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                                kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaakontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaakontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaakontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaakontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaakontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                             </p>
                         </div>
 
@@ -82,7 +82,13 @@ session_start();
                         <div class="product-container">
                             <div class="product-card">
                                 <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-                                <p class="product-name">Undangan Kontol Memk</p>
+                                <p class="product-name">Undangan Khitanan</p>
+                                <div class="description">
+                                    <h4>Deskripsi Produk</h4>
+                                    <p>
+                                        kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                                    </p>
+                                </div>
                                 <p class="product-price">Rp. x.xxx,xx</p>
                                 <a href="productdetail.php" class="detail-button"><img class="cart-icon"
                                         src="../resources/img/icons/cart.png" alt="">
@@ -91,7 +97,13 @@ session_start();
                             </div>
                             <div class="product-card">
                                 <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-                                <p class="product-name">Undangan Kontol Memk</p>
+                                <p class="product-name">Undangan Khitanan</p>
+                                <div class="description">
+                                    <h4>Deskripsi Produk</h4>
+                                    <p>
+                                        kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                                    </p>
+                                </div>
                                 <p class="product-price">Rp. x.xxx,xx</p>
                                 <a href="productdetail.php" class="detail-button"><img class="cart-icon"
                                         src="../resources/img/icons/cart.png" alt="">
@@ -101,96 +113,98 @@ session_start();
                         </div>
                     </div>
                 </div>
-                <div class="reviews-product">
-                    <div class="header">
-                        <h3>Ulasan</h3>
-                        <hr color="black">
+            </div>
+
+            <!-- Ulasan -->
+            <div class="reviews-product">
+                <div class="header">
+                    <h3>Ulasan Produk</h3>
+                    <hr color="black">
+                </div>
+                <div class="reviews">
+                    <div class="review-item">
+                        <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
+                        <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
                     </div>
-                    <div class="reviews">
-                        <div class="review-item">
-                            <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
-                            <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
-                        </div>
-                        <div class="review-item">
-                            <p><strong>Jane Smith</strong> - ⭐⭐⭐⭐</p>
-                            <p>Kualitas produk oke, namun packaging bisa lebih baik lagi.</p>
-                        </div>
-                        <div class="review-item">
-                            <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
-                            <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
-                        </div>
-                        <div class="review-item">
-                            <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
-                            <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
-                        </div>
-                        <div class="review-item">
-                            <p><strong>Jane Smith</strong> - ⭐⭐⭐⭐</p>
-                            <p>Kualitas produk oke, namun packaging bisa lebih baik lagi.</p>
-                        </div>
-                        <div class="review-item">
-                            <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
-                            <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
-                        </div>
-                        <div class="review-item">
-                            <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
-                            <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
-                        </div>
-                        <div class="review-item">
-                            <p><strong>Jane Smith</strong> - ⭐⭐⭐⭐</p>
-                            <p>Kualitas produk oke, namun packaging bisa lebih baik lagi.</p>
-                        </div>
-                        <div class="review-item">
-                            <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
-                            <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
-                        </div>
-                        <div class="review-item">
-                            <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
-                            <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
-                        </div>
-                        <div class="review-item">
-                            <p><strong>Jane Smith</strong> - ⭐⭐⭐⭐</p>
-                            <p>Kualitas produk oke, namun packaging bisa lebih baik lagi.</p>
-                        </div>
-                        <div class="review-item">
-                            <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
-                            <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
-                        </div>
-                        <div class="review-item">
-                            <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
-                            <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
-                        </div>
-                        <div class="review-item">
-                            <p><strong>Jane Smith</strong> - ⭐⭐⭐⭐</p>
-                            <p>Kualitas produk oke, namun packaging bisa lebih baik lagi.</p>
-                        </div>
-                        <div class="review-item">
-                            <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
-                            <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
-                        </div>
-                        <div class="review-item">
-                            <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
-                            <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
-                        </div>
-                        <div class="review-item">
-                            <p><strong>Jane Smith</strong> - ⭐⭐⭐⭐</p>
-                            <p>Kualitas produk oke, namun packaging bisa lebih baik lagi.</p>
-                        </div>
-                        <div class="review-item">
-                            <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
-                            <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
-                        </div>
-                        <div class="review-item">
-                            <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
-                            <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
-                        </div>
-                        <div class="review-item">
-                            <p><strong>Jane Smith</strong> - ⭐⭐⭐⭐</p>
-                            <p>Kualitas produk oke, namun packaging bisa lebih baik lagi.</p>
-                        </div>
-                        <div class="review-item">
-                            <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
-                            <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
-                        </div>
+                    <div class="review-item">
+                        <p><strong>Jane Smith</strong> - ⭐⭐⭐⭐</p>
+                        <p>Kualitas produk oke, namun packaging bisa lebih baik lagi.</p>
+                    </div>
+                    <div class="review-item">
+                        <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
+                        <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
+                    </div>
+                    <div class="review-item">
+                        <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
+                        <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
+                    </div>
+                    <div class="review-item">
+                        <p><strong>Jane Smith</strong> - ⭐⭐⭐⭐</p>
+                        <p>Kualitas produk oke, namun packaging bisa lebih baik lagi.</p>
+                    </div>
+                    <div class="review-item">
+                        <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
+                        <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
+                    </div>
+                    <div class="review-item">
+                        <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
+                        <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
+                    </div>
+                    <div class="review-item">
+                        <p><strong>Jane Smith</strong> - ⭐⭐⭐⭐</p>
+                        <p>Kualitas produk oke, namun packaging bisa lebih baik lagi.</p>
+                    </div>
+                    <div class="review-item">
+                        <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
+                        <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
+                    </div>
+                    <div class="review-item">
+                        <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
+                        <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
+                    </div>
+                    <div class="review-item">
+                        <p><strong>Jane Smith</strong> - ⭐⭐⭐⭐</p>
+                        <p>Kualitas produk oke, namun packaging bisa lebih baik lagi.</p>
+                    </div>
+                    <div class="review-item">
+                        <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
+                        <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
+                    </div>
+                    <div class="review-item">
+                        <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
+                        <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
+                    </div>
+                    <div class="review-item">
+                        <p><strong>Jane Smith</strong> - ⭐⭐⭐⭐</p>
+                        <p>Kualitas produk oke, namun packaging bisa lebih baik lagi.</p>
+                    </div>
+                    <div class="review-item">
+                        <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
+                        <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
+                    </div>
+                    <div class="review-item">
+                        <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
+                        <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
+                    </div>
+                    <div class="review-item">
+                        <p><strong>Jane Smith</strong> - ⭐⭐⭐⭐</p>
+                        <p>Kualitas produk oke, namun packaging bisa lebih baik lagi.</p>
+                    </div>
+                    <div class="review-item">
+                        <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
+                        <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
+                    </div>
+                    <div class="review-item">
+                        <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
+                        <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
+                    </div>
+                    <div class="review-item">
+                        <p><strong>Jane Smith</strong> - ⭐⭐⭐⭐</p>
+                        <p>Kualitas produk oke, namun packaging bisa lebih baik lagi.</p>
+                    </div>
+                    <div class="review-item">
+                        <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
+                        <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
                     </div>
                 </div>
             </div>

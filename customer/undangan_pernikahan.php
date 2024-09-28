@@ -1,6 +1,9 @@
 <?php
 session_start();
-
+if (!isset($_SESSION['user_id'])) {
+  header("Location: index.php"); // Jika belum login, redirect ke halaman login
+  exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -9,7 +12,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Undangan Walimatul</title>
+    <title>Undangan Pernikahan</title>
     <link rel="stylesheet" href="../resources/css/dashboard.css">
     <link rel="stylesheet" href="../resources/css/navbar.css">
 </head>
@@ -26,7 +29,7 @@ session_start();
             <div class="product-content">
                 <div class="product-card">
                     <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-                    <p class="product-name">Undangan Kontol Memk</p>
+                    <p class="product-name">Undangan Blanko Pernikahan</p>
                     <div class="description">
                         <h4>Deskripsi Produk</h4>
                         <p>
@@ -35,16 +38,100 @@ session_start();
                     </div>
                     <p class="product-price">Rp. x.xxx,xx</p>
                     <a href="productdetail.php" class="detail-button"><img class="cart-icon"
+
+                                         src="../resources/img/icons/cart.png" alt="">
+                        <p>Lihat Detail</p>
+                    </a>
+                </div>
+                <div class="product-card">
+                    <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
+                    <p class="product-name">Undangan Blanko Pernikahan</p>
+                    <div class="description">
+                        <h4>Deskripsi Produk</h4>
+                        <p>
+                            kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                        </p>
+                    </div>
+                    <p class="product-price">Rp. x.xxx,xx</p>
+
+                                 <a href="productdetail.php" class="detail-button"><img class="cart-icon"
                             src="../resources/img/icons/cart.png" alt="">
                         <p>Lihat Detail</p>
                     </a>
                 </div>
                 <div class="product-card">
                     <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-                    <p class="product-name">Undangan Kontol Memk</p>
+                    <p class="product-name">Undangan Blanko Pernikahan</p>
                     <div class="description">
                         <h4>Deskripsi Produk</h4>
                         <p>
+                            kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                        </p>
+                    </div>
+
+                                 <p class="product-price">Rp. x.xxx,xx</p>
+                    <a href="productdetail.php" class="detail-button"><img class="cart-icon"
+                            src="../resources/img/icons/cart.png" alt="">
+                        <p>Lihat Detail</p>
+                    </a>
+                </div>
+                <div class="product-card">
+                    <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
+                    <p class="product-name">Undangan Blanko Pernikahan</p>
+                    <div class="description">
+                        <h4>Deskripsi Produk</h4>
+                        <p>
+                            kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                        </p>
+
+                                 </div>
+                    <p class="product-price">Rp. x.xxx,xx</p>
+                    <a href="productdetail.php" class="detail-button"><img class="cart-icon"
+                            src="../resources/img/icons/cart.png" alt="">
+                        <p>Lihat Detail</p>
+                    </a>
+                </div>
+                <div class="product-card">
+                    <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
+                    <p class="product-name">Undangan Blanko Pernikahan</p>
+                    <div class="description">
+                        <h4>Deskripsi Produk</h4>
+                        <p>
+                            kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                            kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                            kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+                                     </p>
+                    </div>
+                    <p class="product-price">Rp. x.xxx,xx</p>
+                    <a href="productdetail.php" class="detail-button"><img class="cart-icon"
+                            src="../resources/img/icons/cart.png" alt="">
+                        <p>Lihat Detail</p>
+                    </a>
+                </div>
+                <div class="product-card">
+                    <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
+                    <p class="product-name">Undangan Blanko Pernikahan</p>
+                    <div class="description">
+                        <h4>Deskripsi Produk</h4>
+                        <p>
+
+                                         kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                        </p>
+                    </div>
+                    <p class="product-price">Rp. x.xxx,xx</p>
+                    <a href="productdetail.php" class="detail-button"><img class="cart-icon"
+                            src="../resources/img/icons/cart.png" alt="">
+                        <p>Lihat Detail</p>
+                    </a>
+                </div>
+                <div class="product-card">
+                    <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
+                    <p class="product-name">Undangan Blanko Pernikahan</p>
+                    <div class="description">
+                        <h4>Deskripsi Produk</h4>
+
+                                     <p>
                             kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                         </p>
                     </div>
@@ -56,86 +143,10 @@ session_start();
                 </div>
                 <div class="product-card">
                     <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-                    <p class="product-name">Undangan Kontol Memk</p>
+                    <p class="product-name">Undangan Blanko Pernikahan</p>
                     <div class="description">
-                        <h4>Deskripsi Produk</h4>
-                        <p>
-                            kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-                        </p>
-                    </div>
-                    <p class="product-price">Rp. x.xxx,xx</p>
-                    <a href="productdetail.php" class="detail-button"><img class="cart-icon"
-                            src="../resources/img/icons/cart.png" alt="">
-                        <p>Lihat Detail</p>
-                    </a>
-                </div>
-                <div class="product-card">
-                    <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-                    <p class="product-name">Undangan Kontol Memk</p>
-                    <div class="description">
-                        <h4>Deskripsi Produk</h4>
-                        <p>
-                            kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-                        </p>
-                    </div>
-                    <p class="product-price">Rp. x.xxx,xx</p>
-                    <a href="productdetail.php" class="detail-button"><img class="cart-icon"
-                            src="../resources/img/icons/cart.png" alt="">
-                        <p>Lihat Detail</p>
-                    </a>
-                </div>
-                <div class="product-card">
-                    <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-                    <p class="product-name">Undangan Kontol Memk</p>
-                    <div class="description">
-                        <h4>Deskripsi Produk</h4>
-                        <p>
-                            kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-                            kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-                            kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-                        </p>
-                    </div>
-                    <p class="product-price">Rp. x.xxx,xx</p>
-                    <a href="productdetail.php" class="detail-button"><img class="cart-icon"
-                            src="../resources/img/icons/cart.png" alt="">
-                        <p>Lihat Detail</p>
-                    </a>
-                </div>
-                <div class="product-card">
-                    <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-                    <p class="product-name">Undangan Kontol Memk</p>
-                    <div class="description">
-                        <h4>Deskripsi Produk</h4>
-                        <p>
-                            kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-                        </p>
-                    </div>
-                    <p class="product-price">Rp. x.xxx,xx</p>
-                    <a href="productdetail.php" class="detail-button"><img class="cart-icon"
-                            src="../resources/img/icons/cart.png" alt="">
-                        <p>Lihat Detail</p>
-                    </a>
-                </div>
-                <div class="product-card">
-                    <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-                    <p class="product-name">Undangan Kontol Memk</p>
-                    <div class="description">
-                        <h4>Deskripsi Produk</h4>
-                        <p>
-                            kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-                        </p>
-                    </div>
-                    <p class="product-price">Rp. x.xxx,xx</p>
-                    <a href="productdetail.php" class="detail-button"><img class="cart-icon"
-                            src="../resources/img/icons/cart.png" alt="">
-                        <p>Lihat Detail</p>
-                    </a>
-                </div>
-                <div class="product-card">
-                    <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-                    <p class="product-name">Undangan Kontol Memk</p>
-                    <div class="description">
-                        <h4>Deskripsi Produk</h4>
+
+                                     <h4>Deskripsi Produk</h4>
                         <p>
                             kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                         </p>

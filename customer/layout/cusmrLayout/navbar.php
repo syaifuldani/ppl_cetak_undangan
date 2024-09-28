@@ -6,8 +6,10 @@
 <div class="center-items">
     <ul class="nav-links">
         <div class="search-bar">
-            <input type="text" placeholder="Cari">
-            <button type="submit"><img src="../resources/img/icons/search.png" alt=""></button>
+            <form action="" class="search-input">
+                <label><img src="../resources/img/icons/search.png" alt=""></label>
+                <input type="text" placeholder="Cari">
+            </form>
         </div>
         <li><a href="dashboard.php" class="home">Home</a></li>
         <li class="dropdown">
@@ -16,36 +18,38 @@
                 <img src="../resources/img/icons/dropdown.png" alt="dropdown">
             </a>
             <div class="dropdown-content">
-                <a href="pernikahan.php">
+                <a href="undangan_pernikahan.php">
                     <img src="../resources/img/icons/paper.png" alt="dropdown">
                     Pernikahan
                 </a>
-                <a href="khitanan.php">
+                <a href="undangan_khitanan.php">
                     <img src="../resources/img/icons/paper.png" alt="dropdown">
                     Khitanan
                 </a>
-                <a href="walimatul.php">
+                <a href="undangan_walimatul.php">
                     <img src="../resources/img/icons/paper.png" alt="dropdown">
                     Walimatul
                 </a>
-                <a href="tahlilkirimdoa.php">
+                <a href="undangan_tahlilkirimdoa.php">
                     <img src="../resources/img/icons/paper.png" alt="dropdown">
                     Tahlil & Kirim Doa
                 </a>
-                <a href="ulangtahun.php">
+                <a href="undangan_ulangtahun.php">
                     <img src="../resources/img/icons/paper.png" alt="dropdown">
                     Ulang Tahun
                 </a>
             </div>
         </li>
-        <li><a href="#">About Us</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="service/aboutus.php" class="links">About Us</a></li>
+        <li><a href="service/contact.php" class="links">Contact</a></li>
     </ul>
 </div>
 
 <div class="user-options">
-    <a href="#" class="cart">
+    <!-- Tombol untuk membuka dropdown -->
+    <a href="#" class="cart" id="cartButton">
         <img src="../resources/img/icons/shoppingcart.png" alt="Cart">
+        <span class="cart-count" id="cart-count"></span>
     </a>
 
     <?php if (isset($_SESSION['user_id'])): ?>
@@ -72,3 +76,89 @@
         <a href="register.php" class="register">Register</a>
     <?php endif; ?>
 </div>
+
+
+<div class="cart-dropdown" id="cartDropdown" style="display: none;">
+    <h3>Keranjang</h3>
+
+    <!-- Contoh item keranjang statis -->
+    <div class="cart-item">
+        <img src="../resources/img/icons/contohproduct.jpeg" alt="Product">
+        <div class="item-details">
+            <h4>Undangan Blangko Pernikahan</h4>
+            <p>Qty: 200</p>
+            <p>Rp. 200.000,00</p>
+        </div>
+    </div>
+    <div class="cart-item">
+        <img src="../resources/img/icons/contohproduct.jpeg" alt="Product">
+        <div class="item-details">
+            <h4>Undangan Blangko Pernikahan</h4>
+            <p>Qty: 200</p>
+            <p>Rp. 200.000,00</p>
+        </div>
+    </div>
+    <div class="cart-item">
+        <img src="../resources/img/icons/contohproduct.jpeg" alt="Product">
+        <div class="item-details">
+            <h4>Undangan Blangko Pernikahan</h4>
+            <p>Qty: 200</p>
+            <p>Rp. 200.000,00</p>
+        </div>
+    </div>
+
+    <p class="total-price">Total Harga : Rp. 200.000,00</p>
+    <div class="cart-btn">
+        <a href="cart.php" class="cart-btn">
+            Check Out Sekarang
+        </a>
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+    // Mengambil elemen tombol keranjang, dropdown, dan count
+    const cartButton = document.getElementById('cartButton');
+    const cartDropdown = document.getElementById('cartDropdown');
+    const cartCount = document.querySelector('.cart-count');
+
+    // Fungsi untuk menampilkan atau menyembunyikan dropdown keranjang
+    function toggleCartDropdown() {
+        if (cartDropdown.style.display === 'none' || cartDropdown.style.display === '') {
+            cartDropdown.style.display = 'block';
+        } else {
+            cartDropdown.style.display = 'none';
+        }
+    }
+
+    // Fungsi untuk menghitung jumlah item di dalam keranjang
+    function updateCartCount() {
+        // Menghitung jumlah elemen dengan kelas .cart-item di dalam dropdown
+        const cartItems = document.querySelectorAll('.cart-dropdown .cart-item');
+        const itemCount = cartItems.length;
+
+        // Jika ada item di keranjang, tampilkan jumlah item, jika tidak, sembunyikan elemen cart-count
+        if (itemCount > 0) {
+            cartCount.textContent = itemCount; // Ubah jumlah count
+            cartCount.style.display = 'inline'; // Tampilkan count
+        } else {
+            cartCount.style.display = 'none'; // Sembunyikan count
+        }
+    }
+
+    // Event listener pada tombol keranjang
+    cartButton.addEventListener('click', function(event) {
+        event.preventDefault(); // Mencegah link agar tidak langsung mengarahkan ke URL lain
+        toggleCartDropdown(); // Memanggil fungsi untuk menampilkan atau menyembunyikan dropdown
+    });
+
+    // Event listener untuk menutup dropdown jika klik di luar area dropdown
+    document.addEventListener('click', function(event) {
+        if (!cartButton.contains(event.target) && !cartDropdown.contains(event.target)) {
+            cartDropdown.style.display = 'none'; // Sembunyikan dropdown
+        }
+    });
+
+    // Panggil fungsi updateCartCount untuk memperbarui count awal
+    updateCartCount();
+</script>
