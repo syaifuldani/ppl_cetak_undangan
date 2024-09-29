@@ -26,13 +26,13 @@
             <li>
                 <!-- Link ke Instagram -->
                 <a href="https://www.instagram.com/photostice_" target="_blank">
-                    <img src="../resources/img/icons/instagram.png" alt="Instagram"> Plee.Art
+                    <img src="../resources/img/icons/instagram.png" alt="Instagram"> PleeArt.
                 </a>
             </li>
             <li>
                 <!-- Link ke Twitter -->
                 <a href="https://twitter.com/plee_art" target="_blank">
-                    <img src="../resources/img/icons/tweeter.png" alt="Twitter"> Plee.Art
+                    <img src="../resources/img/icons/twitter.png" alt="Twitter"> PleeArt.
                 </a>
             </li>
             <li>
@@ -56,7 +56,7 @@
     </div>
 </div>
 <div class="footer-bottom">
-    <a href="">
+    <a href="services/aboutus.php">
         <p>Tentang Kami &raquo;</p>
     </a>
     <p>&copy; 2024 by Plee.Art. All rights reserved.</p>

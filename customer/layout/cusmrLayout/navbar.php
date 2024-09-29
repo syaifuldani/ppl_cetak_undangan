@@ -40,8 +40,8 @@
                 </a>
             </div>
         </li>
-        <li><a href="service/aboutus.php" class="links">About Us</a></li>
-        <li><a href="service/contact.php" class="links">Contact</a></li>
+        <li><a href="services/aboutus.php" class="links">About Us</a></li>
+        <li><a href="services/contact.php" class="links">Contact</a></li>
     </ul>
 </div>
 
