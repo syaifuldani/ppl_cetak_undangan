@@ -1,3 +1,8 @@
+<?php
+session_start();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,9 +32,12 @@
                             </div>
                         </div>
                         <div class="thumbnail-images">
-                            <img src="../resources/img/icons/Rectangle.png" alt="Thumbnail 1" class="thumb" onclick="changeImage(this)">
-                            <img src="../resources/img/icons/contohproduct.jpeg" alt="Thumbnail 2" class="thumb" onclick="changeImage(this)">
-                            <img src="../resources/img/icons/contohproduct.jpeg" alt="Thumbnail 3" class="thumb" onclick="changeImage(this)">
+                            <img src="../resources/img/icons/Rectangle.png" alt="Thumbnail 1" class="thumb"
+                                onclick="changeImage(this)">
+                            <img src="../resources/img/icons/contohproduct.jpeg" alt="Thumbnail 2" class="thumb"
+                                onclick="changeImage(this)">
+                            <img src="../resources/img/icons/contohproduct.jpeg" alt="Thumbnail 3" class="thumb"
+                                onclick="changeImage(this)">
                         </div>
                     </div>
 
@@ -82,7 +90,8 @@
                                     </p>
                                 </div>
                                 <p class="product-price">Rp. x.xxx,xx</p>
-                                <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png" alt="">
+                                <a href="productdetail.php" class="detail-button"><img class="cart-icon"
+                                        src="../resources/img/icons/cart.png" alt="">
                                     <p>Lihat Detail</p>
                                 </a>
                             </div>
@@ -96,7 +105,8 @@
                                     </p>
                                 </div>
                                 <p class="product-price">Rp. x.xxx,xx</p>
-                                <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png" alt="">
+                                <a href="productdetail.php" class="detail-button"><img class="cart-icon"
+                                        src="../resources/img/icons/cart.png" alt="">
                                     <p>Lihat Detail</p>
                                 </a>
                             </div>
