@@ -373,11 +373,10 @@ function registrasiAdmin($data)
 
 function loginAdmin($data)
 {
-
     $errors = [];
     // Ambil nilai dari form dan bersihkan input
-    $email = trim($_POST['email']);
-    $password = $_POST['password'];
+    $email = trim($data['email']);
+    $password = $data['password'];
 
     // Validasi input
     if (empty($email) || empty($password)) {
