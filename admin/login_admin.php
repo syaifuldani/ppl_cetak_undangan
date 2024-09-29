@@ -8,8 +8,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $responLoginAdmin = loginAdmin($_POST);
 }
 
-    $responLoginAdmin = loginAdmin($_POST);
-}
+$responLoginAdmin = loginAdmin($_POST);
+
 
 ?>
 <!DOCTYPE html>
