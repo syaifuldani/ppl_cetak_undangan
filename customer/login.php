@@ -1,30 +1,10 @@
 <?php
 session_start();
 require '../config/connection.php';
+require '../config/function.php'; // Koneksi ke function
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Ambil nilai dari form
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-
-    // Query untuk memeriksa user di database
-    $sql = "SELECT * FROM users WHERE email = :email";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':email', $email);
-    $stmt->execute();
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    // Jika user ditemukan dan password cocok
-    if ($user && password_verify($password, $user['password'])) {
-        // Buat session
-        $_SESSION['user_id'] = $user['user_id'];
-        $_SESSION['user_email'] = $user['email'];
-        $_SESSION['user_name'] = $user['nama_lengkap'];
-        header("Location: index.php"); // Redirect ke halaman dashboard
-        exit();
-    } else {
-        echo "Email atau password salah!";
-    }
+    $errors = loginCustomer($_POST);
 }
 ?>
 
@@ -46,15 +26,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="form-section">
             <h2>Login</h2>
             <form action="login.php" method="POST">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
 
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="text" id="email" name="email"
+                        value="<?= isset($_POST['name']) ? htmlspecialchars($_POST['name']) : '' ?>">
+                    <span class="error-message"><?= isset($errors['email']) ? $errors['email'] : ''; ?></span>
+                </div>
 
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password">
+                    <span class="error-message"><?= isset($errors['password']) ? $errors['password'] : ''; ?></span>
+                </div>
                 <button type="submit">Login</button>
             </form>
-            <p>Belum punya akun? <a href="register.php">Register sini</a></p>
+            <p>Belum punya akun? <a href="register.php">Registrasi disini!</a></p>
         </div>
     </div>
 </body>

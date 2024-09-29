@@ -1,6 +1,3 @@
-<?php
-session_start();
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -61,7 +58,7 @@ session_start();
                 <div class="product-card-dsbrd">
                     <a href="undangan_khitanan.php">
                         <img src="../resources/img/homeimg/khitanan.jpeg" alt="Undangan Khitan">
-                        <p>Undangan Khitan laki-laki</p>
+                        <p>Undangan Khitanan</p>
                     </a>
                 </div>
                 <div class="product-card-dsbrd">
