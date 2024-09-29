@@ -1,9 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id'])) {
-  header("Location: index.php"); // Jika belum login, redirect ke halaman login
-  exit();
-}
+
 ?>
 
 <!DOCTYPE html>
@@ -38,8 +35,7 @@ if (!isset($_SESSION['user_id'])) {
                     </div>
                     <p class="product-price">Rp. x.xxx,xx</p>
                     <a href="productdetail.php" class="detail-button"><img class="cart-icon"
-
-                                         src="../resources/img/icons/cart.png" alt="">
+                            src="../resources/img/icons/cart.png" alt="">
                         <p>Lihat Detail</p>
                     </a>
                 </div>
@@ -54,7 +50,7 @@ if (!isset($_SESSION['user_id'])) {
                     </div>
                     <p class="product-price">Rp. x.xxx,xx</p>
 
-                                 <a href="productdetail.php" class="detail-button"><img class="cart-icon"
+                    <a href="productdetail.php" class="detail-button"><img class="cart-icon"
                             src="../resources/img/icons/cart.png" alt="">
                         <p>Lihat Detail</p>
                     </a>
@@ -69,7 +65,7 @@ if (!isset($_SESSION['user_id'])) {
                         </p>
                     </div>
 
-                                 <p class="product-price">Rp. x.xxx,xx</p>
+                    <p class="product-price">Rp. x.xxx,xx</p>
                     <a href="productdetail.php" class="detail-button"><img class="cart-icon"
                             src="../resources/img/icons/cart.png" alt="">
                         <p>Lihat Detail</p>
@@ -84,7 +80,7 @@ if (!isset($_SESSION['user_id'])) {
                             kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                         </p>
 
-                                 </div>
+                    </div>
                     <p class="product-price">Rp. x.xxx,xx</p>
                     <a href="productdetail.php" class="detail-button"><img class="cart-icon"
                             src="../resources/img/icons/cart.png" alt="">
@@ -101,7 +97,7 @@ if (!isset($_SESSION['user_id'])) {
                             kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                             kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
-                                     </p>
+                        </p>
                     </div>
                     <p class="product-price">Rp. x.xxx,xx</p>
                     <a href="productdetail.php" class="detail-button"><img class="cart-icon"
@@ -116,7 +112,7 @@ if (!isset($_SESSION['user_id'])) {
                         <h4>Deskripsi Produk</h4>
                         <p>
 
-                                         kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                            kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                         </p>
                     </div>
                     <p class="product-price">Rp. x.xxx,xx</p>
@@ -131,7 +127,7 @@ if (!isset($_SESSION['user_id'])) {
                     <div class="description">
                         <h4>Deskripsi Produk</h4>
 
-                                     <p>
+                        <p>
                             kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                         </p>
                     </div>
@@ -146,7 +142,7 @@ if (!isset($_SESSION['user_id'])) {
                     <p class="product-name">Undangan Blanko Pernikahan</p>
                     <div class="description">
 
-                                     <h4>Deskripsi Produk</h4>
+                        <h4>Deskripsi Produk</h4>
                         <p>
                             kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                         </p>

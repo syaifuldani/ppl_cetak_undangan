@@ -1,3 +1,8 @@
+<?php
+session_start();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,8 +35,7 @@
                     </div>
                     <p class="product-price">Rp. x.xxx,xx</p>
                     <a href="productdetail.php" class="detail-button"><img class="cart-icon"
-
-                                         src="../resources/img/icons/cart.png" alt="">
+                            src="../resources/img/icons/cart.png" alt="">
                         <p>Lihat Detail</p>
                     </a>
                 </div>
@@ -46,7 +50,7 @@
                     </div>
                     <p class="product-price">Rp. x.xxx,xx</p>
 
-                                 <a href="productdetail.php" class="detail-button"><img class="cart-icon"
+                    <a href="productdetail.php" class="detail-button"><img class="cart-icon"
                             src="../resources/img/icons/cart.png" alt="">
                         <p>Lihat Detail</p>
                     </a>
@@ -61,7 +65,7 @@
                         </p>
                     </div>
 
-                                 <p class="product-price">Rp. x.xxx,xx</p>
+                    <p class="product-price">Rp. x.xxx,xx</p>
                     <a href="productdetail.php" class="detail-button"><img class="cart-icon"
                             src="../resources/img/icons/cart.png" alt="">
                         <p>Lihat Detail</p>
@@ -76,7 +80,7 @@
                             kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                         </p>
 
-                                 </div>
+                    </div>
                     <p class="product-price">Rp. x.xxx,xx</p>
                     <a href="productdetail.php" class="detail-button"><img class="cart-icon"
                             src="../resources/img/icons/cart.png" alt="">
@@ -93,7 +97,7 @@
                             kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                             kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
-                                     </p>
+                        </p>
                     </div>
                     <p class="product-price">Rp. x.xxx,xx</p>
                     <a href="productdetail.php" class="detail-button"><img class="cart-icon"
@@ -108,7 +112,7 @@
                         <h4>Deskripsi Produk</h4>
                         <p>
 
-                                         kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                            kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                         </p>
                     </div>
                     <p class="product-price">Rp. x.xxx,xx</p>
@@ -123,7 +127,7 @@
                     <div class="description">
                         <h4>Deskripsi Produk</h4>
 
-                                     <p>
+                        <p>
                             kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                         </p>
                     </div>
@@ -138,7 +142,7 @@
                     <p class="product-name">Undangan Walimatul</p>
                     <div class="description">
 
-                                     <h4>Deskripsi Produk</h4>
+                        <h4>Deskripsi Produk</h4>
                         <p>
                             kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                         </p>
