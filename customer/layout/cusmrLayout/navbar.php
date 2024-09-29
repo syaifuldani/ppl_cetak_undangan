@@ -55,8 +55,10 @@
     <?php if (isset($_SESSION['user_id'])): ?>
         <!-- If user is logged in, show profile icon -->
         <div class="customer-dropdown">
-            <img src="../resources/img/profiledefault.png" alt="Profile" class="profile-photo dropdown-toggle">
-
+            <img src="<?= isset($_SESSION['user_profile']) ? $_SESSION['user_profile'] : '../resources/img/profiledefault.png' ?>"
+                alt="Profile" class="profile-photo dropdown-toggle">
+            <!-- <img src="</?= isset($_SESSION['user_profile']) ? $_SESSION['user_profile'] : '../resources/img/profiledefault.png' ?>"
+            alt="Profile" class="profile-photo dropdown-toggle"> -->
             <ul class="dropdown-menu">
                 <!-- Add user info (name and email) here -->
                 <li class="user-info">
@@ -147,13 +149,13 @@
     }
 
     // Event listener pada tombol keranjang
-    cartButton.addEventListener('click', function(event) {
+    cartButton.addEventListener('click', function (event) {
         event.preventDefault(); // Mencegah link agar tidak langsung mengarahkan ke URL lain
         toggleCartDropdown(); // Memanggil fungsi untuk menampilkan atau menyembunyikan dropdown
     });
 
     // Event listener untuk menutup dropdown jika klik di luar area dropdown
-    document.addEventListener('click', function(event) {
+    document.addEventListener('click', function (event) {
         if (!cartButton.contains(event.target) && !cartDropdown.contains(event.target)) {
             cartDropdown.style.display = 'none'; // Sembunyikan dropdown
         }

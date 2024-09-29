@@ -1,3 +1,8 @@
+<?php
+session_start();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,7 +34,8 @@
             </p>
           </div>
           <p class="product-price">Rp. x.xxx,xx</p>
-          <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png" alt="">
+          <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
+              alt="">
             <p>Lihat Detail</p>
           </a>
         </div>
@@ -43,7 +49,8 @@
             </p>
           </div>
           <p class="product-price">Rp. x.xxx,xx</p>
-          <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png" alt="">
+          <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
+              alt="">
             <p>Lihat Detail</p>
           </a>
         </div>
@@ -57,7 +64,8 @@
             </p>
           </div>
           <p class="product-price">Rp. x.xxx,xx</p>
-          <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png" alt="">
+          <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
+              alt="">
             <p>Lihat Detail</p>
           </a>
         </div>
@@ -71,7 +79,8 @@
             </p>
           </div>
           <p class="product-price">Rp. x.xxx,xx</p>
-          <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png" alt="">
+          <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
+              alt="">
             <p>Lihat Detail</p>
           </a>
         </div>
@@ -87,7 +96,8 @@
             </p>
           </div>
           <p class="product-price">Rp. x.xxx,xx</p>
-          <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png" alt="">
+          <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
+              alt="">
             <p>Lihat Detail</p>
           </a>
         </div>
@@ -101,7 +111,8 @@
             </p>
           </div>
           <p class="product-price">Rp. x.xxx,xx</p>
-          <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png" alt="">
+          <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
+              alt="">
             <p>Lihat Detail</p>
           </a>
         </div>
@@ -115,7 +126,8 @@
             </p>
           </div>
           <p class="product-price">Rp. x.xxx,xx</p>
-          <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png" alt="">
+          <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
+              alt="">
             <p>Lihat Detail</p>
           </a>
         </div>
@@ -129,7 +141,8 @@
             </p>
           </div>
           <p class="product-price">Rp. x.xxx,xx</p>
-          <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png" alt="">
+          <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
+              alt="">
             <p>Lihat Detail</p>
           </a>
         </div>

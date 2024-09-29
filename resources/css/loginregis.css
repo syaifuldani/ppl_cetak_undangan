@@ -15,7 +15,8 @@ body {
 
 .container {
     display: flex;
-    max-width: 1000px;
+    width: 1000px;
+    height: 550px;
     border: 1px solid #ccc;
     background-color: #7D93BA;
     border-radius: 5px;
@@ -32,13 +33,18 @@ body {
 }
 
 .form-section {
-    width: 40%;
+    width: 60%;
     padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    background-color: #E0E1DD;
+    background-color: #e0e1dd;
+}
+
+.form-group {
+    position: relative; /* Positioning for absolute elements */
+    margin-bottom: 15px; /* Spacing between fields */
 }
 
 h2 {
@@ -50,30 +56,30 @@ form {
 }
 
 label {
+    display: block; /* Labels occupy the full width */
     margin-bottom: 5px;
     font-size: 14px;
     color: #333;
+    font-weight: bold; /* Bold label text */
 }
 
-input {
-    width: 100%;
-    padding: 10px 0;
-    margin-bottom: 15px;
-    border: none;
+input[type="text"],
+input[type="password"] {
+    width: 100%; /* Full width for inputs */
+    padding: 10px 0; /* Padding inside inputs */
+    border: none; /* Border styling */
     border-bottom: 2px solid #ccc;
     background-color: transparent;
     outline: none;
     font-size: 16px;
-}
-
-input:focus {
-    border-bottom: 2px solid #007bff;
+    border-radius: 4px; /* Rounded corners for inputs */
+    box-sizing: border-box; /* Include padding in width */
 }
 
 button {
     width: 100%;
     padding: 10px;
-    background-color: #95A1AD;
+    background-color: #95a1ad;
     color: white;
     border: none;
     border-radius: 4px;
@@ -96,4 +102,10 @@ a {
 
 a:hover {
     text-decoration: underline;
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
 }

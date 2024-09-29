@@ -8,4 +8,3 @@ session_destroy();
 // Redirect ke halaman login
 header("Location: ../login_admin.php");
 exit();
-?>
