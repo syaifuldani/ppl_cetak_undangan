@@ -55,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 <button type="submit">Login</button>
             </form>
+            <p>Belum punya akun admin? <a href="ini_register_admin_loh.php">Register di sini</a></p>
         </div>
     </div>
 </body>

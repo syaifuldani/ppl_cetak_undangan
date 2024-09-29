@@ -1,5 +1,6 @@
 <?php
 session_start();
+require '../config/connection.php';
 
 // Cek apakah pengguna sudah login
 if (!isset($_SESSION['user_id'])) {
@@ -12,12 +13,13 @@ if (!isset($_SESSION['user_id'])) {
 $title = "PleeART";
 $jenishalaman = "Dashboard";
 $user_email = $_SESSION['user_email']; // Email user yang diambil dari session
-?>
 
-<?php
-$title = "Undangan Tahlil";
-$jenishalaman = "Undangan Tahlil";
-
+// Ambil data produk undangan tahlil dari database
+$kategori = "Undangan Tahlil & Kirim Doa"; // Kategori yang ingin ditampilkan
+$sql = "SELECT product_id, nama_produk, deskripsi, harga_product, gambar_satu FROM products WHERE kategori = :kategori";
+$stmt = $GLOBALS["db"]->prepare($sql);
+$stmt->execute(['kategori' => $kategori]);
+$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -26,7 +28,7 @@ $jenishalaman = "Undangan Tahlil";
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $title ?></title>
+    <title><?= htmlspecialchars($title) ?></title>
     <link rel="stylesheet" href="./style/style.css">
 </head>
 
@@ -40,138 +42,20 @@ $jenishalaman = "Undangan Tahlil";
             <?php require "template/header.php"; ?>
 
             <section class="product-list">
+                <?php foreach ($products as $product): ?>
                 <div class="product-item">
-                    <img src="./style/img/tahlil.jpeg" alt="Undangan tahlil">
+                    <img src="data:image/jpeg;base64,<?= base64_encode($product['gambar_satu']); ?>" alt="<?= htmlspecialchars($product['nama_produk']); ?>" style="width: 300px; height: auto;">
                     <div class="product-details">
-                        <h3>Lorem Ipsum</h3>
-                        <p>Undangan tahlil</p>
-                        <p>Rp. 20.000</p>
-                        <p>Summary: Lorem ipsum is placeholder text commonly used in the graphic.</p>
+                        <h3><?= htmlspecialchars($product['nama_produk']); ?></h3>
+                        <p><?= htmlspecialchars($product['deskripsi']); ?></p>
+                        <p>Rp. <?= htmlspecialchars(number_format($product['harga_product'], 2, ',', '.')); ?></p>
                         <div class="stats">
-                            <span>Terjual: 1269</span>
-                            <span>Stok: 1269</span>
+                            <span>Terjual: <?= htmlspecialchars($product['terjual'] ?? '0'); ?></span>
+                            <span>Stok: <?= htmlspecialchars($product['stok'] ?? '0'); ?></span>
                         </div>
                     </div>
                 </div>
-                <div class="product-item">
-                    <img src="./style/img/tahlil.jpeg" alt="Undangan tahlil">
-                    <div class="product-details">
-                        <h3>Lorem Ipsum</h3>
-                        <p>Undangan tahlil</p>
-                        <p>Rp. 20.000</p>
-                        <p>Summary: Lorem ipsum is placeholder text commonly used in the graphic.</p>
-                        <div class="stats">
-                            <span>Terjual: 1269</span>
-                            <span>Stok: 1269</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-item">
-                    <img src="./style/img/tahlil.jpeg" alt="Undangan tahlil">
-                    <div class="product-details">
-                        <h3>Lorem Ipsum</h3>
-                        <p>Undangan tahlil</p>
-                        <p>Rp. 20.000</p>
-                        <p>Summary: Lorem ipsum is placeholder text commonly used in the graphic.</p>
-                        <div class="stats">
-                            <span>Terjual: 1269</span>
-                            <span>Stok: 1269</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-item">
-                    <img src="./style/img/tahlil.jpeg" alt="Undangan tahlil">
-                    <div class="product-details">
-                        <h3>Lorem Ipsum</h3>
-                        <p>Undangan tahlil</p>
-                        <p>Rp. 20.000</p>
-                        <p>Summary: Lorem ipsum is placeholder text commonly used in the graphic.</p>
-                        <div class="stats">
-                            <span>Terjual: 1269</span>
-                            <span>Stok: 1269</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-item">
-                    <img src="./style/img/tahlil.jpeg" alt="Undangan tahlil">
-                    <div class="product-details">
-                        <h3>Lorem Ipsum</h3>
-                        <p>Undangan tahlil</p>
-                        <p>Rp. 20.000</p>
-                        <p>Summary: Lorem ipsum is placeholder text commonly used in the graphic.</p>
-                        <div class="stats">
-                            <span>Terjual: 1269</span>
-                            <span>Stok: 1269</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-item">
-                    <img src="./style/img/tahlil.jpeg" alt="Undangan tahlil">
-                    <div class="product-details">
-                        <h3>Lorem Ipsum</h3>
-                        <p>Undangan tahlil</p>
-                        <p>Rp. 20.000</p>
-                        <p>Summary: Lorem ipsum is placeholder text commonly used in the graphic.</p>
-                        <div class="stats">
-                            <span>Terjual: 1269</span>
-                            <span>Stok: 1269</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-item">
-                    <img src="./style/img/tahlil.jpeg" alt="Undangan tahlil">
-                    <div class="product-details">
-                        <h3>Lorem Ipsum</h3>
-                        <p>Undangan tahlil</p>
-                        <p>Rp. 20.000</p>
-                        <p>Summary: Lorem ipsum is placeholder text commonly used in the graphic.</p>
-                        <div class="stats">
-                            <span>Terjual: 1269</span>
-                            <span>Stok: 1269</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-item">
-                    <img src="./style/img/tahlil.jpeg" alt="Undangan tahlil">
-                    <div class="product-details">
-                        <h3>Lorem Ipsum</h3>
-                        <p>Undangan tahlil</p>
-                        <p>Rp. 20.000</p>
-                        <p>Summary: Lorem ipsum is placeholder text commonly used in the graphic.</p>
-                        <div class="stats">
-                            <span>Terjual: 1269</span>
-                            <span>Stok: 1269</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-item">
-                    <img src="./style/img/tahlil.jpeg" alt="Undangan tahlil">
-                    <div class="product-details">
-                        <h3>Lorem Ipsum</h3>
-                        <p>Undangan tahlil</p>
-                        <p>Rp. 20.000</p>
-                        <p>Summary: Lorem ipsum is placeholder text commonly used in the graphic.</p>
-                        <div class="stats">
-                            <span>Terjual: 1269</span>
-                            <span>Stok: 1269</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-item">
-                    <img src="./style/img/tahlil.jpeg" alt="Undangan tahlil">
-                    <div class="product-details">
-                        <h3>Lorem Ipsum</h3>
-                        <p>Undangan tahlil</p>
-                        <p>Rp. 20.000</p>
-                        <p>Summary: Lorem ipsum is placeholder text commonly used in the graphic.</p>
-                        <div class="stats">
-                            <span>Terjual: 1269</span>
-                            <span>Stok: 1269</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Ulangi div ini untuk produk lainnya -->
+                <?php endforeach; ?>
             </section>
 
             <div class="pagination">
