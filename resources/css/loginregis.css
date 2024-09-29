@@ -10,7 +10,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f7f7f7;
+    background: linear-gradient(to right, #7D93BA 5%, transparent 80%);
 }
 
 .container {
@@ -18,7 +18,7 @@ body {
     width: 1000px;
     height: 550px;
     border: 1px solid #ccc;
-    background-color: #fff;
+    background-color: #7D93BA;
     border-radius: 5px;
 }
 

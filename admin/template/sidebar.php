@@ -34,7 +34,9 @@
         <ul>
             <li><a href="./undangan_pernikahan.php">Undangan Pernikahan</a></li>
             <li><a href="./undangan_khitan.php">Undangan Khitan</a></li>
-            <li><a href="./undangan_tahlil.php">Undangan Tahlil</a></li>
+            <li><a href="./undangan_walimatul.php">Undangan Walimatul</a></li>
+            <li><a href="./undangan_tahlil.php">Undangan Tahlil & Kirim Doa</a></li>
+            <li><a href="./undangan_ulang_tahun.php">Undangan Ulang Tahun</a></li>
         </ul>
     </div>
 </div>
