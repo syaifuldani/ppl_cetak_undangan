@@ -420,6 +420,7 @@ body {
 .stats {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
     margin-top: 10px;
     font-size: 14px;
