@@ -2,10 +2,14 @@
 session_start();
 require '../config/connection.php'; // Pastikan jalur ini sesuai dengan struktur folder Anda
 require '../config/function.php'; //
+require '../config/function.php'; //
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $responLoginAdmin = loginAdmin($_POST);
 }
+
+$responLoginAdmin = loginAdmin($_POST);
+
 
 ?>
 <!DOCTYPE html>
@@ -31,10 +35,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <p style="color: green;"><?php echo htmlspecialchars($_SESSION['success']);
                 unset($_SESSION['success']); ?>
                 </p>
+                <p style="color: green;"><?php echo htmlspecialchars($_SESSION['success']);
+                unset($_SESSION['success']); ?>
+                </p>
             <?php endif; ?>
 
             <!-- Tampilkan pesan error jika ada -->
             <?php if (isset($_SESSION['error'])): ?>
+                <p style="color: red;"><?php echo htmlspecialchars($_SESSION['error']);
+                unset($_SESSION['error']); ?></p>
                 <p style="color: red;"><?php echo htmlspecialchars($_SESSION['error']);
                 unset($_SESSION['error']); ?></p>
             <?php endif; ?>
@@ -52,10 +61,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <span
                         class="error-message"><?= isset($responLoginAdmin['login']) ? $responLoginAdmin['login'] : ''; ?></span>
                 </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="text" id="email" name="email">
+                    <span
+                        class="error-message"><?= isset($responLoginAdmin['email']) ? $responLoginAdmin['email'] : ''; ?></span>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password">
+                    <span
+                        class="error-message"><?= isset($responLoginAdmin['login']) ? $responLoginAdmin['login'] : ''; ?></span>
+                </div>
 
                 <button type="submit">Login</button>
             </form>
-            <p>Belum punya akun admin? <a href="ini_register_admin_loh.php">Register di sini</a></p>
         </div>
     </div>
 </body>
