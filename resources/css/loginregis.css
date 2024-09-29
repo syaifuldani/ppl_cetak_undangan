@@ -10,14 +10,14 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f7f7f7;
+    background: linear-gradient(to right, #7D93BA 5%, transparent 80%);
 }
 
 .container {
     display: flex;
     max-width: 1000px;
     border: 1px solid #ccc;
-    background-color: #fff;
+    background-color: #7D93BA;
     border-radius: 5px;
 }
 
