@@ -24,7 +24,7 @@
                 </a>
                 <a href="undangan_khitanan.php">
                     <img src="../resources/img/icons/paper.png" alt="dropdown">
-                    Khitanan
+                    Khitan
                 </a>
                 <a href="undangan_walimatul.php">
                     <img src="../resources/img/icons/paper.png" alt="dropdown">

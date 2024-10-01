@@ -1,191 +1,8 @@
 <?php
 require "../config/connection.php";
 
-function updateProfileUser($data)
-{
-    // Cek apakah data dikirim melalui form
-    $name = isset($data['nama_lengkap']) ? $data['nama_lengkap'] : '';
-    $alamat = isset($data['alamat']) ? $data['alamat'] : '';
-    $nohp = isset($data['nomor_telepon']) ? $data['nomor_telepon'] : '';
-    $email = isset($data['email']) ? $data['email'] : '';
-
-    // Dapatkan ID user dari sesi
-    $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
-    // Jika user_id ada, lakukan update ke database
-    if ($user_id > 0) {
-        try {
-            // Query untuk update data user
-            $sql = "UPDATE users SET nama_lengkap = :name, alamat = :alamat, nomor_telepon = :nohp, email = :email WHERE user_id = :user_id";
-
-            // Persiapkan dan eksekusi query
-            $stmt = $GLOBALS['db']->prepare($sql);
-            $stmt->execute([
-                ':name' => $name,
-                ':alamat' => $alamat,
-                ':nohp' => $nohp,
-                ':email' => $email,
-                ':user_id' => $user_id
-            ]);
-
-            // Memperbarui data session setelah update
-            $_SESSION['user_name'] = $name;
-            $_SESSION['alamat'] = $alamat;
-            $_SESSION['nomor_telepon'] = $nohp;
-            $_SESSION['user_email'] = $email;
-
-            // Memeriksa apakah file diupload
-            if (isset($_FILES["profile-image"]) && $_FILES["profile-image"]["error"] == UPLOAD_ERR_OK) {
-                $target_dir = "../customer/uploads/";
-                $file_name = basename($_FILES["profile-image"]["name"]);
-                $target_file = $target_dir . time() . "_" . $file_name; // Menambahkan timestamp agar nama file unik
-                $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-                $maxFileSize = 2 * 1024 * 1024; // Maksimum ukuran file 2MB
-
-                // Cek apakah file adalah gambar
-                $check = getimagesize($_FILES["profile-image"]["tmp_name"]);
-                if ($check !== false) {
-                    // Cek ukuran file
-                    if ($_FILES["profile-image"]["size"] > $maxFileSize) {
-                        return ['status' => false, 'message' => "Maaf, ukuran file terlalu besar. Maksimum ukuran file adalah 2MB."];
-                    } else {
-                        // Upload file
-                        if (move_uploaded_file($_FILES["profile-image"]["tmp_name"], $target_file)) {
-                            // Simpan path file gambar ke database
-                            $user_id = $_SESSION['user_id'];
-                            $sql = "UPDATE users SET profile_image = :profile_image WHERE user_id = :user_id";
-                            $stmt = $GLOBALS['db']->prepare($sql);
-                            $stmt->execute([
-                                ':profile_image' => $target_file, // Menyimpan path file ke database
-                                ':user_id' => $user_id
-                            ]);
-
-                            // Jika berhasil, tampilkan pesan sukses
-                            if ($stmt->rowCount()) {
-                                $_SESSION['user_profile'] = $target_file; // Simpan path ke sesi
-                                return ['status' => true, 'message' => 'Profil dan gambar berhasil diperbarui!'];
-                            } else {
-                                return ['status' => false, 'message' => 'Profil diperbarui, tapi tidak ada perubahan pada gambar.'];
-
-                            }
-                        } else {
-                            return ['status' => false, 'message' => 'Terjadi kesalahan saat mengunggah file.'];
-                        }
-                    }
-                } else {
-                    return ['status' => false, 'message' => "File yang diunggah bukan gambar."];
-                }
-            }
-
-            // Jika update berhasil atau tidak ada baris yang diupdate
-            if ($stmt->rowCount() > 0) {
-                return ['status' => true, 'message' => 'Profil berhasil diperbarui.'];
-            } else {
-                return ['status' => false, 'message' => 'Tidak ada perubahan pada profil.'];
-            }
-
-        } catch (\Exception $e) {
-            // Tangani error database
-            return ['status' => false, 'message' => 'Error: ' . $e->getMessage()];
-        }
-
-    } else {
-        return ['status' => false, 'message' => 'User ID tidak ditemukan!'];
-    }
-}
-
-function updateProfileAdmin($data)
-{
-    // Cek apakah data dikirim melalui form
-    $name = isset($data['nama_lengkap']) ? $data['nama_lengkap'] : '';
-    $alamat = isset($data['alamat']) ? $data['alamat'] : '';
-    $nohp = isset($data['nomor_telepon']) ? $data['nomor_telepon'] : '';
-    $email = isset($data['email']) ? $data['email'] : '';
-
-    // Dapatkan ID user dari sesi
-    $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
-    // Jika user_id ada, lakukan update ke database
-    if ($user_id > 0) {
-        try {
-            // Query untuk update data user
-            $sql = "UPDATE users SET nama_lengkap = :name, alamat = :alamat, nomor_telepon = :nohp, email = :email WHERE user_id = :user_id";
-
-            // Persiapkan dan eksekusi query
-            $stmt = $GLOBALS['db']->prepare($sql);
-            $stmt->execute([
-                ':name' => $name,
-                ':alamat' => $alamat,
-                ':nohp' => $nohp,
-                ':email' => $email,
-                ':user_id' => $user_id
-            ]);
-
-            // Memperbarui data session setelah update
-            $_SESSION['user_name'] = $name;
-            $_SESSION['alamat'] = $alamat;
-            $_SESSION['nomor_telepon'] = $nohp;
-            $_SESSION['user_email'] = $email;
-
-            // Memeriksa apakah file diupload
-            if (isset($_FILES["profile-image"]) && $_FILES["profile-image"]["error"] == UPLOAD_ERR_OK) {
-                $target_dir = "../customer/uploads/";
-                $file_name = basename($_FILES["profile-image"]["name"]);
-                $target_file = $target_dir . time() . "_" . $file_name; // Menambahkan timestamp agar nama file unik
-                $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-                $maxFileSize = 2 * 1024 * 1024; // Maksimum ukuran file 2MB
-
-                // Cek apakah file adalah gambar
-                $check = getimagesize($_FILES["profile-image"]["tmp_name"]);
-                if ($check !== false) {
-                    // Cek ukuran file
-                    if ($_FILES["profile-image"]["size"] > $maxFileSize) {
-                        return ['status' => false, 'message' => "Maaf, ukuran file terlalu besar. Maksimum ukuran file adalah 2MB."];
-                    } else {
-                        // Upload file
-                        if (move_uploaded_file($_FILES["profile-image"]["tmp_name"], $target_file)) {
-                            // Simpan path file gambar ke database
-                            $user_id = $_SESSION['user_id'];
-                            $sql = "UPDATE users SET profile_image = :profile_image WHERE user_id = :user_id";
-                            $stmt = $GLOBALS['db']->prepare($sql);
-                            $stmt->execute([
-                                ':profile_image' => $target_file, // Menyimpan path file ke database
-                                ':user_id' => $user_id
-                            ]);
-
-                            // Jika berhasil, tampilkan pesan sukses
-                            if ($stmt->rowCount()) {
-                                $_SESSION['user_profile'] = $target_file; // Simpan path ke sesi
-                                return ['status' => true, 'message' => 'Profil dan gambar berhasil diperbarui!'];
-                            } else {
-                                return ['status' => false, 'message' => 'Profil diperbarui, tapi tidak ada perubahan pada gambar.'];
-
-                            }
-                        } else {
-                            return ['status' => false, 'message' => 'Terjadi kesalahan saat mengunggah file.'];
-                        }
-                    }
-                } else {
-                    return ['status' => false, 'message' => "File yang diunggah bukan gambar."];
-                }
-            }
-
-            // Jika update berhasil atau tidak ada baris yang diupdate
-            if ($stmt->rowCount() > 0) {
-                return ['status' => true, 'message' => 'Profil berhasil diperbarui.'];
-            } else {
-                return ['status' => false, 'message' => 'Tidak ada perubahan pada profil.'];
-            }
-
-        } catch (\Exception $e) {
-            // Tangani error database
-            return ['status' => false, 'message' => 'Error: ' . $e->getMessage()];
-        }
-
-    } else {
-        return ['status' => false, 'message' => 'User ID tidak ditemukan!'];
-    }
-}
-
-// CUSTOMER
+// ----------------------------------------------------------------
+// CUSTOMER FUNCTIONS
 
 function registerCustomer($data)
 {
@@ -296,9 +113,145 @@ function loginCustomer($data)
     return $errors;
 }
 
-// END CUSTOMER
+function updateProfileUser($data)
+{
+    // Cek apakah data dikirim melalui form
+    $name = isset($data['nama_lengkap']) ? $data['nama_lengkap'] : '';
+    $alamat = isset($data['alamat']) ? $data['alamat'] : '';
+    $nohp = isset($data['nomor_telepon']) ? $data['nomor_telepon'] : '';
+    $email = isset($data['email']) ? $data['email'] : '';
 
-// ADMIN
+    // Dapatkan ID user dari sesi
+    $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
+    // Jika user_id ada, lakukan update ke database
+    if ($user_id > 0) {
+        try {
+            // Query untuk update data user
+            $sql = "UPDATE users SET nama_lengkap = :name, alamat = :alamat, nomor_telepon = :nohp, email = :email WHERE user_id = :user_id";
+
+            // Persiapkan dan eksekusi query
+            $stmt = $GLOBALS['db']->prepare($sql);
+            $stmt->execute([
+                ':name' => $name,
+                ':alamat' => $alamat,
+                ':nohp' => $nohp,
+                ':email' => $email,
+                ':user_id' => $user_id
+            ]);
+
+            // Memperbarui data session setelah update
+            $_SESSION['user_name'] = $name;
+            $_SESSION['alamat'] = $alamat;
+            $_SESSION['nomor_telepon'] = $nohp;
+            $_SESSION['user_email'] = $email;
+
+            // Memeriksa apakah file diupload
+            if (isset($_FILES["profile-image"]) && $_FILES["profile-image"]["error"] == UPLOAD_ERR_OK) {
+                $target_dir = "../customer/uploads/";
+                $file_name = basename($_FILES["profile-image"]["name"]);
+                $target_file = $target_dir . time() . "_" . $file_name; // Menambahkan timestamp agar nama file unik
+                $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+                $maxFileSize = 2 * 1024 * 1024; // Maksimum ukuran file 2MB
+
+                // Cek apakah file adalah gambar
+                $check = getimagesize($_FILES["profile-image"]["tmp_name"]);
+                if ($check !== false) {
+                    // Cek ukuran file
+                    if ($_FILES["profile-image"]["size"] > $maxFileSize) {
+                        return ['status' => false, 'message' => "Maaf, ukuran file terlalu besar. Maksimum ukuran file adalah 2MB."];
+                    } else {
+                        // Upload file
+                        if (move_uploaded_file($_FILES["profile-image"]["tmp_name"], $target_file)) {
+                            // Simpan path file gambar ke database
+                            $user_id = $_SESSION['user_id'];
+                            $sql = "UPDATE users SET profile_image = :profile_image WHERE user_id = :user_id";
+                            $stmt = $GLOBALS['db']->prepare($sql);
+                            $stmt->execute([
+                                ':profile_image' => $target_file, // Menyimpan path file ke database
+                                ':user_id' => $user_id
+                            ]);
+
+                            // Jika berhasil, tampilkan pesan sukses
+                            if ($stmt->rowCount()) {
+                                $_SESSION['user_profile'] = $target_file; // Simpan path ke sesi
+                                return ['status' => true, 'message' => 'Profil dan gambar berhasil diperbarui!'];
+                            } else {
+                                return ['status' => false, 'message' => 'Profil diperbarui, tapi tidak ada perubahan pada gambar.'];
+
+                            }
+                        } else {
+                            return ['status' => false, 'message' => 'Terjadi kesalahan saat mengunggah file.'];
+                        }
+                    }
+                } else {
+                    return ['status' => false, 'message' => "File yang diunggah bukan gambar."];
+                }
+            }
+
+            // Jika update berhasil atau tidak ada baris yang diupdate
+            if ($stmt->rowCount() > 0) {
+                return ['status' => true, 'message' => 'Profil berhasil diperbarui.'];
+            } else {
+                return ['status' => false, 'message' => 'Tidak ada perubahan pada profil.'];
+            }
+
+        } catch (\Exception $e) {
+            // Tangani error database
+            return ['status' => false, 'message' => 'Error: ' . $e->getMessage()];
+        }
+
+    } else {
+        return ['status' => false, 'message' => 'User ID tidak ditemukan!'];
+    }
+}
+
+// Function to get products from the database
+function getProductData($kategori) {
+    try {
+        // SQL query untuk mengambil produk berdasarkan kategori
+        $sql = "SELECT product_id, nama_produk, deskripsi, harga_produk, gambar_satu, gambar_dua, gambar_tiga, kategori
+                FROM products
+                WHERE kategori = :kategori";
+
+        // Prepare the statement
+        $stmt = $GLOBALS['db']->prepare($sql);
+
+        // Bind parameter untuk kategori
+        $stmt->bindParam(':kategori', $kategori);
+
+        // Execute the query
+        $stmt->execute();
+
+        // Ambil hasil sebagai array asosiatif
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Encode gambar dalam format base64
+        foreach ($products as &$product) {
+            if (!empty($product['gambar_satu'])) {
+                $product['gambar_satu'] = 'data:image/jpeg;base64,' . base64_encode($product['gambar_satu']);
+            }
+            if (!empty($product['gambar_dua'])) {
+                $product['gambar_dua'] = 'data:image/jpeg;base64,' . base64_encode($product['gambar_dua']);
+            }
+            if (!empty($product['gambar_tiga'])) {
+                $product['gambar_tiga'] = 'data:image/jpeg;base64,' . base64_encode($product['gambar_tiga']);
+            }
+        }
+
+        return $products; // Kembalikan array produk
+    } catch (PDOException $e) {
+        // Tangani error
+        return ['error' => 'Error fetching products: ' . $e->getMessage()];
+    }
+}
+
+
+// END CUSTOMER FUNCTIONS
+
+// ----------------------------------------------------------------
+
+// ADMIN FUNCTIONS
+
 function registrasiAdmin($data)
 {
     $errors = [];
@@ -371,6 +324,7 @@ function registrasiAdmin($data)
     return $errors;
 }
 
+
 function loginAdmin($data)
 {
     $errors = [];
@@ -420,4 +374,104 @@ function loginAdmin($data)
 
     return $errors;
 }
-require "../config/connection.php";
+
+function updateProfileAdmin($data)
+{
+    // Cek apakah data dikirim melalui form
+    $name = isset($data['nama_lengkap']) ? $data['nama_lengkap'] : '';
+    $alamat = isset($data['alamat']) ? $data['alamat'] : '';
+    $nohp = isset($data['nomor_telepon']) ? $data['nomor_telepon'] : '';
+    $email = isset($data['email']) ? $data['email'] : '';
+
+    // Dapatkan ID user dari sesi
+    $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
+    // Jika user_id ada, lakukan update ke database
+    if ($user_id > 0) {
+        try {
+            // Query untuk update data user
+            $sql = "UPDATE users SET nama_lengkap = :name, alamat = :alamat, nomor_telepon = :nohp, email = :email WHERE user_id = :user_id";
+
+            // Persiapkan dan eksekusi query
+            $stmt = $GLOBALS['db']->prepare($sql);
+            $stmt->execute([
+                ':name' => $name,
+                ':alamat' => $alamat,
+                ':nohp' => $nohp,
+                ':email' => $email,
+                ':user_id' => $user_id
+            ]);
+
+            // Memperbarui data session setelah update
+            $_SESSION['user_name'] = $name;
+            $_SESSION['alamat'] = $alamat;
+            $_SESSION['nomor_telepon'] = $nohp;
+            $_SESSION['user_email'] = $email;
+
+            // Memeriksa apakah file diupload
+            if (isset($_FILES["profile-image"]) && $_FILES["profile-image"]["error"] == UPLOAD_ERR_OK) {
+                $target_dir = "../customer/uploads/";
+                $file_name = basename($_FILES["profile-image"]["name"]);
+                $target_file = $target_dir . time() . "_" . $file_name; // Menambahkan timestamp agar nama file unik
+                $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+                $maxFileSize = 2 * 1024 * 1024; // Maksimum ukuran file 2MB
+
+                // Cek apakah file adalah gambar
+                $check = getimagesize($_FILES["profile-image"]["tmp_name"]);
+                if ($check !== false) {
+                    // Cek ukuran file
+                    if ($_FILES["profile-image"]["size"] > $maxFileSize) {
+                        return ['status' => false, 'message' => "Maaf, ukuran file terlalu besar. Maksimum ukuran file adalah 2MB."];
+                    } else {
+                        // Upload file
+                        if (move_uploaded_file($_FILES["profile-image"]["tmp_name"], $target_file)) {
+                            // Simpan path file gambar ke database
+                            $user_id = $_SESSION['user_id'];
+                            $sql = "UPDATE users SET profile_image = :profile_image WHERE user_id = :user_id";
+                            $stmt = $GLOBALS['db']->prepare($sql);
+                            $stmt->execute([
+                                ':profile_image' => $target_file, // Menyimpan path file ke database
+                                ':user_id' => $user_id
+                            ]);
+
+                            // Jika berhasil, tampilkan pesan sukses
+                            if ($stmt->rowCount()) {
+                                $_SESSION['user_profile'] = $target_file; // Simpan path ke sesi
+                                return ['status' => true, 'message' => 'Profil dan gambar berhasil diperbarui!'];
+                            } else {
+                                return ['status' => false, 'message' => 'Profil diperbarui, tapi tidak ada perubahan pada gambar.'];
+
+                            }
+                        } else {
+                            return ['status' => false, 'message' => 'Terjadi kesalahan saat mengunggah file.'];
+                        }
+                    }
+                } else {
+                    return ['status' => false, 'message' => "File yang diunggah bukan gambar."];
+                }
+            }
+
+            // Jika update berhasil atau tidak ada baris yang diupdate
+            if ($stmt->rowCount() > 0) {
+                return ['status' => true, 'message' => 'Profil berhasil diperbarui.'];
+            } else {
+                return ['status' => false, 'message' => 'Tidak ada perubahan pada profil.'];
+            }
+
+        } catch (\Exception $e) {
+            // Tangani error database
+            return ['status' => false, 'message' => 'Error: ' . $e->getMessage()];
+        }
+
+    } else {
+        return ['status' => false, 'message' => 'User ID tidak ditemukan!'];
+    }
+}
+
+// END ADMIN FUNCTIONS
+
+// ----------------------------------------------------------------
+
+// END FUNCTIONS
+
+
+

@@ -84,7 +84,7 @@ session_start();
                                 <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
                                 <p class="product-name">Undangan Khitanan</p>
                                 <div class="description">
-                                    <h4>Deskripsi Produk</h4>
+                                    <h6>Deskripsi Produk</h6>
                                     <p>
                                         kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                                     </p>
@@ -99,7 +99,7 @@ session_start();
                                 <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
                                 <p class="product-name">Undangan Khitanan</p>
                                 <div class="description">
-                                    <h4>Deskripsi Produk</h4>
+                                    <h6>Deskripsi Produk</h6>
                                     <p>
                                         kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                                     </p>

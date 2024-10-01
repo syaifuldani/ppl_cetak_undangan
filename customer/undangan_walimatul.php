@@ -1,20 +1,10 @@
 <?php
 session_start();
 require '../config/connection.php';
+require '../config/function.php'; 
 
-// Cek apakah pengguna sudah login
-if (!isset($_SESSION['user_id'])) {
-    // Jika tidak ada session login, redirect ke halaman login
-    header("Location: login_admin.php");
-    exit();
-}
-
-// Ambil data produk undangan pernikahan dari database
-$kategori = "Undangan Walimatul"; // Kategori yang ingin ditampilkan
-$sql = "SELECT product_id, nama_produk, deskripsi, harga_product, gambar_satu FROM products WHERE kategori = :kategori";
-$stmt = $GLOBALS["db"]->prepare($sql);
-$stmt->execute(['kategori' => $kategori]);
-$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// Ambil data produk undangan pernikahan dari function
+$products = getProductData('Walimatul');
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +13,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Undangan Walimatul</title>
+    <title>Undangan Pernikahan</title>
     <link rel="stylesheet" href="../resources/css/dashboard.css">
     <link rel="stylesheet" href="../resources/css/navbar.css">
 </head>
@@ -38,27 +28,31 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <!-- Items Product -->
         <div class="product-container">
             <div class="product-content">
-                <?php foreach ($products as $product): ?>
-                    <div class="product-card">
-                        <img class="product" src="data:image/jpeg;base64,<?= base64_encode($product['gambar_satu']); ?>"
-                            alt="<?= htmlspecialchars($product['nama_produk']); ?>">
-                        <p class="product-name"><?= htmlspecialchars($product['nama_produk']); ?></p>
-                        <div class="description">
-                            <h4>Deskripsi Produk</h4>
-                            <p><?= htmlspecialchars($product['deskripsi']); ?></p>
+                <?php if (isset($products['error'])): ?>
+                    <p>Error: <?= htmlspecialchars($products['error']); ?></p>
+                <?php else: ?>
+                    <?php foreach ($products as $product): ?>
+                        <div class="product-card">
+                            <img class="product" src="<?= $product['gambar_satu']; ?>"
+                                alt="<?= htmlspecialchars($product['nama_produk']); ?>">
+                            <p class="product-name"><?= htmlspecialchars($product['nama_produk']); ?></p>
+                            <div class="description">
+                                <h5>Deskripsi Produk</h5>
+                                <p><?= htmlspecialchars($product['deskripsi']); ?></p>
+                            </div>
+                            <p class="product-price">Rp.
+                                <?= htmlspecialchars(number_format($product['harga_produk'], 2, ',', '.')); ?>
+                            </p>
+                            <a href="productdetail.php?id=<?= $product['product_id']; ?>" class="detail-button"><img
+                                    class="cart-icon" src="../resources/img/icons/cart.png" alt="">
+                                <p>Lihat Detail</p>
+                            </a>
                         </div>
-                        <p class="product-price">Rp.
-                            <?= htmlspecialchars(number_format($product['harga_product'], 2, ',', '.')); ?>
-                        </p>
-                        <a href="productdetail.php?id=<?= $product['product_id']; ?>" class="detail-button"><img
-                                class="cart-icon" src="../resources/img/icons/cart.png" alt="">
-                            <p>Lihat Detail</p>
-                        </a>
-                    </div>
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
 
-                <?php if (empty($products)): ?>
-                    <p>Produk tidak ditemukan untuk kategori ini.</p>
+                    <?php if (empty($products)): ?>
+                        <p>Produk tidak ditemukan untuk kategori ini.</p>
+                    <?php endif; ?>
                 <?php endif; ?>
             </div>
         </div>
