@@ -78,13 +78,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     <script src="../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
     <script>
-        <?php if ($success_message): ?>
-            Swal.fire({
-                icon: 'success',
-                title: 'Berhasil',
-                text: '<?= $success_message ?>'
-            });
-        <?php endif ?>
+    <?php if ($success_message): ?>
+    Swal.fire({
+        icon: 'success',
+        title: 'Berhasil',
+        text: '<?= $success_message ?>'
+    });
+    <?php endif ?>
     </script>
 </body>
 

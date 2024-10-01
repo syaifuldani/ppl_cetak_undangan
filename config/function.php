@@ -206,7 +206,8 @@ function updateProfileUser($data)
 }
 
 // Function to get products from the database
-function getProductData($kategori) {
+function getProductData($kategori)
+{
     try {
         // SQL query untuk mengambil produk berdasarkan kategori
         $sql = "SELECT product_id, nama_produk, deskripsi, harga_produk, gambar_satu, gambar_dua, gambar_tiga, kategori
@@ -357,7 +358,9 @@ function loginAdmin($data)
         if ($user && password_verify($password, $user['password']) && $jenis_pengguna === 'admin') {
             // Buat session
             $_SESSION['user_id'] = $user['user_id'];
+            $_SESSION['user_name'] = $user['nama_lengkap'];
             $_SESSION['user_email'] = $user['email'];
+            $_SESSION['user_nope'] = $user['nomor_telepon'];
             $_SESSION['jenis_pengguna'] = $user['jenis_pengguna'];
             header("Location: dashboard.php"); // Redirect ke halaman dashboard admin
             exit();
@@ -472,6 +475,3 @@ function updateProfileAdmin($data)
 // ----------------------------------------------------------------
 
 // END FUNCTIONS
-
-
-
