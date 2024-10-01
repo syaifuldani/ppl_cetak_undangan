@@ -10,7 +10,10 @@ body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
         Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
         sans-serif;
-    background: linear-gradient(to top,  #8da6d1 5%, transparent 100%);
+    width: 100%;
+    max-width: 1200vh;
+    background: linear-gradient(to top, #8da6d1 5%, transparent 100%);
+    min-height: 100vh;
 }
 
 /* Styling untuk navbar */
@@ -59,12 +62,12 @@ body {
     display: flex;
     align-items: center;
     padding: 5px;
-    width: auto; 
+    width: auto;
     border: 1px solid #9b9b9b;
     border-radius: 50px;
     font-size: 16px;
-    overflow: hidden; 
-    transition: width 0.3s ease; 
+    overflow: hidden;
+    transition: width 0.3s ease;
 }
 
 .search-bar form input[type="text"] {
@@ -74,7 +77,7 @@ body {
     outline: none;
     background: transparent;
     width: 150px;
-    transition: width 0.3s ease; 
+    transition: width 0.3s ease;
 }
 
 .search-bar form input[type="text"]:focus {
@@ -82,7 +85,7 @@ body {
 }
 
 .search-bar form label {
-    margin-right: 10px; 
+    margin-right: 10px;
 }
 
 .nav-links {
@@ -111,22 +114,22 @@ body {
 }
 
 .nav-links .links::after {
-    content: ''; 
+    content: "";
     position: absolute;
-    bottom: 0; 
-    left: 0; 
-    width: 0; 
+    bottom: 0;
+    left: 0;
+    width: 0;
     height: 2px;
-    background-color: #7D93BA;
-    transition: width 0.5s ease; 
+    background-color: #7d93ba;
+    transition: width 0.5s ease;
 }
 
 .nav-links .links:hover::after {
-    width: 100%; 
+    width: 100%;
 }
 
 .nav-links .home:hover {
-    background-color: #7D93BA;
+    background-color: #7d93ba;
     color: white;
     border-radius: 3px;
 }
@@ -159,7 +162,7 @@ body {
 
 .dropdown-content a:hover {
     color: white;
-    background-color: #7D93BA;
+    background-color: #7d93ba;
 }
 
 .dropdown:hover .dropdown-content {
@@ -174,10 +177,9 @@ body {
     transform: rotate(90deg);
 }
 
-
 /* Cart Style */
 .cart {
-    position: relative; 
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -191,18 +193,18 @@ body {
 .user-options {
     display: flex;
     align-items: center;
-    gap: 10px; 
+    gap: 10px;
 }
 
 .cart-count {
-    background-color: #7D93BA;
+    background-color: #7d93ba;
     color: #fff;
     border-radius: 50%;
     padding: 3px 6px;
     font-size: 12px;
-    position: absolute; 
+    position: absolute;
     top: -10px;
-    right: -10px; 
+    right: -10px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -217,7 +219,7 @@ body {
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
     z-index: 100;
 }
@@ -263,7 +265,7 @@ body {
 .cart-btn a {
     text-decoration: none;
     padding: 8px;
-    background-color: #7D93BA;
+    background-color: #7d93ba;
     color: #fff;
     font-size: 16px;
     border-radius: 5px;
@@ -276,13 +278,12 @@ body {
     background-color: #2980b9;
 }
 
-
 /* Profile Customer */
 
 .user-options {
     display: flex;
     align-items: center;
-    gap: 15px; 
+    gap: 15px;
 }
 
 .user-options a img {
@@ -291,7 +292,7 @@ body {
 }
 
 .user-options .profile img {
-    border-radius: 50%; 
+    border-radius: 50%;
 }
 
 .sign-in,
@@ -310,17 +311,17 @@ body {
 }
 
 .sign-in {
-    background-color: #7D93BA;
+    background-color: #7d93ba;
     color: white;
 }
 
 .sign-in:hover {
-    background-color: #7D93BA;
+    background-color: #7d93ba;
     color: black;
 }
 
 .register:hover {
-    background-color: #7D93BA;
+    background-color: #7d93ba;
     color: white;
 }
 
@@ -374,8 +375,6 @@ body {
     border-radius: 5px;
     overflow: hidden;
 }
-
-
 
 /* Dropdown menu items */
 .customer-dropdown .dropdown-menu li {

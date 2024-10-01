@@ -27,14 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="form-section">
             <h2>LOGIN ADMIN</h2>
 
-            <!-- Tampilkan pesan error jika ada -->
-            <?php if (isset($_SESSION['error'])): ?>
-            <p style="color: red;"><?php echo htmlspecialchars($_SESSION['error']);
-                unset($_SESSION['error']); ?></p>
-            <p style="color: red;"><?php echo htmlspecialchars($_SESSION['error']);
-                unset($_SESSION['error']); ?></p>
-            <?php endif; ?>
-
             <form action="login_admin.php" method="POST">
                 <div class="form-group">
                     <label for="email">Email</label>

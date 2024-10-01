@@ -25,11 +25,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Daftar kategori yang diizinkan
     $allowed_categories = [
-        'undangan Pernikahan',
-        'undangan Khitan',
-        'undangan Walimatul',
-        'undangan Tahlil & Kirim Doa',
-        'undangan Ulang Tahun'
+        'Pernikahan',
+        'Khitan',
+        'Walimatul',
+        'Tahlil&KirimDoa',
+        'UlangTahun'
     ];
 
     // Validasi input
