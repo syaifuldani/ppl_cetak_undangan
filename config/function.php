@@ -206,29 +206,27 @@ function updateProfileUser($data)
 }
 
 // Function to get products from the database
-function getPernikahanProducts() {
+function getProductData($kategori) {
     try {
-        // SQL query to get the products with category "pernikahan"
-        $sql = "SELECT nama_produk, deskripsi, harga_produk, gambar_satu, gambar_dua, gambar_tiga, kategori
+        // SQL query untuk mengambil produk berdasarkan kategori
+        $sql = "SELECT product_id, nama_produk, deskripsi, harga_produk, gambar_satu, gambar_dua, gambar_tiga, kategori
                 FROM products
                 WHERE kategori = :kategori";
 
         // Prepare the statement
         $stmt = $GLOBALS['db']->prepare($sql);
 
-        // Bind the parameter for the category
-        $kategori = 'pernikahan';
+        // Bind parameter untuk kategori
         $stmt->bindParam(':kategori', $kategori);
 
         // Execute the query
         $stmt->execute();
 
-        // Fetch all the results as associative arrays
+        // Ambil hasil sebagai array asosiatif
         $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Loop through the products and encode the images in base64
+        // Encode gambar dalam format base64
         foreach ($products as &$product) {
-            // Convert the BLOB data to base64
             if (!empty($product['gambar_satu'])) {
                 $product['gambar_satu'] = 'data:image/jpeg;base64,' . base64_encode($product['gambar_satu']);
             }
@@ -240,9 +238,9 @@ function getPernikahanProducts() {
             }
         }
 
-        return $products; // Return the array of products
+        return $products; // Kembalikan array produk
     } catch (PDOException $e) {
-        // Handle potential errors
+        // Tangani error
         return ['error' => 'Error fetching products: ' . $e->getMessage()];
     }
 }
