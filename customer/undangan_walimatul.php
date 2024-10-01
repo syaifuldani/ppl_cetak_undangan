@@ -2,16 +2,9 @@
 session_start();
 require '../config/connection.php';
 
-// Cek apakah pengguna sudah login
-if (!isset($_SESSION['user_id'])) {
-    // Jika tidak ada session login, redirect ke halaman login
-    header("Location: login_admin.php");
-    exit();
-}
-
 // Ambil data produk undangan pernikahan dari database
 $kategori = "Undangan Walimatul"; // Kategori yang ingin ditampilkan
-$sql = "SELECT product_id, nama_produk, deskripsi, harga_product, gambar_satu FROM products WHERE kategori = :kategori";
+$sql = "SELECT product_id, nama_produk, deskripsi, harga_produk, gambar_satu FROM products WHERE kategori = :kategori";
 $stmt = $GLOBALS["db"]->prepare($sql);
 $stmt->execute(['kategori' => $kategori]);
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -39,26 +32,26 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="product-container">
             <div class="product-content">
                 <?php foreach ($products as $product): ?>
-                    <div class="product-card">
-                        <img class="product" src="data:image/jpeg;base64,<?= base64_encode($product['gambar_satu']); ?>"
-                            alt="<?= htmlspecialchars($product['nama_produk']); ?>">
-                        <p class="product-name"><?= htmlspecialchars($product['nama_produk']); ?></p>
-                        <div class="description">
-                            <h4>Deskripsi Produk</h4>
-                            <p><?= htmlspecialchars($product['deskripsi']); ?></p>
-                        </div>
-                        <p class="product-price">Rp.
-                            <?= htmlspecialchars(number_format($product['harga_product'], 2, ',', '.')); ?>
-                        </p>
-                        <a href="productdetail.php?id=<?= $product['product_id']; ?>" class="detail-button"><img
-                                class="cart-icon" src="../resources/img/icons/cart.png" alt="">
-                            <p>Lihat Detail</p>
-                        </a>
+                <div class="product-card">
+                    <img class="product" src="data:image/jpeg;base64,<?= base64_encode($product['gambar_satu']); ?>"
+                        alt="<?= htmlspecialchars($product['nama_produk']); ?>">
+                    <p class="product-name"><?= htmlspecialchars($product['nama_produk']); ?></p>
+                    <div class="description">
+                        <h4>Deskripsi Produk</h4>
+                        <p><?= htmlspecialchars($product['deskripsi']); ?></p>
                     </div>
+                    <p class="product-price">Rp.
+                        <?= htmlspecialchars(number_format($product['harga_product'], 2, ',', '.')); ?>
+                    </p>
+                    <a href="productdetail.php?id=<?= $product['product_id']; ?>" class="detail-button"><img
+                            class="cart-icon" src="../resources/img/icons/cart.png" alt="">
+                        <p>Lihat Detail</p>
+                    </a>
+                </div>
                 <?php endforeach; ?>
 
                 <?php if (empty($products)): ?>
-                    <p>Produk tidak ditemukan untuk kategori ini.</p>
+                <p>Produk tidak ditemukan untuk kategori ini.</p>
                 <?php endif; ?>
             </div>
         </div>

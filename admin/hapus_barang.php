@@ -14,7 +14,7 @@ $pdo = $GLOBALS['db'];
 
 // Validasi dan sanitasi ID produk dari URL
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-    $product_id = (int)$_GET['id'];
+    $product_id = (int) $_GET['id'];
 } else {
     echo "ID produk tidak valid.";
     exit();
@@ -27,7 +27,7 @@ $sql = "DELETE FROM products WHERE product_id = :id";
 try {
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':id', $product_id, PDO::PARAM_INT);
-    
+
     if ($stmt->execute()) {
         // Redirect dengan pesan sukses
         header("Location: product.php?status=deleted&message=Produk berhasil dihapus");
@@ -41,4 +41,3 @@ try {
     echo "Error: " . htmlspecialchars($e->getMessage());
     exit();
 }
-?>

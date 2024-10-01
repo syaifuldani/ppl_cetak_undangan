@@ -14,11 +14,11 @@ $jenishalaman = "Dashboard";
 $user_email = $_SESSION['user_email']; // Email user yang diambil dari session
 
 $title = "Undangan Pernikahan";
-$jenishalaman = "Undangan Pernikahan";
+$jenishalaman = "Pernikahan";
 
 // Ambil data produk undangan pernikahan dari database
-$kategori = "Undangan Pernikahan"; // Kategori yang ingin ditampilkan
-$sql = "SELECT product_id, nama_produk, deskripsi, harga_product, gambar_satu, gambar_dua, gambar_tiga, kategori FROM products WHERE kategori = :kategori";
+$kategori = "Pernikahan"; // Kategori yang ingin ditampilkan
+$sql = "SELECT product_id, nama_produk, deskripsi, harga_produk, gambar_satu, gambar_dua, gambar_tiga, kategori FROM products WHERE kategori = :kategori";
 $stmt = $GLOBALS["db"]->prepare($sql);
 $stmt->execute(['kategori' => $kategori]);
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -46,11 +46,12 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <section class="product-list">
                 <?php foreach ($products as $product): ?>
                 <div class="product-item">
-                    <img src="data:image/jpeg;base64,<?= base64_encode($product['gambar_satu']); ?>" alt="<?= htmlspecialchars($product['nama_produk']); ?>" style="width: 300px; height: auto;">
+                    <img src="data:image/jpeg;base64,<?= base64_encode($product['gambar_satu']); ?>"
+                        alt="<?= htmlspecialchars($product['nama_produk']); ?>" style="width: 300px; height: auto;">
                     <div class="product-details">
                         <h3><?= htmlspecialchars($product['nama_produk']); ?></h3>
                         <p><?= htmlspecialchars($product['deskripsi']); ?></p>
-                        <p>Rp. <?= htmlspecialchars(number_format($product['harga_product'], 2, ',', '.')); ?></p>
+                        <p>Rp. <?= htmlspecialchars(number_format($product['harga_produk'], 2, ',', '.')); ?></p>
                         <p>Summary: <?= htmlspecialchars($product['summary'] ?? ''); ?></p>
                         <div class="stats">
                             <span>Terjual: <?= htmlspecialchars($product['terjual'] ?? '0'); ?></span>

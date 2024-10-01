@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     require '../config/connection.php';
 
     // Alias objek PDO dari $GLOBALS['db'] ke $GLOBALS["db"] untuk kompatibilitas
-    
+
 
     // Ambil dan sanitasi data dari form
     $nama_produk = trim($_POST['product_name']);
@@ -84,9 +84,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Simpan data ke database
-    $sql = "INSERT INTO products (nama_produk, deskripsi, harga_product, gambar_satu, gambar_dua, gambar_tiga, kategori) 
+    $sql = "INSERT INTO products (nama_produk, deskripsi, harga_produk, gambar_satu, gambar_dua, gambar_tiga, kategori) 
             VALUES (:nama_produk, :deskripsi, :harga_product, :gambar_satu, :gambar_dua, :gambar_tiga, :kategori)";
-    
+
     try {
         $stmt = $GLOBALS["db"]->prepare($sql);
         $stmt->bindParam(':nama_produk', $nama_produk, PDO::PARAM_STR);
@@ -109,18 +109,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tambah Barang - PleeART</title>
     <link rel="stylesheet" href="./style/style.css">
     <style>
-        .error-message {
-            color: red;
-            margin-bottom: 10px;
-        }
+    .error-message {
+        color: red;
+        margin-bottom: 10px;
+    }
     </style>
 </head>
+
 <body>
     <div class="container">
 
@@ -144,13 +146,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <!-- Nama Produk -->
                     <div class="form-group">
                         <label for="product-name">Nama Produk</label>
-                        <input type="text" id="product-name" name="product_name" placeholder="Masukkan nama produk" required>
+                        <input type="text" id="product-name" name="product_name" placeholder="Masukkan nama produk"
+                            required>
                     </div>
 
                     <!-- Deskripsi -->
                     <div class="form-group">
                         <label for="description">Deskripsi</label>
-                        <textarea id="description" name="description" placeholder="Masukkan deskripsi produk" required></textarea>
+                        <textarea id="description" name="description" placeholder="Masukkan deskripsi produk"
+                            required></textarea>
                     </div>
 
                     <!-- Kategori (Dropdown) -->
@@ -158,11 +162,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <label for="category">Kategori</label>
                         <select id="category" name="category" required>
                             <option value="" disabled selected>-- Pilih Kategori --</option>
-                            <option value="undangan Pernikahan">Undangan Pernikahan</option>
-                            <option value="undangan Khitan">Undangan Khitan</option>
-                            <option value="undangan Walimatul">Undangan Walimatul</option>
-                            <option value="undangan Tahlil & Kirim Doa">Undangan Tahlil & Kirim Doa</option>
-                            <option value="undangan Ulang Tahun">Undangan Ulang Tahun</option>
+                            <option value="Pernikahan">Undangan Pernikahan</option>
+                            <option value="Khitan">Undangan Khitan</option>
+                            <option value="Walimatul">Undangan Walimatul</option>
+                            <option value="Tahlil&KirimDoa">Undangan Tahlil & Kirim Doa</option>
+                            <option value="UlangTahun">Undangan Ulang Tahun</option>
                         </select>
                     </div>
 
@@ -170,7 +174,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="form-group price-group">
                         <div class="price-field">
                             <label for="product-price">Harga Produk</label>
-                            <input type="text" id="product-price" name="product_price" placeholder="Masukkan harga produk" required>
+                            <input type="text" id="product-price" name="product_price"
+                                placeholder="Masukkan harga produk" required>
                         </div>
                     </div>
 
@@ -179,7 +184,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <label>Product Gallery (max 3)</label>
                         <div class="image-upload" style="border: #000000 2px solid; margin-top:1rem;">
                             <div id="image-preview-container" style="display: flex; gap: 10px; flex-wrap: wrap;"></div>
-                            <input type="file" id="file-upload" name="product_image[]" accept=".jpg,.jpeg,.png,.gif,.webp" multiple onchange="previewImages(event)">
+                            <input type="file" id="file-upload" name="product_image[]"
+                                accept=".jpg,.jpeg,.png,.gif,.webp" multiple onchange="previewImages(event)">
                             <p>Drop your images here, or browse. Jpeg, png, gif, webp are allowed</p>
                         </div>
                     </div>
@@ -187,7 +193,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <!-- Tombol Submit dan Cancel -->
                     <div class="button-group">
                         <button type="submit" class="btn btn-update">Tambah</button>
-                        <button type="button" class="btn btn-cancel" onclick="window.location.href='product.php'">CANCEL</button>
+                        <button type="button" class="btn btn-cancel"
+                            onclick="window.location.href='product.php'">CANCEL</button>
                     </div>
                 </form>
             </section>
@@ -195,26 +202,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
     <script>
-        function previewImages(event) {
-            var files = event.target.files;
-            var previewContainer = document.getElementById('image-preview-container');
-            previewContainer.innerHTML = '';
+    function previewImages(event) {
+        var files = event.target.files;
+        var previewContainer = document.getElementById('image-preview-container');
+        previewContainer.innerHTML = '';
 
-            Array.from(files).forEach(file => {
-                if (file && file.type.startsWith('image/')) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        var imgElement = document.createElement('img');
-                        imgElement.src = e.target.result;
-                        imgElement.style.maxWidth = '150px';
-                        imgElement.style.marginBottom = '10px';
-                        imgElement.style.border = '1px solid #ccc';
-                        previewContainer.appendChild(imgElement);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-        }
+        Array.from(files).forEach(file => {
+            if (file && file.type.startsWith('image/')) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var imgElement = document.createElement('img');
+                    imgElement.src = e.target.result;
+                    imgElement.style.maxWidth = '150px';
+                    imgElement.style.marginBottom = '10px';
+                    imgElement.style.border = '1px solid #ccc';
+                    previewContainer.appendChild(imgElement);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
     </script>
 </body>
+
 </html>

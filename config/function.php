@@ -403,7 +403,9 @@ function loginAdmin($data)
         if ($user && password_verify($password, $user['password']) && $jenis_pengguna === 'admin') {
             // Buat session
             $_SESSION['user_id'] = $user['user_id'];
+            $_SESSION['user_name'] = $user['nama_lengkap'];
             $_SESSION['user_email'] = $user['email'];
+            $_SESSION['user_nope'] = $user['nomor_telepon'];
             $_SESSION['jenis_pengguna'] = $user['jenis_pengguna'];
             header("Location: dashboard.php"); // Redirect ke halaman dashboard admin
             exit();
