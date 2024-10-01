@@ -26,131 +26,26 @@ session_start();
       <div class="product-content">
         <div class="product-card">
           <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-          <p class="product-name">Undangan Tahlil&Kirim Doa</p>
+          <p class="product-name">Undangan Blanko Pernikahan</p>
           <div class="description">
-            <h4>Deskripsi Produk</h4>
-            <p>
-              kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-            </p>
-          </div>
-          <p class="product-price">Rp. x.xxx,xx</p>
-          <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
-              alt="">
-            <p>Lihat Detail</p>
-          </a>
-        </div>
-        <div class="product-card">
-          <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-          <p class="product-name">Undangan Tahlil&Kirim Doa</p>
-          <div class="description">
-            <h4>Deskripsi Produk</h4>
+            <h6>Deskripsi Produk</h6>
             <p>
               kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
             </p>
           </div>
+
           <p class="product-price">Rp. x.xxx,xx</p>
-          <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
-              alt="">
-            <p>Lihat Detail</p>
-          </a>
-        </div>
-        <div class="product-card">
-          <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-          <p class="product-name">Undangan Tahlil&Kirim Doa</p>
-          <div class="description">
-            <h4>Deskripsi Produk</h4>
-            <p>
-              kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-            </p>
-          </div>
-          <p class="product-price">Rp. x.xxx,xx</p>
-          <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
-              alt="">
-            <p>Lihat Detail</p>
-          </a>
-        </div>
-        <div class="product-card">
-          <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-          <p class="product-name">Undangan Tahlil&Kirim Doa</p>
-          <div class="description">
-            <h4>Deskripsi Produk</h4>
-            <p>
-              kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-            </p>
-          </div>
-          <p class="product-price">Rp. x.xxx,xx</p>
-          <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
-              alt="">
-            <p>Lihat Detail</p>
-          </a>
-        </div>
-        <div class="product-card">
-          <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-          <p class="product-name">Undangan Tahlil&Kirim Doa</p>
-          <div class="description">
-            <h4>Deskripsi Produk</h4>
-            <p>
-              kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-              kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-              kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-            </p>
-          </div>
-          <p class="product-price">Rp. x.xxx,xx</p>
-          <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
-              alt="">
-            <p>Lihat Detail</p>
-          </a>
-        </div>
-        <div class="product-card">
-          <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-          <p class="product-name">Undangan Tahlil&Kirim Doa</p>
-          <div class="description">
-            <h4>Deskripsi Produk</h4>
-            <p>
-              kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-            </p>
-          </div>
-          <p class="product-price">Rp. x.xxx,xx</p>
-          <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
-              alt="">
-            <p>Lihat Detail</p>
-          </a>
-        </div>
-        <div class="product-card">
-          <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-          <p class="product-name">Undangan Tahlil&Kirim Doa</p>
-          <div class="description">
-            <h4>Deskripsi Produk</h4>
-            <p>
-              kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-            </p>
-          </div>
-          <p class="product-price">Rp. x.xxx,xx</p>
-          <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
-              alt="">
-            <p>Lihat Detail</p>
-          </a>
-        </div>
-        <div class="product-card">
-          <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-          <p class="product-name">Undangan Tahlil&Kirim Doa</p>
-          <div class="description">
-            <h4>Deskripsi Produk</h4>
-            <p>
-              kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-            </p>
-          </div>
-          <p class="product-price">Rp. x.xxx,xx</p>
-          <a href="productdetail.php" class="detail-button"><img class="cart-icon" src="../resources/img/icons/cart.png"
-              alt="">
+          <a href="productdetail.php" class="detail-button"><img class="cart-icon"
+              src="../resources/img/icons/cart.png" alt="">
             <p>Lihat Detail</p>
           </a>
         </div>
       </div>
     </div>
+  </div>
 
-    <script src="../resources/js/slides.js"></script>
-    <script src="../resources/js/burgersidebar.js"></script>
+  <script src="../resources/js/slides.js"></script>
+  <script src="../resources/js/burgersidebar.js"></script>
 </body>
 
 </html>
