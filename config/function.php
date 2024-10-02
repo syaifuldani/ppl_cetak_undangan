@@ -312,6 +312,20 @@ function getRandomProducts($limit = 2) {
         $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         // Loop through the products and encode the images in base64
+
+        // Prepare the statement
+        $stmt = $GLOBALS['db']->prepare($sql);
+
+        // Bind parameter untuk kategori
+        $stmt->bindParam(':kategori', $kategori);
+
+        // Execute the query
+        $stmt->execute();
+
+        // Ambil hasil sebagai array asosiatif
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Encode gambar dalam format base64
         foreach ($products as &$product) {
             if (!empty($product['gambar_satu'])) {
                 $product['gambar_satu'] = 'data:image/jpeg;base64,' . base64_encode($product['gambar_satu']);
@@ -366,8 +380,20 @@ function getCartItems($userId) {
             $item['gambar_satu'] = 'data:image/jpeg;base64,' . base64_encode($item['gambar_satu']);
         }
         $cartItems[] = $item;
-    }
+            if (!empty($product['gambar_dua'])) {
+                $product['gambar_dua'] = 'data:image/jpeg;base64,' . base64_encode($product['gambar_dua']);
+            }
+            if (!empty($product['gambar_tiga'])) {
+                $product['gambar_tiga'] = 'data:image/jpeg;base64,' . base64_encode($product['gambar_tiga']);
+            }
+        }
 
+        return $products; // Kembalikan array produk
+    } catch (PDOException $e) {
+        // Tangani error
+        return ['error' => 'Error fetching products: ' . $e->getMessage()];
+    }
+}
     return $cartItems;
 }
 
@@ -418,6 +444,12 @@ function deleteCartItems($userId, $cartId) {
 
 // ADMIN FUNCTIONS
 
+
+// END CUSTOMER FUNCTIONS
+
+// ----------------------------------------------------------------
+
+// ADMIN FUNCTIONS
 function registrasiAdmin($data)
 {
     $errors = [];
@@ -523,7 +555,9 @@ function loginAdmin($data)
         if ($user && password_verify($password, $user['password']) && $jenis_pengguna === 'admin') {
             // Buat session
             $_SESSION['user_id'] = $user['user_id'];
+            $_SESSION['user_name'] = $user['nama_lengkap'];
             $_SESSION['user_email'] = $user['email'];
+            $_SESSION['user_nope'] = $user['nomor_telepon'];
             $_SESSION['jenis_pengguna'] = $user['jenis_pengguna'];
             header("Location: dashboard.php"); // Redirect ke halaman dashboard admin
             exit();
@@ -636,8 +670,5 @@ function updateProfileAdmin($data)
 // END ADMIN FUNCTIONS
 
 // ----------------------------------------------------------------
-
 // END FUNCTIONS
-
-
 

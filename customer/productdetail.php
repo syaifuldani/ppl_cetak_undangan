@@ -156,7 +156,7 @@ $products = getRandomProducts(2);
                             else:
                                 ?>
                                 <div class="product-card">
-                                    <p>Tidak ada produk tersedia.</p>
+                                  <p>Tidak ada produk tersedia.</p>
                                 </div>
                             <?php endif; ?>
                         </div>
