@@ -2,7 +2,10 @@
 session_start();
 require '../config/connection.php';
 require '../config/function.php'; 
+require '../config/function.php'; 
 
+// Ambil data produk undangan pernikahan dari function
+$products = getProductData('Pernikahan');
 // Ambil data produk undangan pernikahan dari function
 $products = getProductData('Pernikahan');
 ?>
@@ -63,3 +66,4 @@ $products = getProductData('Pernikahan');
 </body>
 
 </html>
+

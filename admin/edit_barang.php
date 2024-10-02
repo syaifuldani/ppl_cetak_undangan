@@ -14,7 +14,7 @@ $pdo = $GLOBALS['db'];
 
 // Ambil dan sanitasi ID produk dari URL
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-    $product_id = (int)$_GET['id'];
+    $product_id = (int) $_GET['id'];
 } else {
     echo "ID produk tidak valid.";
     exit();
@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $sql = "UPDATE products SET 
                 nama_produk = :nama_produk, 
                 deskripsi = :deskripsi, 
-                harga_product = :harga_product, 
+                harga_produk = :harga_produk, 
                 gambar_satu = :gambar_satu, 
                 gambar_dua = :gambar_dua, 
                 gambar_tiga = :gambar_tiga, 
@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':nama_produk', $nama_produk, PDO::PARAM_STR);
         $stmt->bindParam(':deskripsi', $deskripsi, PDO::PARAM_STR);
-        $stmt->bindParam(':harga_product', $harga_product, PDO::PARAM_STR);
+        $stmt->bindParam(':harga_produk', $harga_product, PDO::PARAM_STR);
         $stmt->bindParam(':gambar_satu', $gambar_satu, PDO::PARAM_LOB);
         $stmt->bindParam(':gambar_dua', $gambar_dua, PDO::PARAM_LOB);
         $stmt->bindParam(':gambar_tiga', $gambar_tiga, PDO::PARAM_LOB);
@@ -138,19 +138,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Produk - PleeART</title>
     <link rel="stylesheet" href="./style/style.css">
     <style>
-        .delete-checkbox {
-            margin-left: 10px;
-            color: red;
-            cursor: pointer;
-        }
+    .delete-checkbox {
+        margin-left: 10px;
+        color: red;
+        cursor: pointer;
+    }
     </style>
 </head>
+
 <body>
     <div class="container">
 
@@ -173,29 +175,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <form action="" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="product-name">Nama Produk</label>
-                        <input type="text" id="product-name" name="product_name" value="<?php echo htmlspecialchars($product['nama_produk']); ?>" required>
+                        <input type="text" id="product-name" name="product_name"
+                            value="<?php echo htmlspecialchars($product['nama_produk']); ?>" required>
                     </div>
 
                     <div class="form-group">
                         <label for="description">Deskripsi</label>
-                        <textarea id="description" name="description" required><?php echo htmlspecialchars($product['deskripsi']); ?></textarea>
+                        <textarea id="description" name="description"
+                            required><?php echo htmlspecialchars($product['deskripsi']); ?></textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="category">Kategori</label>
                         <select id="category" name="category" required>
-                            <option value="Undangan Pernikahan" <?php echo ($product['kategori'] == 'Undangan Pernikahan') ? 'selected' : ''; ?>>Undangan Pernikahan</option>
-                            <option value="Undangan Khitan" <?php echo ($product['kategori'] == 'Undangan Khitan') ? 'selected' : ''; ?>>Undangan Khitan</option>
-                            <option value="Undangan Walimatul" <?php echo ($product['kategori'] == 'Undangan Walimatul') ? 'selected' : ''; ?>>Undangan Walimatul</option>
-                            <option value="Undangan Tahlil & Kirim Doa" <?php echo ($product['kategori'] == 'Undangan Tahlil & Kirim Doa') ? 'selected' : ''; ?>>Undangan Tahlil & Kirim Doa</option>
-                            <option value="Undangan Ulang Tahun" <?php echo ($product['kategori'] == 'Undangan Ulang Tahun') ? 'selected' : ''; ?>>Undangan Ulang Tahun</option>
+                            <option value="Pernikahan"
+                                <?php echo ($product['kategori'] == 'Pernikahan') ? 'selected' : ''; ?>>
+                                Undangan Pernikahan</option>
+                            <option value="Khitan" <?php echo ($product['kategori'] == 'Khitan') ? 'selected' : ''; ?>>
+                                Undangan
+                                Khitan</option>
+                            <option value="Walimatul"
+                                <?php echo ($product['kategori'] == 'Walimatul') ? 'selected' : ''; ?>>Undangan
+                                Walimatul</option>
+                            <option value="Tahlil&KirimDoa"
+                                <?php echo ($product['kategori'] == 'Tahlil&KirimDoa') ? 'selected' : ''; ?>>
+                                Undangan Tahlil & Kirim Doa</option>
+                            <option value="UlangTahun"
+                                <?php echo ($product['kategori'] == 'UlangTahun') ? 'selected' : ''; ?>>
+                                Undangan Ulang Tahun</option>
                         </select>
                     </div>
 
                     <div class="form-group price-group">
                         <div class="price-field">
                             <label for="product-price">Harga Produk</label>
-                            <input type="text" id="product-price" name="product_price" value="<?php echo htmlspecialchars($product['harga_product']); ?>" required>
+                            <input type="text" id="product-price" name="product_price"
+                                value="<?php echo htmlspecialchars($product['harga_produk']); ?>" required>
                         </div>
                     </div>
 
@@ -205,38 +220,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <div id="image-preview-container" style="display: flex; gap: 10px; flex-wrap: wrap;">
                                 <!-- Tampilkan preview gambar yang sudah ada dengan opsi untuk menghapus -->
                                 <?php if ($product['gambar_satu']): ?>
-                                    <div style="position: relative;">
-                                        <img src="data:image/jpeg;base64,<?php echo base64_encode($product['gambar_satu']); ?>" style="max-width: 150px; border: 1px solid #ccc;">
-                                        <label class="delete-checkbox">
-                                            <input type="checkbox" name="delete_gambar_satu" value="1"> Hapus
-                                        </label>
-                                    </div>
+                                <div style="position: relative;">
+                                    <img src="data:image/jpeg;base64,<?php echo base64_encode($product['gambar_satu']); ?>"
+                                        style="max-width: 150px; border: 1px solid #ccc;">
+                                    <label class="delete-checkbox">
+                                        <input type="checkbox" name="delete_gambar_satu" value="1"> Hapus
+                                    </label>
+                                </div>
                                 <?php endif; ?>
                                 <?php if ($product['gambar_dua']): ?>
-                                    <div style="position: relative;">
-                                        <img src="data:image/jpeg;base64,<?php echo base64_encode($product['gambar_dua']); ?>" style="max-width: 150px; border: 1px solid #ccc;">
-                                        <label class="delete-checkbox">
-                                            <input type="checkbox" name="delete_gambar_dua" value="1"> Hapus
-                                        </label>
-                                    </div>
+                                <div style="position: relative;">
+                                    <img src="data:image/jpeg;base64,<?php echo base64_encode($product['gambar_dua']); ?>"
+                                        style="max-width: 150px; border: 1px solid #ccc;">
+                                    <label class="delete-checkbox">
+                                        <input type="checkbox" name="delete_gambar_dua" value="1"> Hapus
+                                    </label>
+                                </div>
                                 <?php endif; ?>
                                 <?php if ($product['gambar_tiga']): ?>
-                                    <div style="position: relative;">
-                                        <img src="data:image/jpeg;base64,<?php echo base64_encode($product['gambar_tiga']); ?>" style="max-width: 150px; border: 1px solid #ccc;">
-                                        <label class="delete-checkbox">
-                                            <input type="checkbox" name="delete_gambar_tiga" value="1"> Hapus
-                                        </label>
-                                    </div>
+                                <div style="position: relative;">
+                                    <img src="data:image/jpeg;base64,<?php echo base64_encode($product['gambar_tiga']); ?>"
+                                        style="max-width: 150px; border: 1px solid #ccc;">
+                                    <label class="delete-checkbox">
+                                        <input type="checkbox" name="delete_gambar_tiga" value="1"> Hapus
+                                    </label>
+                                </div>
                                 <?php endif; ?>
                             </div>
-                            <input type="file" id="file-upload" name="product_image[]" accept=".jpg,.jpeg,.png,.gif,.webp" multiple onchange="previewImages(event)">
+                            <input type="file" id="file-upload" name="product_image[]"
+                                accept=".jpg,.jpeg,.png,.gif,.webp" multiple onchange="previewImages(event)">
                             <p>Drop your images here, or browse. Jpeg, png, gif, webp are allowed</p>
                         </div>
                     </div>
 
                     <div class="button-group">
                         <button type="submit" class="btn btn-update">Update</button>
-                        <button type="button" class="btn btn-cancel" onclick="window.location.href='product.php'">CANCEL</button>
+                        <button type="button" class="btn btn-cancel"
+                            onclick="window.location.href='product.php'">CANCEL</button>
                     </div>
                 </form>
             </section>
@@ -244,26 +264,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
     <script>
-        function previewImages(event) {
-            var files = event.target.files;
-            var previewContainer = document.getElementById('image-preview-container');
-            previewContainer.innerHTML = '';
+    function previewImages(event) {
+        var files = event.target.files;
+        var previewContainer = document.getElementById('image-preview-container');
+        previewContainer.innerHTML = '';
 
-            Array.from(files).forEach(file => {
-                if (file && file.type.startsWith('image/')) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        var imgElement = document.createElement('img');
-                        imgElement.src = e.target.result;
-                        imgElement.style.maxWidth = '150px';
-                        imgElement.style.marginBottom = '10px';
-                        imgElement.style.border = '1px solid #ccc';
-                        previewContainer.appendChild(imgElement);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-        }
+        Array.from(files).forEach(file => {
+            if (file && file.type.startsWith('image/')) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var imgElement = document.createElement('img');
+                    imgElement.src = e.target.result;
+                    imgElement.style.maxWidth = '150px';
+                    imgElement.style.marginBottom = '10px';
+                    imgElement.style.border = '1px solid #ccc';
+                    previewContainer.appendChild(imgElement);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
     </script>
 </body>
+
 </html>

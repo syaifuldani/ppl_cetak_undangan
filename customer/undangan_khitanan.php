@@ -2,7 +2,10 @@
 session_start();
 require '../config/connection.php';
 require '../config/function.php'; 
+require '../config/function.php'; 
 
+// Ambil data produk undangan pernikahan dari function
+$products = getProductData('Khitan');
 // Ambil data produk undangan pernikahan dari function
 $products = getProductData('Khitan');
 ?>
@@ -13,6 +16,7 @@ $products = getProductData('Khitan');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan</title>
     <title>Undangan Pernikahan</title>
     <link rel="stylesheet" href="../resources/css/dashboard.css">
     <link rel="stylesheet" href="../resources/css/navbar.css">
@@ -54,6 +58,7 @@ $products = getProductData('Khitan');
                         <p>Produk tidak ditemukan untuk kategori ini.</p>
                     <?php endif; ?>
                 <?php endif; ?>
+                <?php endif; ?>
             </div>
         </div>
 
@@ -63,3 +68,4 @@ $products = getProductData('Khitan');
 </body>
 
 </html>
+

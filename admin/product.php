@@ -20,7 +20,7 @@ $pdo = $GLOBALS['db'];
 $limit = 4;
 
 // Ambil halaman saat ini dari URL, jika tidak ada set ke 1
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
 
 // Hitung total entri
@@ -35,7 +35,7 @@ try {
 }
 
 // Ambil data untuk halaman saat ini
-$sql = "SELECT product_id, nama_produk, deskripsi, harga_product, gambar_satu, gambar_dua, gambar_tiga, kategori FROM products LIMIT :limit OFFSET :offset";
+$sql = "SELECT product_id, nama_produk, deskripsi, harga_produk, gambar_satu, gambar_dua, gambar_tiga, kategori FROM products LIMIT :limit OFFSET :offset";
 try {
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
@@ -87,28 +87,33 @@ try {
                         </thead>
                         <tbody>
                             <?php if (!empty($products)): ?>
-                                <?php foreach ($products as $product): ?>
-                                    <tr>
-                                        <td>
-                                            <img src="data:image/jpeg;base64,<?php echo base64_encode($product['gambar_satu']); ?>" alt="Gambar Produk" style="width: 50px; height: auto;">
-                                        </td>
-                                        <td>#<?php echo htmlspecialchars($product['product_id']); ?></td>
-                                        <td><?php echo htmlspecialchars($product['nama_produk']); ?></td>
-                                        <td><?php echo htmlspecialchars($product['deskripsi']); ?></td>
-                                        <td>Rp.<?php echo number_format($product['harga_product'], 2, ',', '.'); ?></td>
-                                        <td><?php echo htmlspecialchars($product['kategori']); ?></td>
-                                        <td>
-                                            <div class="aksi">
-                                                <button onclick="window.location.href='edit_barang.php?id=<?php echo urlencode($product['product_id']); ?>'" class="edit-btn">Edit</button>
-                                                <button onclick="if(confirm('Apakah Anda yakin ingin menghapus produk ini?')) window.location.href='hapus_barang.php?id=<?php echo urlencode($product['product_id']); ?>'" class="delete-btn">Delete</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
+                            <?php foreach ($products as $product): ?>
+                            <tr>
+                                <td>
+                                    <img src="data:image/jpeg;base64,<?php echo base64_encode($product['gambar_satu']); ?>"
+                                        alt="Gambar Produk" style="width: 50px; height: auto;">
+                                </td>
+                                <td>#<?php echo htmlspecialchars($product['product_id']); ?></td>
+                                <td><?php echo htmlspecialchars($product['nama_produk']); ?></td>
+                                <td><?php echo htmlspecialchars($product['deskripsi']); ?></td>
+                                <td>Rp.<?php echo number_format($product['harga_produk'], 2, ',', '.'); ?></td>
+                                <td><?php echo htmlspecialchars($product['kategori']); ?></td>
+                                <td>
+                                    <div class="aksi">
+                                        <button
+                                            onclick="window.location.href='edit_barang.php?id=<?php echo urlencode($product['product_id']); ?>'"
+                                            class="edit-btn">Edit</button>
+                                        <button
+                                            onclick="if(confirm('Apakah Anda yakin ingin menghapus produk ini?')) window.location.href='hapus_barang.php?id=<?php echo urlencode($product['product_id']); ?>'"
+                                            class="delete-btn">Delete</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
                             <?php else: ?>
-                                <tr>
-                                    <td colspan="8">Tidak ada produk ditemukan.</td>
-                                </tr>
+                            <tr>
+                                <td colspan="8">Tidak ada produk ditemukan.</td>
+                            </tr>
                             <?php endif; ?>
                         </tbody>
                     </table>
@@ -117,17 +122,17 @@ try {
                 <div class="pagination">
                     <ul>
                         <?php if ($page > 1): ?>
-                            <li><a href="?page=<?php echo $page - 1; ?>">&lt; Prev</a></li>
+                        <li><a href="?page=<?php echo $page - 1; ?>">&lt; Prev</a></li>
                         <?php endif; ?>
 
                         <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                            <li class="<?php echo ($i == $page) ? 'active' : ''; ?>">
-                                <a href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                            </li>
+                        <li class="<?php echo ($i == $page) ? 'active' : ''; ?>">
+                            <a href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                        </li>
                         <?php endfor; ?>
 
                         <?php if ($page < $total_pages): ?>
-                            <li><a href="?page=<?php echo $page + 1; ?>">Next &gt;</a></li>
+                        <li><a href="?page=<?php echo $page + 1; ?>">Next &gt;</a></li>
                         <?php endif; ?>
                     </ul>
                 </div>

@@ -2,7 +2,10 @@
 session_start();
 require '../config/connection.php';
 require '../config/function.php'; 
+require '../config/function.php'; 
 
+// Ambil data produk undangan pernikahan dari function
+$products = getProductData('UlangTahun');
 // Ambil data produk undangan pernikahan dari function
 $products = getProductData('UlangTahun');
 ?>
@@ -13,6 +16,7 @@ $products = getProductData('UlangTahun');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan</title>
     <title>Undangan Pernikahan</title>
     <link rel="stylesheet" href="../resources/css/dashboard.css">
     <link rel="stylesheet" href="../resources/css/navbar.css">
@@ -63,3 +67,4 @@ $products = getProductData('UlangTahun');
 </body>
 
 </html>
+

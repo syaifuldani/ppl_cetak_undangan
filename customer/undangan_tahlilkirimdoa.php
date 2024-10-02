@@ -2,7 +2,10 @@
 session_start();
 require '../config/connection.php';
 require '../config/function.php'; 
+require '../config/function.php'; 
 
+// Ambil data produk undangan pernikahan dari function
+$products = getProductData('Tahlil&KirimDoa');
 // Ambil data produk undangan pernikahan dari function
 $products = getProductData('Tahlil&KirimDoa');
 ?>
@@ -16,9 +19,19 @@ $products = getProductData('Tahlil&KirimDoa');
     <title>Undangan Pernikahan</title>
     <link rel="stylesheet" href="../resources/css/dashboard.css">
     <link rel="stylesheet" href="../resources/css/navbar.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan</title>
+    <link rel="stylesheet" href="../resources/css/dashboard.css">
+    <link rel="stylesheet" href="../resources/css/navbar.css">
 </head>
 
 <body>
+    <div class="container">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <?php include 'layout/cusmrLayout/navbar.php'; ?>
+        </nav>
     <div class="container">
         <!-- Navbar -->
         <nav class="navbar">
@@ -60,6 +73,10 @@ $products = getProductData('Tahlil&KirimDoa');
         <script src="../resources/js/slides.js"></script>
         <script src="../resources/js/burgersidebar.js"></script>
     </div>
+        <script src="../resources/js/slides.js"></script>
+        <script src="../resources/js/burgersidebar.js"></script>
+    </div>
 </body>
 
 </html>
+
