@@ -206,7 +206,8 @@ function updateProfileUser($data)
 }
 
 // Function to get products from the database
-function getProductData($kategori) {
+function getProductData($kategori)
+{
     try {
         // SQL query untuk mengambil produk berdasarkan kategori
         $sql = "SELECT product_id, nama_produk, deskripsi, harga_produk, gambar_satu, gambar_dua, gambar_tiga, kategori
@@ -245,7 +246,8 @@ function getProductData($kategori) {
     }
 }
 
-function getProductDetails($product_id) {
+function getProductDetails($product_id)
+{
     try {
         // Query untuk mengambil detail produk berdasarkan ID
         $sql = "SELECT *
@@ -291,7 +293,8 @@ function getProductDetails($product_id) {
     }
 }
 
-function getRandomProducts($limit = 2) {
+function getRandomProducts($limit = 2)
+{
     try {
         // SQL query to get random products
         $sql = "SELECT product_id, nama_produk, deskripsi, harga_produk, gambar_satu 
@@ -312,19 +315,6 @@ function getRandomProducts($limit = 2) {
         $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         // Loop through the products and encode the images in base64
-
-        // Prepare the statement
-        $stmt = $GLOBALS['db']->prepare($sql);
-
-        // Bind parameter untuk kategori
-        $stmt->bindParam(':kategori', $kategori);
-
-        // Execute the query
-        $stmt->execute();
-
-        // Ambil hasil sebagai array asosiatif
-        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
         // Encode gambar dalam format base64
         foreach ($products as &$product) {
             if (!empty($product['gambar_satu'])) {
@@ -338,18 +328,19 @@ function getRandomProducts($limit = 2) {
     }
 }
 
-function addToCart($product_id, $user_id, $quantity = 1, $total_price = 0.00) {
+function addToCart($product_id, $user_id, $quantity = 1, $total_price = 0.00)
+{
     // Query untuk menyimpan data ke tabel carts
     $query = "INSERT INTO carts (product_id, user_id, jumlah, total_harga) VALUES (:product_id, :user_id, :jumlah, :total_harga)";
-    
+
     // Mempersiapkan statement
     $stmt = $GLOBALS['db']->prepare($query);
-    
+
     // Bind parameter
     $stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-    $stmt->bindParam(':jumlah', $quantity, PDO::PARAM_INT); 
-    $stmt->bindParam(':total_harga', $total_price, PDO::PARAM_STR); 
+    $stmt->bindParam(':jumlah', $quantity, PDO::PARAM_INT);
+    $stmt->bindParam(':total_harga', $total_price, PDO::PARAM_STR);
 
     // Eksekusi statement
     if ($stmt->execute()) {
@@ -359,45 +350,51 @@ function addToCart($product_id, $user_id, $quantity = 1, $total_price = 0.00) {
     }
 }
 
-function getCartItems($userId) {
+function getCartItems($userId)
+{
     // Inisialisasi array untuk menyimpan item keranjang
     $cartItems = [];
 
-    // Query untuk mengambil data item keranjang dari database, tambahkan product_id
-    $sql = "SELECT  c.cart_id, p.nama_produk, p.gambar_satu, c.jumlah, p.harga_produk, c.product_id
-            FROM carts c
-            JOIN products p ON c.product_id = p.product_id
-            WHERE c.user_id = :user_id";
-    
-    $stmt = $GLOBALS['db']->prepare($sql);
-    $stmt->bindParam(':user_id', $userId);
-    $stmt->execute();
+    try {
+        // Query untuk mengambil data item keranjang dari database
+        $sql = "SELECT c.cart_id, p.nama_produk, p.gambar_satu, c.jumlah, p.harga_produk, c.product_id, p.gambar_dua, p.gambar_tiga
+                FROM carts c
+                JOIN products p ON c.product_id = p.product_id
+                WHERE c.user_id = :user_id";
 
-    // Fetch semua item ke dalam array
-    while ($item = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        // Encode gambar_satu ke base64 jika ada
-        if ($item['gambar_satu']) {
-            $item['gambar_satu'] = 'data:image/jpeg;base64,' . base64_encode($item['gambar_satu']);
-        }
-        $cartItems[] = $item;
-            if (!empty($product['gambar_dua'])) {
-                $product['gambar_dua'] = 'data:image/jpeg;base64,' . base64_encode($product['gambar_dua']);
+        $stmt = $GLOBALS['db']->prepare($sql);
+        $stmt->bindParam(':user_id', $userId);
+        $stmt->execute();
+
+        // Fetch semua item ke dalam array
+        while ($item = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            // Encode gambar_satu ke base64 jika ada
+            if (!empty($item['gambar_satu'])) {
+                $item['gambar_satu'] = 'data:image/jpeg;base64,' . base64_encode($item['gambar_satu']);
             }
-            if (!empty($product['gambar_tiga'])) {
-                $product['gambar_tiga'] = 'data:image/jpeg;base64,' . base64_encode($product['gambar_tiga']);
+            if (!empty($item['gambar_dua'])) {
+                $item['gambar_dua'] = 'data:image/jpeg;base64,' . base64_encode($item['gambar_dua']);
             }
+            if (!empty($item['gambar_tiga'])) {
+                $item['gambar_tiga'] = 'data:image/jpeg;base64,' . base64_encode($item['gambar_tiga']);
+            }
+            // Masukkan item ke dalam array cartItems
+            $cartItems[] = $item;
         }
 
-        return $products; // Kembalikan array produk
     } catch (PDOException $e) {
         // Tangani error
-        return ['error' => 'Error fetching products: ' . $e->getMessage()];
+        return ['error' => 'Error fetching cart items: ' . $e->getMessage()];
     }
-}
+
+    // Kembalikan array item keranjang
     return $cartItems;
 }
 
-function updateCartItem($userId, $productId, $quantity) {
+
+
+function updateCartItem($userId, $productId, $quantity)
+{
     // Ambil harga produk untuk menghitung total harga
     $sql = "SELECT harga_produk FROM products WHERE product_id = :product_id";
     $stmt = $GLOBALS['db']->prepare($sql);
@@ -420,7 +417,8 @@ function updateCartItem($userId, $productId, $quantity) {
     }
 }
 
-function deleteCartItems($userId, $cartId) {
+function deleteCartItems($userId, $cartId)
+{
     // Validasi: pastikan $cartId adalah integer
     if (!is_numeric($cartId)) {
         throw new Exception("Invalid cart ID.");
@@ -667,8 +665,112 @@ function updateProfileAdmin($data)
     }
 }
 
+function addItemsToProduct($data)
+{
+    $errors = [];
+
+    // Ambil dan sanitasi data dari form
+    $nama_produk = trim($data['product_name']);
+    $deskripsi = trim($data['description']);
+    $kategori = isset($data['category']) ? trim($data['category']) : '';
+    $harga_product = trim($data['product_price']);
+
+    // Daftar kategori yang diizinkan
+    $allowed_categories = [
+        'Pernikahan',
+        'Khitan',
+        'Walimatul',
+        'Tahlil&KirimDoa',
+        'UlangTahun'
+    ];
+
+
+
+    // Validasi input
+    if (empty($nama_produk) || empty($deskripsi) || empty($kategori) || empty($harga_product)) {
+        $errors['field'] = 'Semua field wajib diisi!';
+    }
+
+    // Validasi kategori
+    if (!in_array($kategori, $allowed_categories)) {
+        $errors['category'] = 'Kategori wajib diisi!';
+    }
+
+    // Validasi harga_product adalah angka
+    if (!is_numeric($harga_product)) {
+        $errors['number'] = 'Harga Produk harus berupa angka!';
+    }
+
+    // Handle upload gambar (opsional)
+    $gambar_satu = $gambar_dua = $gambar_tiga = null;
+    $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+
+    // Looping untuk memeriksa apakah ada file yang diunggah
+    if (isset($_FILES['product_image'])) {
+        for ($i = 0; $i < count($_FILES['product_image']['name']); $i++) {
+            if ($_FILES['product_image']['error'][$i] === 0) {
+                $file_extension = strtolower(pathinfo($_FILES['product_image']['name'][$i], PATHINFO_EXTENSION));
+                if (in_array($file_extension, $allowed_extensions)) {
+                    // Optional: Cek ukuran file (misalnya maksimal 2MB)
+                    $max_size = 2 * 1024 * 1024; // 2MB
+                    if ($_FILES['product_image']['size'][$i] > $max_size) {
+                        $errors['imageToLarge'] = "Ukuran gambar terlalu besar: " . htmlspecialchars($_FILES['product_image']['name'][$i]);
+                    }
+
+                    $image_data = file_get_contents($_FILES['product_image']['tmp_name'][$i]);
+                    if ($i == 0) {
+                        $gambar_satu = $image_data;
+                    } elseif ($i == 1) {
+                        $gambar_dua = $image_data;
+                    } elseif ($i == 2) {
+                        $gambar_tiga = $image_data;
+                    }
+                } else {
+                    $errors['imageNotSupported'] = "Format gambar tidak didukung: " . htmlspecialchars($_FILES['product_image']['name'][$i]);
+                }
+            }
+        }
+    }
+
+    // Jika ada error pada proses upload gambar, hentikan eksekusi
+    if (!empty($errors)) {
+        return $errors;
+    }
+
+    // Simpan data ke database
+    $sql = "INSERT INTO products (nama_produk, deskripsi, harga_produk, gambar_satu, gambar_dua, gambar_tiga, kategori) 
+            VALUES (:nama_produk, :deskripsi, :harga_product, :gambar_satu, :gambar_dua, :gambar_tiga, :kategori)";
+
+    try {
+        $stmt = $GLOBALS["db"]->prepare($sql);
+        $stmt->bindParam(':nama_produk', $nama_produk, PDO::PARAM_STR);
+        $stmt->bindParam(':deskripsi', $deskripsi, PDO::PARAM_STR);
+        $stmt->bindParam(':harga_product', $harga_product, PDO::PARAM_STR);
+        $stmt->bindParam(':gambar_satu', $gambar_satu, PDO::PARAM_LOB);
+        $stmt->bindParam(':gambar_dua', $gambar_dua, PDO::PARAM_LOB);
+        $stmt->bindParam(':gambar_tiga', $gambar_tiga, PDO::PARAM_LOB);
+        $stmt->bindParam(':kategori', $kategori, PDO::PARAM_STR);
+        $stmt->execute();
+
+        // Redirect atau tampilkan pesan sukses
+        return ['status' => 'success', 'message' => 'Berhasil menambah barang!'];
+    } catch (PDOException $e) {
+        echo "Error: " . htmlspecialchars($e->getMessage());
+    }
+
+    return $errors;
+}
+
+function getAllDataByCategory($category)
+{
+    // Ambil data produk undangan khitan dari database
+    $sql = "SELECT product_id, nama_produk, deskripsi, harga_produk, gambar_satu, gambar_dua, gambar_tiga, kategori FROM products WHERE kategori = :kategori";
+    $stmt = $GLOBALS["db"]->prepare($sql);
+    $stmt->execute(['kategori' => $category]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 // END ADMIN FUNCTIONS
 
 // ----------------------------------------------------------------
 // END FUNCTIONS
-

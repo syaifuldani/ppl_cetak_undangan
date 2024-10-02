@@ -8,10 +8,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Attempt to register the user and capture any errors
     $registerResponse = registerCustomer($_POST);
 
+    // var_dump($registerResponse);
+
     if (isset($registerResponse['status']) && $registerResponse['status'] === 'success') {
-        // $success_message = $registerResponse['message'];
-        header("Location: login.php");
-        exit();
+        $success_message = $registerResponse['message'];
     } else {
         // If errors exist, handle them
         $errors = $registerResponse;
@@ -78,13 +78,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     <script src="../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
     <script>
-    <?php if ($success_message): ?>
-    Swal.fire({
-        icon: 'success',
-        title: 'Berhasil',
-        text: '<?= $success_message ?>'
-    });
-    <?php endif ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: '<?= $success_message ?>'
+        }).then(function () {
+            window.location = "login.php"; // Redirect after user confirms the alert
+        });
     </script>
 </body>
 
