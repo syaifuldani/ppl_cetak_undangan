@@ -13,7 +13,7 @@
         </div>
         <li><a href="dashboard.php" class="home">Home</a></li>
         <li class="dropdown">
-            <a href="#" class="dropbtn">
+            <a href="" class="dropbtn">
                 Cetak Undangan
                 <img src="../resources/img/icons/dropdown.png" alt="dropdown">
             </a>
@@ -49,7 +49,18 @@
     <!-- Tombol untuk membuka dropdown -->
     <a href="#" class="cart" id="cartButton">
         <img src="../resources/img/icons/shoppingcart.png" alt="Cart">
-        <span class="cart-count" id="cart-count"></span>
+        <?php if (isset($_SESSION['user_id'])): ?>
+            <?php
+            // Ambil item keranjang untuk pengguna yang sudah login
+            $cartItems = getCartItems($_SESSION['user_id']);
+            $itemCount = count($cartItems); // Hitung jumlah item di keranjang
+            ?>
+            <span class="cart-count" id="cart-count" style="<?= $itemCount > 0 ? 'display: inline' : 'display: none'; ?>">
+                <?= $itemCount; ?>
+            </span>
+        <?php else: ?>
+            <span class="cart-count" id="cart-count" style="display: none;"></span>
+        <?php endif; ?>
     </a>
 
     <?php if (isset($_SESSION['user_id'])): ?>
@@ -74,7 +85,7 @@
 
     <?php else: ?>
         <!-- If user is not logged in, show Sign in and Register links -->
-        <a href="login.php" class="sign-in">Sign in</a>
+        <a href="login.php" class="sign-in">Login</a>
         <a href="register.php" class="register">Register</a>
     <?php endif; ?>
 </div>
@@ -83,37 +94,56 @@
 <div class="cart-dropdown" id="cartDropdown" style="display: none;">
     <h3>Keranjang</h3>
 
-    <!-- Contoh item keranjang statis -->
-    <div class="cart-item">
-        <img src="../resources/img/icons/contohproduct.jpeg" alt="Product">
-        <div class="item-details">
-            <h4>Undangan Blangko Pernikahan</h4>
-            <p>Qty: 200</p>
-            <p>Rp. 200.000,00</p>
-        </div>
-    </div>
-    <div class="cart-item">
-        <img src="../resources/img/icons/contohproduct.jpeg" alt="Product">
-        <div class="item-details">
-            <h4>Undangan Blangko Pernikahan</h4>
-            <p>Qty: 200</p>
-            <p>Rp. 200.000,00</p>
-        </div>
-    </div>
-    <div class="cart-item">
-        <img src="../resources/img/icons/contohproduct.jpeg" alt="Product">
-        <div class="item-details">
-            <h4>Undangan Blangko Pernikahan</h4>
-            <p>Qty: 200</p>
-            <p>Rp. 200.000,00</p>
-        </div>
-    </div>
+    <?php
+    // Cek apakah pengguna sudah login
+    if (isset($_SESSION['user_id'])) {
+        // Panggil fungsi untuk mendapatkan item keranjang
+        $cartItems = getCartItems($_SESSION['user_id']);
 
-    <p class="total-price">Total Harga : Rp. 200.000,00</p>
+        // Cek apakah ada item di keranjang
+        if (!empty($cartItems)) {
+            // Tampilkan setiap item di keranjang
+            foreach ($cartItems as $item) {
+    ?>
+                <div class="cart-item">
+                    <img src="<?= $item['gambar_satu'] ?>" alt="Product" class="cart-item-image">
+                    <div class="item-details">
+                        <h4 class="item-name"><?= $item['nama_produk'] ?></h4>
+                        <p class="item-qty">Qty: <?= $item['jumlah'] ?></p>
+                        <p class="item-price">Rp. <?= number_format($item['harga_produk'], 2, ',', '.') ?></p>
+                    </div>
+                </div>
+            <?php
+            }
+
+            // Menghitung total harga
+            $totalHarga = 0;
+            foreach ($cartItems as $item) {
+                $totalHarga += $item['harga_produk'] * $item['jumlah']; // Asumsikan harga_produk adalah per item
+            }
+            ?>
+            <p class="total-price">Total Harga: Rp. <?= number_format($totalHarga, 2, ',', '.') ?></p>
+    <?php
+        } else {
+            // Jika tidak ada item di keranjang
+            echo '<p class="empty-cart-message">Keranjang kosong.</p>';
+        }
+    } else {
+        // Pesan untuk pengguna yang belum login
+        echo '<p class="login-prompt">Silahkan Login Terlebih Dahulu!</p>';
+    }
+    ?>
+
     <div class="cart-btn">
-        <a href="cart.php" class="cart-btn">
-            Check Out Sekarang
-        </a>
+        <?php if (isset($_SESSION['user_id'])): ?>
+            <a href="cart.php" class="cart-btn">
+                Check Out Sekarang
+            </a>
+        <?php else: ?>
+            <a href="login.php" class="cart-btn">
+                Login Dulu Ga Sihh!
+            </a>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -133,29 +163,14 @@
         }
     }
 
-    // Fungsi untuk menghitung jumlah item di dalam keranjang
-    function updateCartCount() {
-        // Menghitung jumlah elemen dengan kelas .cart-item di dalam dropdown
-        const cartItems = document.querySelectorAll('.cart-dropdown .cart-item');
-        const itemCount = cartItems.length;
-
-        // Jika ada item di keranjang, tampilkan jumlah item, jika tidak, sembunyikan elemen cart-count
-        if (itemCount > 0) {
-            cartCount.textContent = itemCount; // Ubah jumlah count
-            cartCount.style.display = 'inline'; // Tampilkan count
-        } else {
-            cartCount.style.display = 'none'; // Sembunyikan count
-        }
-    }
-
     // Event listener pada tombol keranjang
-    cartButton.addEventListener('click', function (event) {
+    cartButton.addEventListener('click', function(event) {
         event.preventDefault(); // Mencegah link agar tidak langsung mengarahkan ke URL lain
         toggleCartDropdown(); // Memanggil fungsi untuk menampilkan atau menyembunyikan dropdown
     });
 
     // Event listener untuk menutup dropdown jika klik di luar area dropdown
-    document.addEventListener('click', function (event) {
+    document.addEventListener('click', function(event) {
         if (!cartButton.contains(event.target) && !cartDropdown.contains(event.target)) {
             cartDropdown.style.display = 'none'; // Sembunyikan dropdown
         }

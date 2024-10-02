@@ -45,11 +45,16 @@
     </div>
 
     <div class="footer-section">
-        <h2>Ulasan</h2>
+        <h2>Other</h2>
         <ul>
             <li>
                 <a href="">
-                    <p>Beri ulasan Anda untuk Toko Kami <br> &raquo;&raquo;&raquo;</p>
+                    <p><img src="../resources/img/icons/pencil.png" alt="Ulasan">Beri ulasan untuk PleeArt.</p>
+                </a>
+            </li>
+            <li>
+                <a href="">
+                    <img src="../resources/img/icons/termofuse.png" alt="Term Of Use">Terms of Use
                 </a>
             </li>
         </ul>
