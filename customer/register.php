@@ -78,13 +78,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     <script src="../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
     <script>
-    Swal.fire({
-        icon: 'success',
-        title: 'Berhasil',
-        text: '<?= $success_message ?>'
-    }).then(function() {
-        window.location = "login.php"; // Redirect after user confirms the alert
-    });
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: '<?= $success_message ?>'
+        }).then(function () {
+            window.location = "login.php"; // Redirect after user confirms the alert
+        });
     </script>
 </body>
 

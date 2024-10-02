@@ -28,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <!DOCTYPE html>
 <html lang="id">
 
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     </style>
 </head>
+
 
 <body>
     <div class="container">
@@ -89,6 +91,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <option value="Walimatul">Undangan Walimatul</option>
                             <option value="Tahlil&KirimDoa">Undangan Tahlil & Kirim Doa</option>
                             <option value="UlangTahun">Undangan Ulang Tahun</option>
+                            <option value="Pernikahan">Undangan Pernikahan</option>
+                            <option value="Khitan">Undangan Khitan</option>
+                            <option value="Walimatul">Undangan Walimatul</option>
+                            <option value="Tahlil&KirimDoa">Undangan Tahlil & Kirim Doa</option>
+                            <option value="UlangTahun">Undangan Ulang Tahun</option>
                         </select>
                         <span
                             class="error-message"><?= isset($responseAddItems['category']) ? $responseAddItems['category'] : ''; ?></span>
@@ -112,6 +119,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <div id="image-preview-container" style="display: flex; gap: 10px; flex-wrap: wrap;"></div>
                             <input type="file" id="file-upload" name="product_image[]"
                                 accept=".jpg,.jpeg,.png,.gif,.webp" multiple onchange="previewImages(event)">
+                            <input type="file" id="file-upload" name="product_image[]"
+                                accept=".jpg,.jpeg,.png,.gif,.webp" multiple onchange="previewImages(event)">
                             <p>Drop your images here, or browse. Jpeg, png, gif, webp are allowed</p>
                         </div>
                         <span
@@ -125,6 +134,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <!-- Tombol Submit dan Cancel -->
                     <div class="button-group">
                         <button type="submit" class="btn btn-update">Tambah</button>
+                        <button type="button" class="btn btn-cancel"
+                            onclick="window.location.href='product.php'">CANCEL</button>
                         <button type="button" class="btn btn-cancel"
                             onclick="window.location.href='product.php'">CANCEL</button>
                     </div>
@@ -172,5 +183,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <?php endif; ?>
     </script>
 </body>
+
 
 </html>

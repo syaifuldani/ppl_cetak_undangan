@@ -15,6 +15,7 @@ $jenishalaman = "Dashboard";
 $user_email = $_SESSION['user_email']; // Email user yang diambil dari session
 $title = "Undangan Khitan";
 $jenishalaman = "Khitan";
+$jenishalaman = "Khitan";
 
 
 $kategori = "Khitan"; // Kategori yang ingin ditampilkan

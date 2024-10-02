@@ -16,6 +16,7 @@ $user_email = $_SESSION['user_email']; // Email user yang diambil dari session
 
 $title = "Undangan Pernikahan";
 $jenishalaman = "Pernikahan";
+$jenishalaman = "Pernikahan";
 
 // Ambil data produk undangan pernikahan dari database
 $kategori = "Pernikahan"; // Kategori yang ingin ditampilkan
@@ -43,20 +44,23 @@ $responsGetData = getAllDataByCategory($kategori);
 
             <section class="product-list">
                 <?php foreach ($responsGetData as $product): ?>
-                <div class="product-item">
-                    <img src="data:image/jpeg;base64,<?= base64_encode($product['gambar_satu']); ?>"
-                        alt="<?= htmlspecialchars($product['nama_produk']); ?>" style="width: 300px; height: auto;">
-                    <div class="product-details">
-                        <h3><?= htmlspecialchars($product['nama_produk']); ?></h3>
-                        <p><?= htmlspecialchars($product['deskripsi']); ?></p>
-                        <p>Rp. <?= htmlspecialchars(number_format($product['harga_produk'], 2, ',', '.')); ?></p>
-                        <p>Summary: <?= htmlspecialchars($product['summary'] ?? ''); ?></p>
-                        <div class="stats">
-                            <span>Terjual: <?= htmlspecialchars($product['terjual'] ?? '0'); ?></span>
-                            <span>Stok: <?= htmlspecialchars($product['stok'] ?? '0'); ?></span>
+                    <div class="product-item">
+                        <img src="data:image/jpeg;base64,<?= base64_encode($product['gambar_satu']); ?>"
+                            alt="<?= htmlspecialchars($product['nama_produk']); ?>" style="width: 300px; height: auto;">
+                        <img src="data:image/jpeg;base64,<?= base64_encode($product['gambar_satu']); ?>"
+                            alt="<?= htmlspecialchars($product['nama_produk']); ?>" style="width: 300px; height: auto;">
+                        <div class="product-details">
+                            <h3><?= htmlspecialchars($product['nama_produk']); ?></h3>
+                            <p><?= htmlspecialchars($product['deskripsi']); ?></p>
+                            <p>Rp. <?= htmlspecialchars(number_format($product['harga_produk'], 2, ',', '.')); ?></p>
+                            <p>Rp. <?= htmlspecialchars(number_format($product['harga_produk'], 2, ',', '.')); ?></p>
+                            <p>Summary: <?= htmlspecialchars($product['summary'] ?? ''); ?></p>
+                            <div class="stats">
+                                <span>Terjual: <?= htmlspecialchars($product['terjual'] ?? '0'); ?></span>
+                                <span>Stok: <?= htmlspecialchars($product['stok'] ?? '0'); ?></span>
+                            </div>
                         </div>
                     </div>
-                </div>
                 <?php endforeach; ?>
             </section>
 
