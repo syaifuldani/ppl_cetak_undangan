@@ -1,219 +1,88 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
-
-.container {
-    max-width: 1000px;
-    margin: 50px auto;
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-}
-
 .content-wrapper {
     display: flex;
-    justify-content: space-between;
-    gap: 20px;
-}
-
-.profile-info {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    margin-bottom: 30px;
-    flex-direction: column;
     justify-content: center;
-}
-
-.profile-pic {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin-bottom: 10px;
-    position: relative;
-    cursor: pointer;
-    display: inline-block;
-}
-
-.edit-text {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    text-align: center;
-    padding: 10px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    border-radius: 0 0 50% 50%;
-    font-size: 14px;
-}
-
-.profile-pic img {
+    align-items: center;
+    flex-direction: column; 
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    /* opacity: 0.7; */
-}
-
-.profile-pic:hover img {
-    opacity: 0.7;
-}
-
-.profile-pic:hover .edit-text {
-    opacity: 1;
-}
-
-.profile-name {
-    font-size: 20px;
-    font-weight: bold;
-    color: #333;
-    text-align: center;
-}
-
-.profile-email {
-    font-size: 14px;
-    color: #666;
-    text-align: center;
+    padding-top: 100px;
+    padding-bottom: 100px;
 }
 
 .form-container {
-    flex: 1;
+    width: 100%;
+    max-width: 600px; /* Atur lebar maksimum untuk tampilan lebih baik */
+    padding: 20px;
+    background-color: #fff; /* Warna latar belakang kontainer */
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #7D93BA; /* Warna judul */
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.profile-info {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-pic {
+    position: relative;
+    display: inline-block;
+}
+
+#profileImage {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #7D93BA; /* Border untuk gambar profil */
+}
+
+.edit-text {
+    display: block;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #7D93BA; /* Warna teks edit */
+    cursor: pointer;
 }
 
 .form-group {
     margin-bottom: 20px;
 }
 
-label {
+.form-group label {
     display: block;
     margin-bottom: 5px;
-    font-weight: bold;
-    color: #333;
+    color: #555; /* Warna label */
 }
 
-input[type="text"],
-input[type="email"],
-select {
+.form-group input {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 3px;
-    box-sizing: border-box;
+    border-radius: 5px;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    border-color: #7D93BA; /* Border saat fokus */
 }
 
 .btn {
-    background-color: #4caf50;
+    width: 100%;
+    padding: 10px;
+    background-color: #7D93BA; /* Warna tombol simpan */
     color: white;
-    padding: 10px 20px;
     border: none;
-    border-radius: 3px;
+    border-radius: 5px;
     cursor: pointer;
-    display: block;
-    margin: 20px auto;
+    font-size: 16px;
+    transition: background-color 0.3s;
 }
 
 .btn:hover {
-    background-color: #45a049;
-}
-
-.add-email-btn {
-    background-color: #008cba;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-}
-
-.add-email-btn:hover {
-    background-color: #007bff;
-}
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.header h1 {
-    margin: 0;
-}
-
-.profile-pic-header {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    overflow: hidden;
-}
-
-.profile-pic-header img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-/* CSS untuk kontainer pesan */
-.message-container {
-    margin: 20px 0;
-    padding: 15px;
-    border-radius: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-/* Gaya untuk link tombol kembali */
-.back-button {
-    display: inline-block; /* Membuat link bersifat blok untuk padding dan margin */
-    padding: 10px 20px; /* Ruang di dalam tombol */
-    background-color: #007bff; /* Warna latar belakang biru */
-    color: #ffffff; /* Warna teks putih */
-    text-decoration: none; /* Menghapus garis bawah */
-    border-radius: 5px; /* Sudut melengkung */
-    transition: background-color 0.3s ease; /* Efek transisi saat hover */
-}
-
-/* Gaya saat hover */
-.back-button:hover {
-    background-color: #0056b3; /* Warna latar belakang saat hover */
-}
-
-/* Gaya untuk pesan sukses */
-.success-message {
-    background-color: #d4edda; /* Warna latar belakang hijau muda */
-    color: #155724; /* Warna teks hijau gelap */
-    border: 1px solid #c3e6cb; /* Border hijau */
-}
-
-/* Gaya untuk pesan kesalahan */
-.error-message {
-    background-color: #f8d7da; /* Warna latar belakang merah muda */
-    color: #721c24; /* Warna teks merah gelap */
-    border: 1px solid #f5c6cb; /* Border merah */
-}
-
-/* Gaya untuk judul pesan */
-.message-title {
-    font-weight: bold;
-    margin-right: 10px; /* Jarak antara judul dan isi pesan */
-}
-
-@media screen and (max-width: 800px) {
-    .content-wrapper {
-        flex-direction: column;
-    }
+    background-color: #6A7D9D; /* Warna tombol saat hover */
 }

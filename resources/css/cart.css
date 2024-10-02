@@ -61,11 +61,12 @@ th {
 td {
     border-bottom: 1px solid #ddd;
     text-align: center;
+    text-align: left;
 }
 
 td .items {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 }
 
@@ -112,7 +113,7 @@ td p {
     margin-top: 10px; 
 }
 
-.update-cart-btn a {
+.update-cart-btn button {
     background-color: #7D93BA; 
     padding: 8px;
     color: #fff;
@@ -120,9 +121,10 @@ td p {
     cursor: pointer; 
     text-decoration: none;
     font-size: 14px;
+    border: none;
 }
 
-.update-cart-btn a:hover {
+.update-cart-btn button:hover {
     background-color: #2980b9;
 }
 

@@ -1,8 +1,21 @@
 <?php
 session_start();
+
+require '../config/connection.php';
+require '../config/function.php';
+
 if (!isset($_SESSION['user_id'])) {
   header("Location: index.php"); // Jika belum login, redirect ke halaman login
   exit();
+}
+
+// Inisialisasi variabel cartItems
+$cartItems = [];
+
+// Cek apakah pengguna sudah login
+if (isset($_SESSION['user_id'])) {
+    // Ambil item keranjang dari database
+    $cartItems = getCartItems($_SESSION['user_id']);
 }
 ?>
 <!DOCTYPE html>
