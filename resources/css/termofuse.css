@@ -1,0 +1,48 @@
+/* Main Content Styling */
+.content {
+    padding: 60px;
+    max-width: 1100px;
+    margin: auto;
+    line-height: 1.6;
+    background-color: #ffffff; /* Menambahkan background putih */
+    border-radius: 10px; /* Membuat sudut yang membulat */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Menambahkan bayangan halus */
+}
+
+/* Styling Header dan Paragraf */
+h1 {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+h2 {
+    margin-top: 20px;
+    font-size: 1.5em;
+    color: #333;
+}
+
+p {
+    font-size: 1.1em;
+    margin-bottom: 15px;
+    color: #555;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .content {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+    }
+
+    h2 {
+        font-size: 1.3em;
+    }
+
+    p {
+        font-size: 1em;
+    }
+}
