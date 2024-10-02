@@ -8,16 +8,16 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
+require '../config/connection.php'; // Pastikan path sesuai dengan struktur folder Anda
 $jenishalaman = "Order list";
 
 // Sertakan file koneksi ke database
-require '../config/connection.php'; // Pastikan path sesuai dengan struktur folder Anda
 
 // Tentukan jumlah data per halaman
 $limit = 10;
 
 // Ambil halaman saat ini dari URL, jika tidak ada set ke 1
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
 
 // Hitung total entri
@@ -80,7 +80,9 @@ $orders = $stmt->fetchAll();
                                 <td>#<?php echo $order['order_id']; ?></td>
                                 <td><?php echo date('M jS, Y', strtotime($order['tanggal_pemesanan'])); ?></td>
                                 <td><?php echo $order['nama_lengkap']; ?></td>
-                                <td><span class="<?php echo strtolower($order['status_pemesanan']); ?>"><?php echo ucfirst($order['status_pemesanan']); ?></span></td>
+                                <td><span
+                                        class="<?php echo strtolower($order['status_pemesanan']); ?>"><?php echo ucfirst($order['status_pemesanan']); ?></span>
+                                </td>
                                 <td>Rp.<?php echo number_format($order['total_harga'], 2); ?></td>
                             </tr>
                         <?php endforeach; ?>

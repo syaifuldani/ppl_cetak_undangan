@@ -1,6 +1,7 @@
 <?php
 session_start();
 require '../config/connection.php'; // Menghubungkan ke database
+require '../config/function.php'; //
 
 // Cek apakah pengguna sudah login
 if (!isset($_SESSION['user_id'])) {
@@ -18,10 +19,7 @@ $jenishalaman = "Pernikahan";
 
 // Ambil data produk undangan pernikahan dari database
 $kategori = "Pernikahan"; // Kategori yang ingin ditampilkan
-$sql = "SELECT product_id, nama_produk, deskripsi, harga_produk, gambar_satu, gambar_dua, gambar_tiga, kategori FROM products WHERE kategori = :kategori";
-$stmt = $GLOBALS["db"]->prepare($sql);
-$stmt->execute(['kategori' => $kategori]);
-$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$responsGetData = getAllDataByCategory($kategori);
 ?>
 
 <!DOCTYPE html>
@@ -44,7 +42,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php require "template/header.php"; ?>
 
             <section class="product-list">
-                <?php foreach ($products as $product): ?>
+                <?php foreach ($responsGetData as $product): ?>
                 <div class="product-item">
                     <img src="data:image/jpeg;base64,<?= base64_encode($product['gambar_satu']); ?>"
                         alt="<?= htmlspecialchars($product['nama_produk']); ?>" style="width: 300px; height: auto;">
