@@ -1,7 +1,53 @@
 <?php
 session_start();
+require '../config/function.php';
 
+// Fungsi untuk mengecek apakah user sudah login
+function isUserLoggedIn() {
+    return isset($_SESSION['user_id']);
+}
+
+// Cek apakah form disubmit
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Ambil data dari form
+    $product_id = isset($_POST['product_id']) ? trim($_POST['product_id']) : null;
+    $user_id = isset($_POST['user_id']) ? trim($_POST['user_id']) : null;
+    $quantity = isset($_POST['quantity']) ? trim($_POST['quantity']) : null;
+    $price = isset($_POST['price']) ? trim($_POST['price']) : null;
+
+    // Validasi input
+    if ($product_id && $user_id && is_numeric($quantity) && is_numeric($price)) {
+        // Hitung total harga
+        $total_price = $quantity * $price;
+
+        // Panggil fungsi untuk menyimpan ke database
+        if (addToCart($product_id, $user_id, $quantity, $total_price)) {
+            // Jika berhasil, redirect ke halaman yang sama dengan parameter success
+            header("Location: productdetail.php?id=$product_id&success");
+            exit();
+        } else {
+            // Jika gagal, redirect dengan pesan error
+            header("Location: productdetail.php?id=$product_id&error");
+            exit();
+        }
+    } else {
+        // Redirect jika data tidak valid
+        header("Location: productdetail.php?id=$product_id&error=1");
+        exit();
+    }
+}
+
+// Ambil detail produk berdasarkan ID
+$product_id = isset($_GET['id']) ? $_GET['id'] : null;
+if (is_null($product_id)) {
+    echo "Error: Produk tidak ditemukan.";
+    exit;
+}
+
+$product = getProductDetails($product_id);
+$products = getRandomProducts(2);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -28,88 +74,91 @@ session_start();
                     <div class="image-gallery">
                         <div class="image-zoom">
                             <div class="main-image" onmousemove="zoomImage(event)" onmouseleave="resetImage()">
-                                <img id="mainImage" src="../resources/img/icons/Rectangle.png" alt="Undangan Utama">
+                                <img id="mainImage" src="<?= $product['gambar_satu']; ?>" alt="<?= htmlspecialchars($product['nama_produk']); ?>">
                             </div>
                         </div>
                         <div class="thumbnail-images">
-                            <img src="../resources/img/icons/Rectangle.png" alt="Thumbnail 1" class="thumb"
-                                onclick="changeImage(this)">
-                            <img src="../resources/img/icons/contohproduct.jpeg" alt="Thumbnail 2" class="thumb"
-                                onclick="changeImage(this)">
-                            <img src="../resources/img/icons/contohproduct.jpeg" alt="Thumbnail 3" class="thumb"
-                                onclick="changeImage(this)">
+                            <img src="<?= $product['gambar_satu']; ?>" alt="Thumbnail 1" class="thumb" onclick="changeImage(this)">
+                            <?php if (isset($product['gambar_dua'])): ?>
+                                <img src="<?= $product['gambar_dua']; ?>" alt="Thumbnail 2" class="thumb" onclick="changeImage(this)">
+                            <?php endif; ?>
+                            <?php if (isset($product['gambar_tiga'])): ?>
+                                <img src="<?= $product['gambar_tiga']; ?>" alt="Thumbnail 3" class="thumb" onclick="changeImage(this)">
+                            <?php endif; ?>
                         </div>
                     </div>
 
                     <!-- Section Informasi Produk -->
                     <div class="product-info">
-                        <h1>Undangan Blangko Pernikahan</h1>
-                        <p class="price">Rp. 1000,00/Lembar</p>
-                        <div class="description">
-                            <h4>Deskripsi Produk</h4>
-                            <p>
-                                kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaakontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaakontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaakontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaakontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaakontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-                            </p>
-                        </div>
+                        <?php if ($product): ?>
+                            <!-- Nama produk -->
+                            <h1><?= htmlspecialchars($product['nama_produk']); ?></h1>
+
+                            <!-- Harga produk -->
+                            <p class="price">Rp. <?= htmlspecialchars(number_format($product['harga_produk'], 2, ',', '.')); ?>/Lembar</p>
+
+                            <div class="description">
+                                <h4>Deskripsi Produk</h4>
+                                <p><?= htmlspecialchars($product['deskripsi']); ?></p>
+                            </div>
+                        <?php else: ?>
+                            <h1>Produk tidak ditemukan.</h1>
+                        <?php endif; ?>
 
                         <!-- Inputan Kuantitas -->
                         <div class="quantity">
-                            <button onclick="decreaseQuantity()">-</button>
-                            <input type="text" id="quantityInput" value="1">
-                            <button onclick="increaseQuantity()">+</button>
+                            <form action="" method="POST" id="addToCartForm">
+                                <input type="hidden" name="product_id" value="<?= htmlspecialchars($product['product_id']); ?>">
 
-                            <!-- Tombol Pesan -->
-                            <a href="#" class="order-btn" onclick="showOverlay()">
-                                <img src="../resources/img/icons/cart.png" class="cart-icon" alt="">
-                                Pesan Sekarang
-                            </a>
-                        </div>
+                                <input type="hidden" name="price" value="<?= htmlspecialchars($product['harga_produk']); ?>">
 
-                        <!-- Overlay -->
-                        <div id="overlay" class="overlay">
-                            <div class="overlay-content">
-                                <div class="checkmark-container">
-                                    <div class="checkmark-circle">
-                                        <div class="checkmark">✓</div>
-                                    </div>
-                                </div>
-                                <p>Pesanan Berhasil disimpan ke keranjang</p>
-                                <a href="#" class="btn-lanjut" onclick="hideOverlay()">Lanjut Belanja</a>
-                            </div>
+                                <?php if (isset($_SESSION['user_id'])): ?>
+                                    <input type="hidden" name="user_id" value="<?= htmlspecialchars($_SESSION['user_id']); ?>">
+
+                                    <button type="button" onclick="decreaseQuantity()">-</button>
+                                    <input type="text" name="quantity" id="quantityInput" value="1">
+                                    <button type="button" onclick="increaseQuantity()">+</button>
+
+                                    <button type="submit" class="order-btn">
+                                        <img src="../resources/img/icons/cart.png" class="cart-icon" alt="">
+                                        Pesan Sekarang
+                                    </button>
+                                <?php else: ?>
+                                    <a href="login.php" class="order-btn">
+                                        <img src="../resources/img/icons/cart.png" class="cart-icon" alt="">
+                                        Login untuk Pesan
+                                    </a>
+                                <?php endif; ?>
+                            </form>
                         </div>
 
                         <h2>Undangan Lainnya</h2>
                         <div class="product-container">
-                            <div class="product-card">
-                                <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-                                <p class="product-name">Undangan Khitanan</p>
-                                <div class="description">
-                                    <h6>Deskripsi Produk</h6>
-                                    <p>
-                                        kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-                                    </p>
+                            <?php
+                            if (!empty($products) && !isset($products['error'])):
+                                foreach ($products as $product):
+                            ?>
+                                    <div class="product-card">
+                                        <img class="product" src="<?= htmlspecialchars($product['gambar_satu']); ?>" alt="<?= htmlspecialchars($product['nama_produk']); ?>">
+                                        <p class="product-name"><?= htmlspecialchars($product['nama_produk']); ?></p>
+                                        <div class="description">
+                                            <h6>Deskripsi Produk</h6>
+                                            <p><?= htmlspecialchars($product['deskripsi']); ?></p>
+                                        </div>
+                                        <p class="product-price">Rp. <?= htmlspecialchars(number_format($product['harga_produk'], 2, ',', '.')); ?></p>
+                                        <a href="productdetail.php?id=<?= htmlspecialchars($product['product_id']); ?>" class="detail-button">
+                                            <img class="cart-icon" src="../resources/img/icons/cart.png" alt="">
+                                            <p>Lihat Detail</p>
+                                        </a>
+                                    </div>
+                                <?php
+                                endforeach;
+                            else:
+                                ?>
+                                <div class="product-card">
+                                    <p>Tidak ada produk tersedia.</p>
                                 </div>
-                                <p class="product-price">Rp. x.xxx,xx</p>
-                                <a href="productdetail.php" class="detail-button"><img class="cart-icon"
-                                        src="../resources/img/icons/cart.png" alt="">
-                                    <p>Lihat Detail</p>
-                                </a>
-                            </div>
-                            <div class="product-card">
-                                <img class="product" src="../resources/img/icons/contohproduct.jpeg" alt="Undangan">
-                                <p class="product-name">Undangan Khitanan</p>
-                                <div class="description">
-                                    <h6>Deskripsi Produk</h6>
-                                    <p>
-                                        kontidsbfdyjfvjdrvfrjbdjfraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-                                    </p>
-                                </div>
-                                <p class="product-price">Rp. x.xxx,xx</p>
-                                <a href="productdetail.php" class="detail-button"><img class="cart-icon"
-                                        src="../resources/img/icons/cart.png" alt="">
-                                    <p>Lihat Detail</p>
-                                </a>
-                            </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -134,87 +183,28 @@ session_start();
                         <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
                         <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
                     </div>
-                    <div class="review-item">
-                        <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
-                        <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
-                    </div>
-                    <div class="review-item">
-                        <p><strong>Jane Smith</strong> - ⭐⭐⭐⭐</p>
-                        <p>Kualitas produk oke, namun packaging bisa lebih baik lagi.</p>
-                    </div>
-                    <div class="review-item">
-                        <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
-                        <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
-                    </div>
-                    <div class="review-item">
-                        <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
-                        <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
-                    </div>
-                    <div class="review-item">
-                        <p><strong>Jane Smith</strong> - ⭐⭐⭐⭐</p>
-                        <p>Kualitas produk oke, namun packaging bisa lebih baik lagi.</p>
-                    </div>
-                    <div class="review-item">
-                        <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
-                        <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
-                    </div>
-                    <div class="review-item">
-                        <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
-                        <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
-                    </div>
-                    <div class="review-item">
-                        <p><strong>Jane Smith</strong> - ⭐⭐⭐⭐</p>
-                        <p>Kualitas produk oke, namun packaging bisa lebih baik lagi.</p>
-                    </div>
-                    <div class="review-item">
-                        <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
-                        <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
-                    </div>
-                    <div class="review-item">
-                        <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
-                        <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
-                    </div>
-                    <div class="review-item">
-                        <p><strong>Jane Smith</strong> - ⭐⭐⭐⭐</p>
-                        <p>Kualitas produk oke, namun packaging bisa lebih baik lagi.</p>
-                    </div>
-                    <div class="review-item">
-                        <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
-                        <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
-                    </div>
-                    <div class="review-item">
-                        <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
-                        <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
-                    </div>
-                    <div class="review-item">
-                        <p><strong>Jane Smith</strong> - ⭐⭐⭐⭐</p>
-                        <p>Kualitas produk oke, namun packaging bisa lebih baik lagi.</p>
-                    </div>
-                    <div class="review-item">
-                        <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
-                        <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
-                    </div>
-                    <div class="review-item">
-                        <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
-                        <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
-                    </div>
-                    <div class="review-item">
-                        <p><strong>Jane Smith</strong> - ⭐⭐⭐⭐</p>
-                        <p>Kualitas produk oke, namun packaging bisa lebih baik lagi.</p>
-                    </div>
-                    <div class="review-item">
-                        <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
-                        <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overlay -->
+        <div id="overlay" class="overlay">
+            <div class="overlay-content">
+                <div class="checkmark-container">
+                    <div class="checkmark-circle">
+                        <div class="checkmark">✓</div>
                     </div>
                 </div>
+                <p id="overlayMessage"></p>
+                <a href="javascript:history.back();" class="btn-lanjut" onclick="hideOverlay()">Lanjut Belanja</a>
             </div>
         </div>
     </div>
 
 
     <script src="../resources/js/thumnail.js"></script>
-    <script src="../resources/js/overlay.js"></script>
     <script src="../resources/js/zoomimage.js"></script>
+    <script src="../resources/js/overlay.js"></script>
 </body>
 
 </html>

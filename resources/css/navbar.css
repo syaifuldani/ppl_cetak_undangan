@@ -232,6 +232,11 @@ body {
     margin-bottom: 15px;
 }
 
+.cart-dropdown .empty-cart-message,
+.cart-dropdown .login-prompt {
+    margin-bottom: 100px;
+}
+
 .cart-item {
     display: flex;
     margin-bottom: 15px;

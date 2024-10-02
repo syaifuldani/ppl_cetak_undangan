@@ -1,3 +1,71 @@
+<?php
+// Memulai session
+session_start();
+
+// Inklusi file fungsi untuk mengambil data keranjang
+include '../config/function.php';
+
+// Memastikan pengguna sudah login
+if (isset($_SESSION['user_id'])) {
+    $userId = $_SESSION['user_id'];
+
+    // Cek apakah ada permintaan untuk menghapus item dari keranjang
+    if (isset($_GET['product_id'])) {
+        $productId = $_GET['product_id'];
+
+        // Panggil fungsi deleteCartItems untuk menghapus item
+        deleteCartItems($userId, $productId);
+
+        // Redirect kembali ke halaman keranjang setelah penghapusan
+        header("Location: cart.php");
+        exit(); // Stop eksekusi script setelah redirect
+    }
+
+    // Ambil item keranjang dari database
+    $cartItems = getCartItems($userId);
+} else {
+    // Set status HTTP menjadi 404 (Not Found)
+    http_response_code(404);
+
+    // Tampilkan halaman "Page Not Found"
+    echo "<h1>404 - Page Not Found</h1>";
+    echo "<p>Halaman yang Anda minta tidak ditemukan</p>";
+    exit();
+}
+
+if (isset($_GET['action']) && $_GET['action'] == 'delete') {
+    $cartId = isset($_GET['cart_id']) ? (int)$_GET['cart_id'] : 0;
+    if ($cartId > 0) {
+        deleteCartItems($userId, $cartId);  // Pastikan $userId didefinisikan
+        echo "Item berhasil dihapus.";
+    } else {
+        echo "Produk tidak valid.";
+    }
+}
+
+// Mendapatkan data item dari database
+$cartItems = getCartItems($userId);
+
+// Mendapatkan user_id dari session
+$userId = $_SESSION['user_id'];
+
+// Memanggil fungsi untuk mendapatkan item keranjang
+$cartItems = getCartItems($userId);
+
+// Fungsi untuk memperbarui keranjang
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_cart'])) {
+    foreach ($_POST['quantities'] as $cartId => $quantity) {
+        // Memperbarui jumlah produk di database
+        updateCartItem($userId, $cartId, $quantity);
+    }
+
+    // Refresh halaman setelah pembaruan
+    header("Location: cart.php");
+    exit();
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -20,57 +88,57 @@
             <div class="cart-container">
                 <div class="cart-section">
                     <h1>Keranjang Anda!</h1>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>
-                                    Product
-                                </th>
-                                <th>
-                                    Harga Per Kertas
-                                </th>
-                                <th>
-                                    Jumlah
-                                </th>
-                                <th>
-                                    Sub Total
-                                </th>
-                                <th>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div class="items">
-                                        <img alt="Product Image" class="product-image" height="50" src="../resources/img/icons/contohproduct.jpeg" width="50" />
-                                        <p>Undangan Nikah Blanko Biru</p>
-                                    </div>
-                                </td>
-                                <td class="price">
-                                    Rp.1000
-                                </td>
-                                <td>
-                                    <div class="quantity-control">
-                                        <button>-</button>
-                                        <input value="100"/>
-                                        <button>+</button>
-                                    </div>
-                                </td>
-                                <td class="subtotal">
-                                    Rp.100.000,00
-                                </td>
-                                <td>
-                                    <a href="#">
-                                        <img src="../resources/img/icons/trash.png" alt="">
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="update-cart-btn">
-                        <a href="#" class="update-cart-btn">Perbarui Keranjang</a>
-                    </div>
+                    <!-- Form untuk update keranjang -->
+                    <form action="cart.php" method="POST">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Harga Per Kertas</th>
+                                    <th>Jumlah</th>
+                                    <th>Sub Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (!empty($cartItems)) : ?>
+                                    <?php foreach ($cartItems as $item) : ?>
+                                        <tr>
+                                            <td>
+                                                <div class="items">
+                                                    <img alt="Product Image" class="product-image" height="50" src="<?= $item['gambar_satu']; ?>" width="50" />
+                                                    <p><?= $item['nama_produk']; ?></p>
+                                                </div>
+                                            </td>
+                                            <td class="price">Rp.<?= number_format($item['harga_produk'], 2, ',', '.'); ?></td>
+                                            <td>
+                                                <div class="quantity-control">
+                                                    <button type="button" onclick="decreaseQuantity(<?= $item['product_id']; ?>)">-</button>
+                                                    <input type="text" name="quantities[<?= $item['product_id']; ?>]" value="<?= $item['jumlah']; ?>" min="1" id="quantityInput-<?= $item['product_id']; ?>">
+                                                    <button type="button" onclick="increaseQuantity(<?= $item['product_id']; ?>)">+</button>
+                                                </div>
+                                            </td>
+                                            <td class="subtotal">Rp.<?= number_format($item['jumlah'] * $item['harga_produk'], 2, ',', '.'); ?></td>
+                                            <td>
+                                                <a href="cart.php?action=delete&cart_id=<?= $item['cart_id']; ?>">
+                                                    <img src="../resources/img/icons/trash.png" alt="Hapus Item">
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php else : ?>
+                                    <tr>
+                                        <td colspan="5">Keranjang kosong.</td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                        <!-- Tombol untuk memperbarui keranjang -->
+                        <div class="update-cart-btn">
+                            <input type="hidden" name="product_id" value="<?php echo isset($item['product_id']) ? $item['product_id'] : ''; ?>">
+                            <button type="submit" name="update_cart" class="update-cart-btn">Perbarui Keranjang</button>
+                        </div>
+                    </form>
                     <div class="warning-message">
                         Lengkapi Data Undangan dan Data Pengiriman Anda!!
                     </div>
@@ -127,11 +195,27 @@
                             </li>
                         </ul>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        function increaseQuantity(productId) {
+            const quantityInput = document.getElementById(`quantityInput-${productId}`);
+            let currentValue = parseInt(quantityInput.value);
+            quantityInput.value = currentValue + 1; // Tambahkan 1
+        }
+
+        function decreaseQuantity(productId) {
+            const quantityInput = document.getElementById(`quantityInput-${productId}`);
+            let currentValue = parseInt(quantityInput.value);
+
+            if (currentValue > 1) {
+                quantityInput.value = currentValue - 1; // Kurangi 1
+            }
+        }
+    </script>
 </body>
 
 </html>
