@@ -53,7 +53,7 @@
                 </a>
             </li>
             <li>
-                <a href="">
+                <a href="termofuse.php">
                     <img src="../resources/img/icons/termofuse.png" alt="Term Of Use">Terms of Use
                 </a>
             </li>
