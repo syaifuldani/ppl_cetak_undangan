@@ -823,7 +823,5 @@ function getAllDataByCategory($category)
 }
 
 // END ADMIN FUNCTIONS
-
 // ----------------------------------------------------------------
-// END FUNCTIONS
 // END FUNCTIONS
