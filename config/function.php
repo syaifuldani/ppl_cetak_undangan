@@ -330,7 +330,8 @@ function getRandomProducts($limit = 2)
     }
 }
 
-function addToCart($product_id, $user_id, $quantity = 1, $total_price = 0.00) {
+function addToCart($product_id, $user_id, $quantity = 1, $total_price = 0.00) 
+{
     // Query untuk memeriksa apakah produk sudah ada di keranjang
     $queryCheck = "SELECT jumlah FROM carts WHERE product_id = :product_id AND user_id = :user_id";
     $stmtCheck = $GLOBALS['db']->prepare($queryCheck);
@@ -351,6 +352,8 @@ function addToCart($product_id, $user_id, $quantity = 1, $total_price = 0.00) {
         $stmtUpdate->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         
         return $stmtUpdate->execute(); // Berhasil di-update
+}
+
 function addToCart($product_id, $user_id, $quantity = 1, $total_price = 0.00)
 {
     // Query untuk menyimpan data ke tabel carts
@@ -570,8 +573,6 @@ function registrasiAdmin($data)
     }
     return $errors;
 }
-
-
 
 function loginAdmin($data)
 {
