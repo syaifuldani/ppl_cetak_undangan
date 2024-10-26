@@ -30,15 +30,11 @@ $products = getProductData('Khitan');
         <!-- Items Product -->
         <div class="product-container">
             <div class="product-content">
-
-                    <?php if (empty($products)): ?>
-                        <p>Produk tidak ditemukan untuk kategori ini.</p>
-                    <?php endif; ?>
                 <!-- Jika ada error dalam mengambil produk -->
                 <?php if (isset($products['error'])): ?>
-                <p>Error: <?= htmlspecialchars($products['error']); ?></p>
+                    <p>Error: <?= htmlspecialchars($products['error']); ?></p>
                 <?php elseif (empty($products)): ?>
-                <p>Produk tidak ditemukan untuk kategori ini.</p>
+                    <p>Produk tidak ditemukan untuk kategori ini.</p>
                 <?php else: ?>
                 <!-- Loop produk jika ditemukan -->
                 <?php foreach ($products as $product): ?>
