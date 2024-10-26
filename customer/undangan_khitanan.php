@@ -1,7 +1,7 @@
 <?php
 session_start();
 require '../config/connection.php';
-require '../config/function.php'; 
+require '../config/function.php';
 
 // Ambil data produk Khitan dari function
 $products = getProductData('Khitan');
@@ -31,28 +31,29 @@ $products = getProductData('Khitan');
 
                 <!-- Jika ada error dalam mengambil produk -->
                 <?php if (isset($products['error'])): ?>
-                <p>Error: <?= htmlspecialchars($products['error']); ?></p>
+                    <p>Error: <?= htmlspecialchars($products['error']); ?></p>
                 <?php elseif (empty($products)): ?>
-                <p>Produk tidak ditemukan untuk kategori ini.</p>
+                    <p>Produk tidak ditemukan untuk kategori ini.</p>
                 <?php else: ?>
-                <!-- Loop produk jika ditemukan -->
-                <?php foreach ($products as $product): ?>
-                <div class="product-card">
-                    <img class="product" src="<?= $product['gambar_satu']; ?>"
-                        alt="<?= htmlspecialchars($product['nama_produk']); ?>">
-                    <p class="product-name"><?= htmlspecialchars($product['nama_produk']); ?></p>
-                    <div class="description">
-                        <h5>Deskripsi Produk</h5>
-                        <p><?= htmlspecialchars($product['deskripsi']); ?></p>
-                    </div>
-                    <p class="product-price">Rp.
-                        <?= htmlspecialchars(number_format($product['harga_produk'], 2, ',', '.')); ?></p>
-                    <a href="productdetail.php?id=<?= $product['product_id']; ?>" class="detail-button">
-                        <img class="cart-icon" src="../resources/img/icons/cart.png" alt="">
-                        <p>Lihat Detail</p>
-                    </a>
-                </div>
-                <?php endforeach; ?>
+                    <!-- Loop produk jika ditemukan -->
+                    <?php foreach ($products as $product): ?>
+                        <div class="product-card">
+                            <img class="product" src="<?= $product['gambar_satu']; ?>"
+                                alt="<?= htmlspecialchars($product['nama_produk']); ?>">
+                            <p class="product-name"><?= htmlspecialchars($product['nama_produk']); ?></p>
+                            <div class="description">
+                                <h5>Deskripsi Produk</h5>
+                                <p><?= htmlspecialchars($product['deskripsi']); ?></p>
+                            </div>
+                            <p class="product-price">Rp.
+                                <?= htmlspecialchars(number_format($product['harga_produk'], 2, ',', '.')); ?>
+                            </p>
+                            <a href="productdetail.php?id=<?= $product['product_id']; ?>" class="detail-button">
+                                <img class="cart-icon" src="../resources/img/icons/cart.png" alt="">
+                                <p>Lihat Detail</p>
+                            </a>
+                        </div>
+                    <?php endforeach; ?>
                 <?php endif; ?>
 
             </div>

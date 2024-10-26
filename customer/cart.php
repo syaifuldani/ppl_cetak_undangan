@@ -3,7 +3,7 @@
 session_start();
 
 // Inklusi file fungsi untuk mengambil data keranjang
-include '../config/function.php';
+require_once '../config/function.php';
 
 // Memastikan pengguna sudah login
 if (isset($_SESSION['user_id'])) {
@@ -34,7 +34,7 @@ if (isset($_SESSION['user_id'])) {
 }
 
 if (isset($_GET['action']) && $_GET['action'] == 'delete') {
-    $cartId = isset($_GET['cart_id']) ? (int)$_GET['cart_id'] : 0;
+    $cartId = isset($_GET['cart_id']) ? (int) $_GET['cart_id'] : 0;
     if ($cartId > 0) {
         deleteCartItems($userId, $cartId);  // Pastikan $userId didefinisikan
         echo "Item berhasil dihapus.";
@@ -75,6 +75,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_cart'])) {
     <title>Keranjang</title>
     <link rel="stylesheet" href="../resources/css/cart.css">
     <link rel="stylesheet" href="../resources/css/navbar.css">
+
+    <!-- @TODO: replace SET_YOUR_CLIENT_KEY_HERE with your client key -->
+    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="<?php $_ENV['MIDTRANS_CLIENT_KEY'] ?>"></script>
+    <!-- Note: replace with src="https://app.midtrans.com/snap/snap.js" for Production environment -->
+
+
 </head>
 
 <body>
@@ -101,24 +108,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_cart'])) {
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if (!empty($cartItems)) : ?>
-                                    <?php foreach ($cartItems as $item) : ?>
+                                <?php if (!empty($cartItems)): ?>
+                                    <?php foreach ($cartItems as $item): ?>
                                         <tr>
                                             <td>
                                                 <div class="items">
-                                                    <img alt="Product Image" class="product-image" height="50" src="<?= $item['gambar_satu']; ?>" width="50" />
+                                                    <img alt="Product Image" class="product-image" height="50"
+                                                        src="<?= $item['gambar_satu']; ?>" width="50" />
                                                     <p><?= $item['nama_produk']; ?></p>
                                                 </div>
                                             </td>
                                             <td class="price">Rp.<?= number_format($item['harga_produk'], 2, ',', '.'); ?></td>
                                             <td>
                                                 <div class="quantity-control">
-                                                    <button type="button" onclick="decreaseQuantity(<?= $item['product_id']; ?>)">-</button>
-                                                    <input type="text" name="quantities[<?= $item['product_id']; ?>]" value="<?= $item['jumlah']; ?>" min="1" id="quantityInput-<?= $item['product_id']; ?>">
-                                                    <button type="button" onclick="increaseQuantity(<?= $item['product_id']; ?>)">+</button>
+                                                    <button type="button"
+                                                        onclick="decreaseQuantity(<?= $item['product_id']; ?>)">-</button>
+                                                    <input type="text" name="quantities[<?= $item['product_id']; ?>]"
+                                                        value="<?= $item['jumlah']; ?>" min="1"
+                                                        id="quantityInput-<?= $item['product_id']; ?>">
+                                                    <button type="button"
+                                                        onclick="increaseQuantity(<?= $item['product_id']; ?>)">+</button>
                                                 </div>
                                             </td>
-                                            <td class="subtotal">Rp.<?= number_format($item['jumlah'] * $item['harga_produk'], 2, ',', '.'); ?></td>
+                                            <td class="subtotal">
+                                                Rp.<?= number_format($item['jumlah'] * $item['harga_produk'], 2, ',', '.'); ?>
+                                            </td>
                                             <td>
                                                 <a href="cart.php?action=delete&cart_id=<?= $item['cart_id']; ?>">
                                                     <img src="../resources/img/icons/trash.png" alt="Hapus Item">
@@ -126,7 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_cart'])) {
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
-                                <?php else : ?>
+                                <?php else: ?>
                                     <tr>
                                         <td colspan="5">Keranjang kosong.</td>
                                     </tr>
@@ -135,7 +149,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_cart'])) {
                         </table>
                         <!-- Tombol untuk memperbarui keranjang -->
                         <div class="update-cart-btn">
-                            <input type="hidden" name="product_id" value="<?php echo isset($item['product_id']) ? $item['product_id'] : ''; ?>">
+                            <input type="hidden" name="product_id"
+                                value="<?php echo isset($item['product_id']) ? $item['product_id'] : ''; ?>">
                             <button type="submit" name="update_cart" class="update-cart-btn">Perbarui Keranjang</button>
                         </div>
                     </form>
@@ -149,7 +164,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_cart'])) {
                             <input type="text" placeholder="Tempat/Lokasi Acara">
                             <textarea placeholder="Keterangan Tambahan"></textarea>
                             <p class="info">
-                                Tuliskan keterangan tambahan seperti nama orang tua dan calon mempelai, teks doa, nama yang dirayakan, tema acara, atau pesan/informasi penting lainnya sesuai dengan acara pernikahan, khitan, walimatul ursy, tahlil, kirim doa, atau ulang tahun.<br><br>
+                                Tuliskan keterangan tambahan seperti nama orang tua dan calon mempelai, teks doa,
+                                nama
+                                yang dirayakan, tema acara, atau pesan/informasi penting lainnya sesuai dengan acara
+                                pernikahan, khitan, walimatul ursy, tahlil, kirim doa, atau ulang tahun.<br><br>
 
                                 Contoh : <br>
                                 Nama : John Doe <br>
@@ -163,17 +181,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_cart'])) {
                             <input type="text" placeholder="No. Telp Penerima">
                             <textarea placeholder="Alamat Lengkap dan Keterangan"></textarea>
                             <p class="info">
-                                Pastikan alamat yang Anda tulis lengkap dan jelas, termasuk nama jalan, nomor rumah, RT/RW, desa/kelurahan, kecamatan, kota/kabupaten, dan kode pos.
-                                Jangan lupa sertakan informasi tambahan seperti patokan lokasi (misalnya: "Di sebelah toko A" atau "Dekat dengan kantor B") agar paket dapat dikirimkan dengan tepat. <br><br>
+                                Pastikan alamat yang Anda tulis lengkap dan jelas, termasuk nama jalan, nomor rumah,
+                                RT/RW, desa/kelurahan, kecamatan, kota/kabupaten, dan kode pos.
+                                Jangan lupa sertakan informasi tambahan seperti patokan lokasi (misalnya: "Di
+                                sebelah
+                                toko A" atau "Dekat dengan kantor B") agar paket dapat dikirimkan dengan tepat.
+                                <br><br>
                                 Contoh: <br>
                                 Nama: John Doe <br>
-                                Alamat: Jl. A Yani No. 123, RT 02/RW 03, Dsn.Sumberjo Ds.Sumbertanggul Kec. Mojosari Kab. Mojokerto, 41382 <br>
+                                Alamat: Jl. A Yani No. 123, RT 02/RW 03, Dsn.Sumberjo Ds.Sumbertanggul Kec. Mojosari
+                                Kab. Mojokerto, 41382 <br>
                                 Patokan: Rumah warna putih depannya ada pohon sawo.
                             </p>
                         </div>
-                        <button class="pay-btn">Bayar Sekarang</button>
+                        <button class="pay-btn" id="pay-btn">Bayar Sekarang</button>
                     </div>
                 </div>
+
+                <div id="snap-container"></div>
 
                 <div class="details-section">
                     <div class="order-history">
@@ -199,7 +224,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_cart'])) {
             </div>
         </div>
     </div>
-
+    <script src="..\resources\js\Order.js"></script>
     <script>
         function increaseQuantity(productId) {
             const quantityInput = document.getElementById(`quantityInput-${productId}`);
