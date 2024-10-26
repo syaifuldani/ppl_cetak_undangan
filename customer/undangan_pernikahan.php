@@ -56,10 +56,6 @@ $products = getProductData('Pernikahan');
                             </a>
                         </div>
                     <?php endforeach; ?>
-
-                    <?php if (empty($products)): ?>
-                        <p>Produk tidak ditemukan untuk kategori ini.</p>
-                    <?php endif; ?>
                 <?php endif; ?>
 
             </div>
