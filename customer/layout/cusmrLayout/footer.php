@@ -48,7 +48,7 @@
         <h2>Other</h2>
         <ul>
             <li>
-                <a href="">
+                <a href="services/ulasan_website.php">
                     <p><img src="../resources/img/icons/pencil.png" alt="Ulasan">Beri ulasan untuk PleeArt.</p>
                 </a>
             </li>

@@ -2,10 +2,7 @@
 session_start();
 require '../config/connection.php';
 require '../config/function.php'; 
-require '../config/function.php'; 
 
-// Ambil data produk undangan pernikahan dari function
-$products = getProductData('Khitan');
 // Ambil data produk undangan pernikahan dari function
 $products = getProductData('Khitan');
 ?>
@@ -16,8 +13,8 @@ $products = getProductData('Khitan');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Undangan Pernikahan</title>
-    <title>Undangan Pernikahan</title>
+    <title>Undangan Khitan</title>
+    <link rel="icon" href="../resources/img/icons/pleart.png" type="image/png">
     <link rel="stylesheet" href="../resources/css/dashboard.css">
     <link rel="stylesheet" href="../resources/css/navbar.css">
 </head>
@@ -58,11 +55,9 @@ $products = getProductData('Khitan');
                         <p>Produk tidak ditemukan untuk kategori ini.</p>
                     <?php endif; ?>
                 <?php endif; ?>
-                <?php endif; ?>
             </div>
         </div>
 
-        <script src="../resources/js/slides.js"></script>
         <script src="../resources/js/burgersidebar.js"></script>
     </div>
 </body>

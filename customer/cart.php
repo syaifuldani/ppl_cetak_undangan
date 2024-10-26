@@ -36,8 +36,7 @@ if (isset($_SESSION['user_id'])) {
 if (isset($_GET['action']) && $_GET['action'] == 'delete') {
     $cartId = isset($_GET['cart_id']) ? (int)$_GET['cart_id'] : 0;
     if ($cartId > 0) {
-        deleteCartItems($userId, $cartId);  // Pastikan $userId didefinisikan
-        echo "Item berhasil dihapus.";
+        deleteCartItems($userId, $cartId);
     } else {
         echo "Produk tidak valid.";
     }
@@ -60,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_cart'])) {
     }
 
     // Refresh halaman setelah pembaruan
-    header("Location: cart.php");
+    header("Location: cart.php?updated=success");
     exit();
 }
 
@@ -73,6 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_cart'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Keranjang</title>
+    <link rel="icon" href="../resources/img/icons/pleart.png" type="image/png">
     <link rel="stylesheet" href="../resources/css/cart.css">
     <link rel="stylesheet" href="../resources/css/navbar.css">
 </head>
@@ -113,14 +113,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_cart'])) {
                                             <td class="price">Rp.<?= number_format($item['harga_produk'], 2, ',', '.'); ?></td>
                                             <td>
                                                 <div class="quantity-control">
-                                                    <button type="button" onclick="decreaseQuantity(<?= $item['product_id']; ?>)">-</button>
-                                                    <input type="text" name="quantities[<?= $item['product_id']; ?>]" value="<?= $item['jumlah']; ?>" min="1" id="quantityInput-<?= $item['product_id']; ?>">
-                                                    <button type="button" onclick="increaseQuantity(<?= $item['product_id']; ?>)">+</button>
+                                                    <button type="button" onclick="decreaseQuantity(<?= $item['cart_id']; ?>)">-</button>
+                                                    <input type="text" name="quantities[<?= $item['product_id']; ?>]" value="<?= $item['jumlah']; ?>" min="1" id="quantityInput-<?= $item['cart_id']; ?>">
+                                                    <button type="button" onclick="increaseQuantity(<?= $item['cart_id']; ?>)">+</button>
                                                 </div>
                                             </td>
                                             <td class="subtotal">Rp.<?= number_format($item['jumlah'] * $item['harga_produk'], 2, ',', '.'); ?></td>
                                             <td>
-                                                <a href="cart.php?action=delete&cart_id=<?= $item['cart_id']; ?>">
+                                                <a href="cart.php?action=delete&cart_id=<?= $item['cart_id']; ?>" class="delete-item">
                                                     <img src="../resources/img/icons/trash.png" alt="Hapus Item">
                                                 </a>
                                             </td>
@@ -184,35 +184,98 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_cart'])) {
                                     <img src="../resources/img/icons/li-caption.png" alt="">
                                     <span>05/09/2024</span>
                                 </div>
-                                <a href="#">Lihat →</a>
+                                <a href="riwayat_pemesanan.php">Lihat →</a>
                             </li>
                             <li>
                                 <div class="information">
                                     <img src="../resources/img/icons/li-caption.png" alt="">
                                     <span>05/09/2024</span>
                                 </div>
-                                <a href="#">Lihat →</a>
+                                <a href="riwayat_pemesanan.php">Lihat →</a>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
+
+            <!-- Overlay Konfirmasi -->
+            <div id="deleteOverlay" class="overlay" style="display: none;">
+                <div class="overlay-content">
+                    <p>Apakah Anda yakin ingin menghapus item ini?</p>
+                    <button id="confirmDelete" class="btn-confirm">Ya, Hapus</button>
+                    <button id="cancelDelete" class="btn-cancel">Batal</button>
+                </div>
+            </div>
+
+            <!-- Overlay Konfirmasi Pembaruan Keranjang -->
+            <div id="updateOverlay" class="overlay" style="display: none;">
+                <div class="overlay-content">
+                    <p>Keranjang berhasil diperbarui!</p>
+                    <button id="closeUpdateOverlay" class="btn-cancel">OK</button>
+                </div>
+            </div>
+
+
         </div>
     </div>
 
+    <script src="../resources/js/burgersidebar.js"></script>
     <script>
-        function increaseQuantity(productId) {
-            const quantityInput = document.getElementById(`quantityInput-${productId}`);
+        const deleteOverlay = document.getElementById('deleteOverlay');
+        const confirmDeleteBtn = document.getElementById('confirmDelete');
+        const cancelDeleteBtn = document.getElementById('cancelDelete');
+        let deleteUrl = '';
+
+        // Tambahkan event listener pada tombol hapus
+        document.querySelectorAll('.delete-item').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                deleteUrl = this.getAttribute('href'); // Simpan URL penghapusan
+                deleteOverlay.style.display = 'flex'; // Tampilkan overlay
+            });
+        });
+
+        // Tombol konfirmasi penghapusan
+        confirmDeleteBtn.addEventListener('click', function() {
+            window.location.href = deleteUrl; // Arahkan ke URL penghapusan
+        });
+
+        // Tombol batal
+        cancelDeleteBtn.addEventListener('click', function() {
+            deleteOverlay.style.display = 'none'; // Sembunyikan overlay
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const updateOverlay = document.getElementById('updateOverlay');
+            const closeUpdateOverlayBtn = document.getElementById('closeUpdateOverlay');
+
+            if (urlParams.has('updated') && urlParams.get('updated') === 'success') {
+                updateOverlay.style.display = 'flex';
+            }
+
+            // Tutup overlay saat tombol "OK" ditekan
+            closeUpdateOverlayBtn.addEventListener('click', function() {
+                updateOverlay.style.display = 'none';
+                // Menghapus parameter dari URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            });
+        });
+    </script>
+    <script>
+        function increaseQuantity(cartId) {
+            const quantityInput = document.getElementById(`quantityInput-${cartId}`);
             let currentValue = parseInt(quantityInput.value);
-            quantityInput.value = currentValue + 1; // Tambahkan 1
+            quantityInput.value = currentValue + 1; 
         }
 
-        function decreaseQuantity(productId) {
-            const quantityInput = document.getElementById(`quantityInput-${productId}`);
+        function decreaseQuantity(cartId) {
+            const quantityInput = document.getElementById(`quantityInput-${cartId}`);
             let currentValue = parseInt(quantityInput.value);
 
             if (currentValue > 1) {
-                quantityInput.value = currentValue - 1; // Kurangi 1
+                quantityInput.value = currentValue - 1; 
             }
         }
     </script>
