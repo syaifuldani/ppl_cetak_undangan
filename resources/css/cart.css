@@ -261,3 +261,189 @@ ul li a {
 .pay-btn:hover {
     background-color: #2980b9;
 }
+
+
+/* Overlay Css */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.overlay-content {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    width: 300px;
+}
+
+.overlay-content p {
+    color: #4a4a4a;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.btn-confirm {
+    background-color: #e57373; 
+    color: white;
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-cancel {
+    background-color: #7D93BA; 
+    color: white;
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-confirm:hover {
+    background-color: #d65b5b;
+}
+
+.btn-cancel:hover {
+    background-color: #66789A; 
+}
+
+
+/* Media queries untuk tampilan tablet */
+@media screen and (max-width: 1024px) {
+    .cart-container {
+        flex-direction: column;
+    }
+
+    .cart-section, .details-section {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .quantity-control {
+        display: inline-block;
+    }
+
+    .warning-message {
+        font-size: 14px;
+    }
+
+    .pay-btn {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+/* Media queries untuk tampilan mobile */
+@media screen and (max-width: 768px) {
+    .cart-container {
+        flex-direction: column;
+    }
+
+    .cart-section, .details-section {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .cart-section h1 {
+        font-size: 18px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    table thead {
+        display: none;
+    }
+
+    table tbody tr {
+        display: block;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    table tbody td {
+        display: flex;
+        justify-content: flex-start;
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+
+    table tbody td:last-child {
+        margin-bottom: 0;
+    }
+
+    /* Menambahkan label untuk setiap baris di tampilan mobile */
+    table tbody td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        text-transform: capitalize;
+    }
+
+    .items {
+        display: flex;
+        align-items: center;
+    }
+
+    .items img {
+        margin-right: 10px;
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+    }
+
+    .quantity-control {
+        display: flex;
+        width: 100%;
+    }
+
+    .quantity-control button {
+        padding: 5px 10px;
+    }
+
+    .quantity-control input {
+        width: 40px;
+        text-align: center;
+    }
+
+    /* Tombol perbarui keranjang */
+    .update-cart-btn button {
+        font-size: 14px;
+        padding: 10px;
+        width: 100%;
+    }
+
+    .pay-btn {
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    .order-history li {
+        padding: 5px 0;
+    }
+
+    .order-history .information {
+        font-size: 12px;
+    }
+}
+

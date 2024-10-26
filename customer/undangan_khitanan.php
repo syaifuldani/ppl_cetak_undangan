@@ -13,6 +13,8 @@ $products = getProductData('Khitan');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Khitan</title>
+    <link rel="icon" href="../resources/img/icons/pleart.png" type="image/png">
     <title>Produk Khitan</title>
     <link rel="stylesheet" href="../resources/css/dashboard.css">
     <link rel="stylesheet" href="../resources/css/navbar.css">
@@ -29,6 +31,9 @@ $products = getProductData('Khitan');
         <div class="product-container">
             <div class="product-content">
 
+                    <?php if (empty($products)): ?>
+                        <p>Produk tidak ditemukan untuk kategori ini.</p>
+                    <?php endif; ?>
                 <!-- Jika ada error dalam mengambil produk -->
                 <?php if (isset($products['error'])): ?>
                 <p>Error: <?= htmlspecialchars($products['error']); ?></p>
@@ -58,9 +63,7 @@ $products = getProductData('Khitan');
             </div>
         </div>
 
-        <script src="../resources/js/slides.js"></script>
         <script src="../resources/js/burgersidebar.js"></script>
     </div>
 </body>
-
 </html>

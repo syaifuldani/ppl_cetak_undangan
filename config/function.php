@@ -3,6 +3,8 @@ require "../config/connection.php";
 
 // ----------------------------------------------------------------
 // CUSTOMER FUNCTIONS
+// ----------------------------------------------------------------
+// CUSTOMER FUNCTIONS
 
 function registerCustomer($data)
 {
@@ -328,6 +330,27 @@ function getRandomProducts($limit = 2)
     }
 }
 
+function addToCart($product_id, $user_id, $quantity = 1, $total_price = 0.00) {
+    // Query untuk memeriksa apakah produk sudah ada di keranjang
+    $queryCheck = "SELECT jumlah FROM carts WHERE product_id = :product_id AND user_id = :user_id";
+    $stmtCheck = $GLOBALS['db']->prepare($queryCheck);
+    $stmtCheck->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+    $stmtCheck->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmtCheck->execute();
+    
+    // Jika produk sudah ada di keranjang, update kuantitasnya
+    if ($row = $stmtCheck->fetch(PDO::FETCH_ASSOC)) {
+        $newQuantity = $row['jumlah'] + $quantity;
+        $newTotalPrice = $total_price * $newQuantity; // Total harga disesuaikan
+        
+        $queryUpdate = "UPDATE carts SET jumlah = :jumlah, total_harga = :total_harga WHERE product_id = :product_id AND user_id = :user_id";
+        $stmtUpdate = $GLOBALS['db']->prepare($queryUpdate);
+        $stmtUpdate->bindParam(':jumlah', $newQuantity, PDO::PARAM_INT);
+        $stmtUpdate->bindParam(':total_harga', $newTotalPrice, PDO::PARAM_STR);
+        $stmtUpdate->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+        $stmtUpdate->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        
+        return $stmtUpdate->execute(); // Berhasil di-update
 function addToCart($product_id, $user_id, $quantity = 1, $total_price = 0.00)
 {
     // Query untuk menyimpan data ke tabel carts
@@ -346,7 +369,15 @@ function addToCart($product_id, $user_id, $quantity = 1, $total_price = 0.00)
     if ($stmt->execute()) {
         return true; // Berhasil
     } else {
-        return false; // Gagal
+        // Jika produk belum ada di keranjang, tambahkan sebagai data baru
+        $queryInsert = "INSERT INTO carts (product_id, user_id, jumlah, total_harga) VALUES (:product_id, :user_id, :jumlah, :total_harga)";
+        $stmtInsert = $GLOBALS['db']->prepare($queryInsert);
+        $stmtInsert->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+        $stmtInsert->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $stmtInsert->bindParam(':jumlah', $quantity, PDO::PARAM_INT); 
+        $stmtInsert->bindParam(':total_harga', $total_price, PDO::PARAM_STR); 
+        
+        return $stmtInsert->execute(); // Berhasil ditambahkan
     }
 }
 
@@ -362,6 +393,14 @@ function getCartItems($userId)
                 JOIN products p ON c.product_id = p.product_id
                 WHERE c.user_id = :user_id";
 
+    // Fetch semua item ke dalam array
+    while ($item = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        // Encode gambar_satu ke base64 jika ada
+        if ($item['gambar_satu']) {
+            $item['gambar_satu'] = 'data:image/jpeg;base64,' . base64_encode($item['gambar_satu']);
+        }
+        $cartItems[] = $item;
+    }
         $stmt = $GLOBALS['db']->prepare($sql);
         $stmt->bindParam(':user_id', $userId);
         $stmt->execute();
@@ -406,14 +445,25 @@ function updateCartItem($userId, $productId, $quantity)
         $hargaProduk = $product['harga_produk'];
         $totalHarga = $hargaProduk * $quantity;
 
-        // Update kuantitas dan total harga di tabel carts
-        $sqlUpdate = "UPDATE carts SET jumlah = :jumlah, total_harga = :total_harga WHERE user_id = :user_id AND product_id = :product_id";
-        $stmtUpdate = $GLOBALS['db']->prepare($sqlUpdate);
-        $stmtUpdate->bindParam(':jumlah', $quantity);
-        $stmtUpdate->bindParam(':total_harga', $totalHarga);
-        $stmtUpdate->bindParam(':user_id', $userId);
-        $stmtUpdate->bindParam(':product_id', $productId);
-        $stmtUpdate->execute();
+        // Jika kuantitas <= 0, hapus item dari keranjang
+        if ($quantity <= 0) {
+            $sqlDelete = "DELETE FROM carts WHERE user_id = :user_id AND product_id = :product_id";
+            $stmtDelete = $GLOBALS['db']->prepare($sqlDelete);
+            $stmtDelete->bindParam(':user_id', $userId);
+            $stmtDelete->bindParam(':product_id', $productId);
+            $stmtDelete->execute();
+        } else {
+            // Update kuantitas dan total harga di tabel carts
+            $sqlUpdate = "UPDATE carts SET jumlah = :jumlah, total_harga = :total_harga WHERE user_id = :user_id AND product_id = :product_id";
+            $stmtUpdate = $GLOBALS['db']->prepare($sqlUpdate);
+            $stmtUpdate->bindParam(':jumlah', $quantity);
+            $stmtUpdate->bindParam(':total_harga', $totalHarga);
+            $stmtUpdate->bindParam(':user_id', $userId);
+            $stmtUpdate->bindParam(':product_id', $productId);
+            $stmtUpdate->execute();
+        }
+    } else {
+        echo "Produk tidak ditemukan.";
     }
 }
 
@@ -429,7 +479,14 @@ function deleteCartItems($userId, $cartId)
     $stmt = $GLOBALS['db']->prepare($sql);
     $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
     $stmt->bindParam(':cart_id', $cartId, PDO::PARAM_INT);
-    $stmt->execute();
+    
+    if ($stmt->execute()) {
+        // Berhasil menghapus
+        return true;
+    } else {
+        // Gagal menghapus
+        return false;
+    }
 }
 
 
@@ -442,12 +499,6 @@ function deleteCartItems($userId, $cartId)
 
 // ADMIN FUNCTIONS
 
-
-// END CUSTOMER FUNCTIONS
-
-// ----------------------------------------------------------------
-
-// ADMIN FUNCTIONS
 function registrasiAdmin($data)
 {
     $errors = [];
@@ -519,6 +570,7 @@ function registrasiAdmin($data)
     }
     return $errors;
 }
+
 
 
 function loginAdmin($data)
@@ -773,4 +825,5 @@ function getAllDataByCategory($category)
 // END ADMIN FUNCTIONS
 
 // ----------------------------------------------------------------
+// END FUNCTIONS
 // END FUNCTIONS
