@@ -330,30 +330,6 @@ function getRandomProducts($limit = 2)
     }
 }
 
-function addToCart($product_id, $user_id, $quantity = 1, $total_price = 0.00) 
-{
-    // Query untuk memeriksa apakah produk sudah ada di keranjang
-    $queryCheck = "SELECT jumlah FROM carts WHERE product_id = :product_id AND user_id = :user_id";
-    $stmtCheck = $GLOBALS['db']->prepare($queryCheck);
-    $stmtCheck->bindParam(':product_id', $product_id, PDO::PARAM_INT);
-    $stmtCheck->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-    $stmtCheck->execute();
-    
-    // Jika produk sudah ada di keranjang, update kuantitasnya
-    if ($row = $stmtCheck->fetch(PDO::FETCH_ASSOC)) {
-        $newQuantity = $row['jumlah'] + $quantity;
-        $newTotalPrice = $total_price * $newQuantity; // Total harga disesuaikan
-        
-        $queryUpdate = "UPDATE carts SET jumlah = :jumlah, total_harga = :total_harga WHERE product_id = :product_id AND user_id = :user_id";
-        $stmtUpdate = $GLOBALS['db']->prepare($queryUpdate);
-        $stmtUpdate->bindParam(':jumlah', $newQuantity, PDO::PARAM_INT);
-        $stmtUpdate->bindParam(':total_harga', $newTotalPrice, PDO::PARAM_STR);
-        $stmtUpdate->bindParam(':product_id', $product_id, PDO::PARAM_INT);
-        $stmtUpdate->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-        
-        return $stmtUpdate->execute(); // Berhasil di-update
-}
-
 function addToCart($product_id, $user_id, $quantity = 1, $total_price = 0.00)
 {
     // Query untuk menyimpan data ke tabel carts
