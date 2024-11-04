@@ -373,13 +373,6 @@ function getCartItems($userId)
                 WHERE c.user_id = :user_id";
 
     // Fetch semua item ke dalam array
-    while ($item = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        // Encode gambar_satu ke base64 jika ada
-        if ($item['gambar_satu']) {
-            $item['gambar_satu'] = 'data:image/jpeg;base64,' . base64_encode($item['gambar_satu']);
-        }
-        $cartItems[] = $item;
-    }
         $stmt = $GLOBALS['db']->prepare($sql);
         $stmt->bindParam(':user_id', $userId);
         $stmt->execute();
@@ -408,8 +401,6 @@ function getCartItems($userId)
     // Kembalikan array item keranjang
     return $cartItems;
 }
-
-
 
 function updateCartItem($userId, $productId, $quantity)
 {
