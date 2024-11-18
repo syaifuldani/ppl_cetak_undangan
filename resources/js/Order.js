@@ -1,56 +1,125 @@
-function debounce(func, wait) {
-    let timeout;
-    return function () {
-        const context = this,
-            args = arguments;
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(context, args), wait);
-    };
-}
-async function processPayment() {
-    const transactionDetails = {
-        order_id: Math.floor(Math.random() * 1000000),
-        gross_amount: 10000,
-    };
+// order.js
 
-    const customerDetails = {
-        first_name: "budi",
-        last_name: "pratama",
-        email: "budi.pra@example.com",
-        phone: "08111222333",
-    };
+class OrderPayment {
+    constructor() {
+        this.form = document.querySelector("form");
+        this.initializeEventListeners();
+    }
 
-    const data = {
-        transaction_details: transactionDetails,
-        customer_details: customerDetails,
-    };
+    initializeEventListeners() {
+        this.form.addEventListener("submit", this.handleSubmit.bind(this));
+    }
 
-    try {
-        const response = await fetch("../config/midtrans_config.php", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        });
+    async handleSubmit(e) {
+        e.preventDefault();
 
-        if (!response.ok) {
-            throw new Error(`HTTP status ${response.status}`);
+        try {
+            await this.processPayment();
+        } catch (error) {
+            console.error("Error during payment:", error);
+            this.showError("Terjadi kesalahan dalam memproses pembayaran");
         }
+    }
 
-        const token = await response.text();
-        console.log("Received token:", token);
-        // window.snap.pay(token);
-    } catch (error) {
-        console.error("Error during payment processing:", error.message);
+    async processPayment() {
+        // Show loading indicator
+        this.showLoading(true);
+
+        try {
+            // Get form data
+            const formData = new FormData(this.form);
+
+            // Send request to backend
+            const response = await fetch("process_payment.php", {
+                method: "POST",
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+
+            const snapToken = await response.text();
+
+            // Handle Midtrans popup
+            await this.openMidtransPopup(snapToken);
+        } catch (error) {
+            throw error;
+        } finally {
+            // Hide loading indicator
+            this.showLoading(false);
+        }
+    }
+
+    openMidtransPopup(snapToken) {
+        return new Promise((resolve, reject) => {
+            window.snap.pay(snapToken, {
+                onSuccess: (result) => {
+                    console.log("Payment success:", result);
+                    this.showSuccess("Pembayaran berhasil!");
+                    window.location.href = `success.php?order_id=${result.order_id}`;
+                    resolve(result);
+                },
+                onPending: (result) => {
+                    console.log("Payment pending:", result);
+                    this.showInfo("Silakan selesaikan pembayaran Anda");
+                    window.location.href = `pending.php?order_id=${result.order_id}`;
+                    resolve(result);
+                },
+                onError: (result) => {
+                    console.log("Payment error:", result);
+                    this.showError("Pembayaran gagal!");
+                    reject(result);
+                },
+                onClose: () => {
+                    console.log(
+                        "Customer closed the popup without finishing payment"
+                    );
+                    this.showWarning(
+                        "Anda menutup popup pembayaran sebelum menyelesaikan pembayaran"
+                    );
+                    reject(new Error("Popup closed"));
+                },
+            });
+        });
+    }
+
+    // Utility methods for UI feedback
+    showLoading(show) {
+        // Implement loading indicator logic
+        const loadingElement = document.getElementById("loading-indicator");
+        if (loadingElement) {
+            loadingElement.style.display = show ? "block" : "none";
+        }
+    }
+
+    showSuccess(message) {
+        this.showAlert(message, "success");
+    }
+
+    showError(message) {
+        this.showAlert(message, "error");
+    }
+
+    showInfo(message) {
+        this.showAlert(message, "info");
+    }
+
+    showWarning(message) {
+        this.showAlert(message, "warning");
+    }
+
+    showAlert(message, type) {
+        // Implement your alert/notification system
+        // Bisa menggunakan library seperti SweetAlert2 atau sistem notifikasi custom
+        alert(message);
     }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    const payButton = document.getElementById("pay-btn");
-    if (payButton) {
-        payButton.addEventListener("click", debounce(processPayment, 300)); // Debounce to prevent multiple submissions
-    } else {
-        console.error("Pay button not found on the page.");
-    }
+// Initialize when document is ready
+document.addEventListener("DOMContentLoaded", () => {
+    new OrderPayment();
 });
+
+// Export class if using modules
+export default OrderPayment;

@@ -764,67 +764,15 @@ function addItemsToProduct($data)
 function getAllDataByCategory($category)
 {
     // Ambil data produk undangan khitan dari database
-    $sql = "SELECT product_id, nama_produk, deskripsi, harga_produk, gambar_satu, gambar_dua, gambar_tiga, kategori FROM products WHERE kategori = :kategori";
+    $sql = "SELECT product_id, nama_produk, deskripsi, harga_produk, gambar_satu, gambar_dua, gambar_tiga, kategori FROM products WHERE kategori = 'Pernikahan'";
     $stmt = $GLOBALS["db"]->prepare($sql);
-    $stmt->execute(['kategori' => $category]);
+    $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 }
-//=========================KONFIGURASI MIDTRANS=====================================//
 
+// =================================================================
 
-function processPayment($cartItems, $userId)
-{
-    require_once dirname(__FILE__) . '\..\vendor\autoload.php';
-
-    //SAMPLE REQUEST START HERE
-// Load environment variables
-    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-    $dotenv->load();
-
-    // Set your Merchant Server Key
-    \Midtrans\Config::$serverKey = $_ENV['MIDTRANS_SERVER_KEY'];
-    // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-    \Midtrans\Config::$isProduction = false;
-    // Set sanitization on (default)
-    \Midtrans\Config::$isSanitized = true;
-    // Set 3DS transaction for credit card to true
-    \Midtrans\Config::$is3ds = true;
-
-    $total_amount = 0;
-    foreach ($cartItems as $item) {
-        $total_amount += $item['jumlah'] * $item['harga_produk'];
-    }
-
-    $transaction_details = array(
-        'order_id' => time(),
-        'gross_amount' => $total_amount,
-    );
-
-    $customer_details = array(
-        'first_name' => "Pengguna",  // Ganti dengan data sebenarnya jika ada
-        'email' => "pengguna@example.com",  // Ganti dengan email sebenarnya
-        'phone' => "081234567890",  // Ganti dengan no telp sebenarnya
-        'billing_address' => array(
-            'first_name' => "Pengguna",
-            'phone' => "081234567890",
-            'country_code' => 'IDN'
-        )
-    );
-
-    $transaction = array(
-        'transaction_details' => $transaction_details,
-        'customer_details' => $customer_details,
-    );
-
-    try {
-        $snapToken = \Midtrans\Snap::getSnapToken($transaction);
-        return 'https://app.sandbox.midtrans.com/snap/v2/vtweb/' . $snapToken;
-    } catch (Exception $e) {
-        // Log error atau tangani error sesuai kebutuhan
-        error_log("Error processing payment: " . $e->getMessage());
-        return false;
-    }
-}
 
 
 // END ADMIN FUNCTIONS

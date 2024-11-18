@@ -4,10 +4,15 @@ session_start();
 
 // Inklusi file fungsi untuk mengambil data keranjang
 require_once '../config/function.php';
+require_once '../config/midtrans_config.php';
 
 // Memastikan pengguna sudah login
 if (isset($_SESSION['user_id'])) {
     $userId = $_SESSION['user_id'];
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $response = payment_handled($_POST, $userId);
+    }
 
     // Cek apakah ada permintaan untuk menghapus item dari keranjang
     if (isset($_GET['product_id'])) {
@@ -22,7 +27,7 @@ if (isset($_SESSION['user_id'])) {
     }
 
     // Ambil item keranjang dari database
-    $cartItems = getCartItems($userId);
+    $cartItems = getCartItems(userId: $userId);
 } else {
     // Set status HTTP menjadi 404 (Not Found)
     http_response_code(404);
@@ -49,9 +54,6 @@ $cartItems = getCartItems($userId);
 // Mendapatkan user_id dari session
 $userId = $_SESSION['user_id'];
 
-// Memanggil fungsi untuk mendapatkan item keranjang
-$cartItems = getCartItems($userId);
-
 // Fungsi untuk memperbarui keranjang
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_cart'])) {
     foreach ($_POST['quantities'] as $cartId => $quantity) {
@@ -76,12 +78,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_cart'])) {
     <link rel="stylesheet" href="../resources/css/cart.css">
     <link rel="stylesheet" href="../resources/css/navbar.css">
 
+
     <!-- @TODO: replace SET_YOUR_CLIENT_KEY_HERE with your client key -->
-    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
-        data-client-key="<?php $_ENV['MIDTRANS_CLIENT_KEY'] ?>"></script>
+    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key=<?php $_ENV['MIDTRANS_CLIENT_KEY'] ?>></script>
     <!-- Note: replace with src="https://app.midtrans.com/snap/snap.js" for Production environment -->
-
-
 </head>
 
 <body>
@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_cart'])) {
                 <div class="cart-section">
                     <h1>Keranjang Anda!</h1>
                     <!-- Form untuk update keranjang -->
-                    <form action="cart.php" method="POST">
+                    <form action="" method="POST">
                         <table>
                             <thead>
                                 <tr>
@@ -153,49 +153,50 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_cart'])) {
                                 value="<?php echo isset($item['product_id']) ? $item['product_id'] : ''; ?>">
                             <button type="submit" name="update_cart" class="update-cart-btn">Perbarui Keranjang</button>
                         </div>
-                    </form>
-                    <div class="warning-message">
-                        Lengkapi Data Undangan dan Data Pengiriman Anda!!
-                    </div>
-                    <div class="form-section">
-                        <div class="form-group">
-                            <h3>Data Undangan</h3>
-                            <input type="date" placeholder="Tanggal dan Waktu Acara">
-                            <input type="text" placeholder="Tempat/Lokasi Acara">
-                            <textarea placeholder="Keterangan Tambahan"></textarea>
-                            <p class="info">
-                                Tuliskan keterangan tambahan seperti nama orang tua dan calon mempelai, teks doa,
-                                nama
-                                yang dirayakan, tema acara, atau pesan/informasi penting lainnya sesuai dengan acara
-                                pernikahan, khitan, walimatul ursy, tahlil, kirim doa, atau ulang tahun.<br><br>
 
-                                Contoh : <br>
-                                Nama : John Doe <br>
-                                Teks Doa: "Semoga diberikan keberkahan dan keselamatan dunia akhirat." <br>
-                                Dst.
-                            </p>
+                        <div class="warning-message">
+                            Lengkapi Data Undangan dan Data Pengiriman Anda!!
                         </div>
-                        <div class="form-group">
-                            <h3>Data Alamat Kirim</h3>
-                            <input type="text" placeholder="Nama Lengkap Penerima">
-                            <input type="text" placeholder="No. Telp Penerima">
-                            <textarea placeholder="Alamat Lengkap dan Keterangan"></textarea>
-                            <p class="info">
-                                Pastikan alamat yang Anda tulis lengkap dan jelas, termasuk nama jalan, nomor rumah,
-                                RT/RW, desa/kelurahan, kecamatan, kota/kabupaten, dan kode pos.
-                                Jangan lupa sertakan informasi tambahan seperti patokan lokasi (misalnya: "Di
-                                sebelah
-                                toko A" atau "Dekat dengan kantor B") agar paket dapat dikirimkan dengan tepat.
-                                <br><br>
-                                Contoh: <br>
-                                Nama: John Doe <br>
-                                Alamat: Jl. A Yani No. 123, RT 02/RW 03, Dsn.Sumberjo Ds.Sumbertanggul Kec. Mojosari
-                                Kab. Mojokerto, 41382 <br>
-                                Patokan: Rumah warna putih depannya ada pohon sawo.
-                            </p>
+                        <div class="form-section">
+                            <div class="form-group">
+                                <h3>Data Undangan</h3>
+                                <input type="date" name="tanggalacara" placeholder="Tanggal dan Waktu Acara">
+                                <input type="text" name="lokasiacara" placeholder="Tempat/Lokasi Acara">
+                                <textarea name="keterangantambahan" placeholder="Keterangan Tambahan"></textarea>
+                                <p class="info">
+                                    Tuliskan keterangan tambahan seperti nama orang tua dan calon mempelai, teks doa,
+                                    nama
+                                    yang dirayakan, tema acara, atau pesan/informasi penting lainnya sesuai dengan acara
+                                    pernikahan, khitan, walimatul ursy, tahlil, kirim doa, atau ulang tahun.<br><br>
+
+                                    Contoh : <br>
+                                    Nama : John Doe <br>
+                                    Teks Doa: "Semoga diberikan keberkahan dan keselamatan dunia akhirat." <br>
+                                    Dst.
+                                </p>
+                            </div>
+                            <div class="form-group">
+                                <h3>Data Alamat Kirim</h3>
+                                <input name="namapenerima" type="text" placeholder="Nama Lengkap Penerima">
+                                <input name="notelppenerima" type="text" placeholder="No. Telp Penerima">
+                                <textarea name="alamatpenerima" placeholder="Alamat Lengkap dan Keterangan"></textarea>
+                                <p class="info">
+                                    Pastikan alamat yang Anda tulis lengkap dan jelas, termasuk nama jalan, nomor rumah,
+                                    RT/RW, desa/kelurahan, kecamatan, kota/kabupaten, dan kode pos.
+                                    Jangan lupa sertakan informasi tambahan seperti patokan lokasi (misalnya: "Di
+                                    sebelah
+                                    toko A" atau "Dekat dengan kantor B") agar paket dapat dikirimkan dengan tepat.
+                                    <br><br>
+                                    Contoh: <br>
+                                    Nama: John Doe <br>
+                                    Alamat: Jl. A Yani No. 123, RT 02/RW 03, Dsn.Sumberjo Ds.Sumbertanggul Kec. Mojosari
+                                    Kab. Mojokerto, 41382 <br>
+                                    Patokan: Rumah warna putih depannya ada pohon sawo.
+                                </p>
+                            </div>
+                            <button class="pay-btn" id="pay-btn">Bayar Sekarang</button>
                         </div>
-                        <button class="pay-btn" id="pay-btn">Bayar Sekarang</button>
-                    </div>
+                    </form>
                 </div>
 
                 <div id="snap-container"></div>
@@ -224,7 +225,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_cart'])) {
             </div>
         </div>
     </div>
-    <script src="..\resources\js\Order.js"></script>
+
     <script>
         function increaseQuantity(productId) {
             const quantityInput = document.getElementById(`quantityInput-${productId}`);
@@ -241,6 +242,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_cart'])) {
             }
         }
     </script>
+    <script src="..\resources\js\Order.js"></script>
+
 </body>
 
 </html>
