@@ -32,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile, <?= $_SESSION['user_name'] ?></title>
+    <link rel="icon" href="../resources/img/icons/pleart.png" type="image/png">
     <link rel="stylesheet" href="../resources/css/profilecustomer.css">
     <link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="../resources/css/navbar.css">

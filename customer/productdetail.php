@@ -3,7 +3,8 @@ session_start();
 require '../config/function.php';
 
 // Fungsi untuk mengecek apakah user sudah login
-function isUserLoggedIn() {
+function isUserLoggedIn()
+{
     return isset($_SESSION['user_id']);
 }
 
@@ -22,17 +23,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Panggil fungsi untuk menyimpan ke database
         if (addToCart($product_id, $user_id, $quantity, $total_price)) {
-            // Jika berhasil, redirect ke halaman yang sama dengan parameter success
-            header("Location: productdetail.php?id=$product_id&success");
+            // Simpan pesan sukses ke dalam session
+            $_SESSION['cart_status'] = 'success';
+            $_SESSION['cart_message'] = 'Produk berhasil ditambahkan ke keranjang.';
+
+            // Redirect ke halaman productdetail.php dengan ID produk
+            header("Location: productdetail.php?id=$product_id");
             exit();
         } else {
-            // Jika gagal, redirect dengan pesan error
-            header("Location: productdetail.php?id=$product_id&error");
+            // Jika gagal, simpan pesan error ke dalam session
+            $_SESSION['cart_status'] = 'error';
+            $_SESSION['cart_message'] = 'Gagal menambahkan produk ke keranjang.';
+
+            // Redirect ke halaman productdetail.php dengan ID produk
+            header("Location: productdetail.php?id=$product_id");
             exit();
         }
     } else {
-        // Redirect jika data tidak valid
-        header("Location: productdetail.php?id=$product_id&error=1");
+        // Jika data tidak valid
+        $_SESSION['cart_status'] = 'error';
+        $_SESSION['cart_message'] = 'Data produk tidak valid.';
+
+        // Redirect ke halaman productdetail.php dengan ID produk
+        header("Location: productdetail.php?id=$product_id");
         exit();
     }
 }
@@ -48,7 +61,6 @@ $product = getProductDetails($product_id);
 $products = getRandomProducts(2);
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -56,6 +68,7 @@ $products = getRandomProducts(2);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Undangan Pernikahan</title>
+    <link rel="icon" href="../resources/img/icons/pleart.png" type="image/png">
     <link rel="stylesheet" href="../resources/css/navbar.css">
     <link rel="stylesheet" href="../resources/css/productdetail.css">
 </head>
@@ -109,7 +122,6 @@ $products = getRandomProducts(2);
                         <div class="quantity">
                             <form action="" method="POST" id="addToCartForm">
                                 <input type="hidden" name="product_id" value="<?= htmlspecialchars($product['product_id']); ?>">
-
                                 <input type="hidden" name="price" value="<?= htmlspecialchars($product['harga_produk']); ?>">
 
                                 <?php if (isset($_SESSION['user_id'])): ?>
@@ -156,7 +168,7 @@ $products = getRandomProducts(2);
                             else:
                                 ?>
                                 <div class="product-card">
-                                  <p>Tidak ada produk tersedia.</p>
+                                    <p>Tidak ada produk tersedia.</p>
                                 </div>
                             <?php endif; ?>
                         </div>
@@ -179,10 +191,6 @@ $products = getRandomProducts(2);
                         <p><strong>Jane Smith</strong> - ⭐⭐⭐⭐</p>
                         <p>Kualitas produk oke, namun packaging bisa lebih baik lagi.</p>
                     </div>
-                    <div class="review-item">
-                        <p><strong>John Doe</strong> - ⭐⭐⭐⭐⭐</p>
-                        <p>Produk yang sangat bagus dan sesuai dengan deskripsi. Pengiriman cepat!</p>
-                    </div>
                 </div>
             </div>
         </div>
@@ -196,15 +204,34 @@ $products = getRandomProducts(2);
                     </div>
                 </div>
                 <p id="overlayMessage"></p>
-                <a href="javascript:history.back();" class="btn-lanjut" onclick="hideOverlay()">Lanjut Belanja</a>
+                <a href="javascript:hideOverlay()" class="btn-lanjut">Lanjut Belanja</a>
             </div>
         </div>
     </div>
 
-
     <script src="../resources/js/thumnail.js"></script>
     <script src="../resources/js/zoomimage.js"></script>
     <script src="../resources/js/overlay.js"></script>
+    <script>
+        // Cek apakah ada session message dari PHP
+        <?php if (isset($_SESSION['cart_status'])): ?>
+            const cartStatus = '<?= $_SESSION['cart_status']; ?>';
+            const cartMessage = '<?= $_SESSION['cart_message']; ?>';
+
+            if (cartStatus === 'success') {
+                showOverlay(cartMessage); // Tampilkan overlay jika berhasil
+            } else if (cartStatus === 'error') {
+                alert(cartMessage); // Tampilkan pesan error
+            }
+
+            // Hapus pesan session setelah ditampilkan
+            <?php
+            unset($_SESSION['cart_status']);
+            unset($_SESSION['cart_message']);
+            ?>
+        <?php endif; ?>
+    </script>
+    <script src="../resources/js/burgersidebar.js"></script>
 </body>
 
 </html>

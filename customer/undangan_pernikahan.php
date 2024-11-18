@@ -13,6 +13,8 @@ $products = getProductData('Pernikahan');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan</title>
+    <link rel="icon" href="../resources/img/icons/pleart.png" type="image/png">
     <title>Produk Khitan</title>
     <link rel="stylesheet" href="../resources/css/dashboard.css">
     <link rel="stylesheet" href="../resources/css/navbar.css">
@@ -59,9 +61,7 @@ $products = getProductData('Pernikahan');
             </div>
         </div>
 
-        <script src="../resources/js/slides.js"></script>
         <script src="../resources/js/burgersidebar.js"></script>
     </div>
 </body>
-
 </html>

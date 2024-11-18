@@ -16,7 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // If errors exist, handle them
         $errors = $registerResponse;
     }
-
 }
 
 ?>
@@ -28,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Postcard Register Form</title>
+    <link rel="icon" href="../resources/img/icons/pleart.png" type="image/png">
     <link rel="stylesheet" href="../resources/css/loginregis.css">
     <link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
 </head>
@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="container">
         <div class="image-section">
-            <img src="../resources/img/icons/imglogin.png" alt="Postcard">
+            <img src="../resources/img/icons/pleart.png" alt="Postcard">
         </div>
         <div class="form-section">
             <h2>Register</h2>
@@ -72,12 +72,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <button type="submit">Register</button>
             </form>
-            <p>Sudah punya akun? <a href="login.php">Login sini</a></p>
+            <div class="footer">
+                <p>Sudah punya akun? <a href="login.php">Login</a></p>
+            </div>
         </div>
 
     </div>
     <script src="../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
     <script>
+        <?php if ($success_message): ?>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: '<?= $success_message ?>'
+            });
+        <?php endif ?>
+=======
         Swal.fire({
             icon: 'success',
             title: 'Berhasil',
