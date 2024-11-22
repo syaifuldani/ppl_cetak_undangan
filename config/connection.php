@@ -1,7 +1,7 @@
 <?php
 // config.php
 $host = 'localhost';
-$dbname = 'pleeartdbtest';
+$dbname = 'pleeartdb';
 $username = 'root';  // Atur sesuai dengan konfigurasi database Anda
 $password = '';      // Atur sesuai dengan password database Anda
 
