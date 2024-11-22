@@ -353,9 +353,9 @@ function addToCart($product_id, $user_id, $quantity = 1, $total_price = 0.00)
         $stmtInsert = $GLOBALS['db']->prepare($queryInsert);
         $stmtInsert->bindParam(':product_id', $product_id, PDO::PARAM_INT);
         $stmtInsert->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-        $stmtInsert->bindParam(':jumlah', $quantity, PDO::PARAM_INT); 
-        $stmtInsert->bindParam(':total_harga', $total_price, PDO::PARAM_STR); 
-        
+        $stmtInsert->bindParam(':jumlah', $quantity, PDO::PARAM_INT);
+        $stmtInsert->bindParam(':total_harga', $total_price, PDO::PARAM_STR);
+
         return $stmtInsert->execute(); // Berhasil ditambahkan
     }
 }
@@ -372,7 +372,7 @@ function getCartItems($userId)
                 JOIN products p ON c.product_id = p.product_id
                 WHERE c.user_id = :user_id";
 
-    // Fetch semua item ke dalam array
+        // Fetch semua item ke dalam array
         $stmt = $GLOBALS['db']->prepare($sql);
         $stmt->bindParam(':user_id', $userId);
         $stmt->execute();
@@ -402,38 +402,44 @@ function getCartItems($userId)
     return $cartItems;
 }
 
-function updateCartItem($userId, $productId, $quantity)
+function updateCartItem($userId, $quantities)
 {
-    // Ambil harga produk untuk menghitung total harga
-    $sql = "SELECT harga_produk FROM products WHERE product_id = :product_id";
-    $stmt = $GLOBALS['db']->prepare($sql);
-    $stmt->bindParam(':product_id', $productId);
-    $stmt->execute();
-    $product = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($product) {
-        $hargaProduk = $product['harga_produk'];
-        $totalHarga = $hargaProduk * $quantity;
-
-        // Jika kuantitas <= 0, hapus item dari keranjang
-        if ($quantity <= 0) {
-            $sqlDelete = "DELETE FROM carts WHERE user_id = :user_id AND product_id = :product_id";
-            $stmtDelete = $GLOBALS['db']->prepare($sqlDelete);
-            $stmtDelete->bindParam(':user_id', $userId);
-            $stmtDelete->bindParam(':product_id', $productId);
-            $stmtDelete->execute();
-        } else {
-            // Update kuantitas dan total harga di tabel carts
-            $sqlUpdate = "UPDATE carts SET jumlah = :jumlah, total_harga = :total_harga WHERE user_id = :user_id AND product_id = :product_id";
-            $stmtUpdate = $GLOBALS['db']->prepare($sqlUpdate);
-            $stmtUpdate->bindParam(':jumlah', $quantity);
-            $stmtUpdate->bindParam(':total_harga', $totalHarga);
-            $stmtUpdate->bindParam(':user_id', $userId);
-            $stmtUpdate->bindParam(':product_id', $productId);
-            $stmtUpdate->execute();
+    try {
+        if (!isset($userId)) {
+            throw new Exception('Anda harus login terlebih dahulu');
         }
-    } else {
-        echo "Produk tidak ditemukan.";
+
+        if (empty($quantities) || !is_array($quantities)) {
+            throw new Exception('Data keranjang tidak valid');
+        }
+
+        $GLOBALS['db']->beginTransaction();
+
+        foreach ($quantities as $productId => $quantity) {
+            $quantity = max(1, (int) $quantity);
+
+            $stmt = $GLOBALS['db']->prepare("
+                UPDATE carts 
+                SET jumlah = :jumlah,
+                    total_harga = (SELECT harga_produk FROM products WHERE product_id = :product_id) * :jumlah
+                WHERE user_id = :user_id 
+                AND product_id = :product_id
+            ");
+
+            $stmt->execute([
+                ':jumlah' => $quantity,
+                ':user_id' => $userId,
+                ':product_id' => $productId
+            ]);
+        }
+
+        $GLOBALS['db']->commit();
+        return true;
+
+    } catch (Exception $e) {
+        $GLOBALS['db']->rollBack();
+        error_log("Cart update error: " . $e->getMessage());
+        return false;
     }
 }
 
@@ -449,7 +455,7 @@ function deleteCartItems($userId, $cartId)
     $stmt = $GLOBALS['db']->prepare($sql);
     $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
     $stmt->bindParam(':cart_id', $cartId, PDO::PARAM_INT);
-    
+
     if ($stmt->execute()) {
         // Berhasil menghapus
         return true;
@@ -458,10 +464,6 @@ function deleteCartItems($userId, $cartId)
         return false;
     }
 }
-
-
-
-
 
 // END CUSTOMER FUNCTIONS
 
@@ -784,11 +786,80 @@ function addItemsToProduct($data)
 function getAllDataByCategory($category)
 {
     // Ambil data produk undangan khitan dari database
-    $sql = "SELECT product_id, nama_produk, deskripsi, harga_produk, gambar_satu, gambar_dua, gambar_tiga, kategori FROM products WHERE kategori = :kategori";
+    $sql = "SELECT product_id, nama_produk, deskripsi, harga_produk, gambar_satu, gambar_dua, gambar_tiga, kategori FROM products WHERE kategori = 'Pernikahan'";
     $stmt = $GLOBALS["db"]->prepare($sql);
-    $stmt->execute(['kategori' => $category]);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+}
+
+// Pesanan saya
+function getStatusLabel($status)
+{
+    $labels = [
+        'pending' => 'Menunggu Pembayaran',
+        'paid' => 'Sudah Dibayar',
+        'processing' => 'Sedang Dikemas',
+        'shipped' => 'Dalam Pengiriman',
+        'completed' => 'Selesai',
+        'cancelled' => 'Dibatalkan'
+    ];
+
+    return $labels[$status] ?? $status;
+}
+
+function getOrdersByID($userId)
+{
+    global $db;
+
+    $sql = "SELECT o.*, 
+            GROUP_CONCAT(
+                JSON_OBJECT(
+                    'product_id', od.product_id,
+                    'nama_produk', p.nama_produk,
+                    'gambar_satu', p.gambar_satu,
+                    'jumlah_order', od.jumlah_order,
+                    'harga_order', od.harga_order
+                )
+            ) as items
+            FROM orders o
+            LEFT JOIN order_details od ON o.order_id = od.order_id
+            LEFT JOIN products p ON od.product_id = p.product_id
+            WHERE o.user_id = :user_id
+            GROUP BY o.order_id
+            ORDER BY o.created_at DESC";
+
+    $stmt = $db->prepare($sql);
+    $stmt->execute([':user_id' => $userId]);
+
+    $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Parse the JSON string of items
+    foreach ($orders as &$order) {
+        $order['items'] = json_decode('[' . $order['items'] . ']', true);
+    }
+
+    return $orders;
+}
+
+function getOrderList($limit, $offset)
+{
+    $sql = "SELECT o.order_id, o.created_at, o.transaction_status, o.total_harga, u.nama_lengkap
+        FROM orders o
+        JOIN users u ON o.user_id = u.user_id
+        LIMIT :limit OFFSET :offset";
+    $stmt = $GLOBALS["db"]->prepare($sql);
+    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $stmt->execute();
+
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+
+// =================================================================
+
+
 
 // END ADMIN FUNCTIONS
 // ----------------------------------------------------------------

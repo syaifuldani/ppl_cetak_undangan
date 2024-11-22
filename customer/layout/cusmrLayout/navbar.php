@@ -70,7 +70,8 @@
                 $cartItems = getCartItems($_SESSION['user_id']);
                 $itemCount = count($cartItems); // Hitung jumlah item di keranjang
                 ?>
-                <span class="cart-count" id="cart-count" style="<?= $itemCount > 0 ? 'display: inline' : 'display: none'; ?>">
+                <span class="cart-count" id="cart-count"
+                    style="<?= $itemCount > 0 ? 'display: inline' : 'display: none'; ?>">
                     <?= $itemCount; ?>
                 </span>
             <?php else: ?>
@@ -93,6 +94,7 @@
                     </li>
 
                     <li><a href="profile.php">Profile</a></li>
+                    <li><a href="pesanan_saya.php">Pesanan Saya</a></li>
                     <li><a href="logout.php">Logout</a></li>
                 </ul>
             </div>
@@ -108,7 +110,7 @@
     <div class="cart-dropdown" id="cartDropdown" style="display: none;">
         <h3>Keranjang</h3>
 
-        <div class="cart-items-container"> 
+        <div class="cart-items-container">
             <?php
             // Cek apakah pengguna sudah login
             if (isset($_SESSION['user_id'])) {
@@ -119,7 +121,7 @@
                 if (!empty($cartItems)) {
                     // Tampilkan setiap item di keranjang
                     foreach ($cartItems as $item) {
-            ?>
+                        ?>
                         <div class="cart-item">
                             <img src="<?= $item['gambar_satu'] ?>" alt="Product" class="cart-item-image">
                             <div class="item-details">
@@ -128,7 +130,7 @@
                                 <p class="item-price">Rp. <?= number_format($item['harga_produk'], 2, ',', '.') ?></p>
                             </div>
                         </div>
-            <?php
+                        <?php
                     }
 
                     // Menghitung total harga
@@ -145,7 +147,7 @@
                 echo '<p class="login-prompt">Silahkan Login Terlebih Dahulu!</p>';
             }
             ?>
-        </div> 
+        </div>
 
         <?php if (!empty($cartItems)) { ?>
             <p class="total-price">Total Harga: Rp. <?= number_format($totalHarga, 2, ',', '.') ?></p>
@@ -181,13 +183,13 @@
         }
 
         // Event listener pada tombol keranjang
-        cartButton.addEventListener('click', function(event) {
+        cartButton.addEventListener('click', function (event) {
             event.preventDefault(); // Mencegah link agar tidak langsung mengarahkan ke URL lain
             toggleCartDropdown(); // Memanggil fungsi untuk menampilkan atau menyembunyikan dropdown
         });
 
         // Event listener untuk menutup dropdown jika klik di luar area dropdown
-        document.addEventListener('click', function(event) {
+        document.addEventListener('click', function (event) {
             if (!cartButton.contains(event.target) && !cartDropdown.contains(event.target)) {
                 cartDropdown.style.display = 'none'; // Sembunyikan dropdown
             }

@@ -1,7 +1,7 @@
 .content {
     max-width: 1200px;
-    margin: 0 auto; 
-    padding: 20px; 
+    margin: 0 auto;
+    padding: 20px;
     padding-top: 100px;
 }
 
@@ -20,8 +20,8 @@
 }
 
 textarea {
-    resize: vertical; 
-    width: 100%; 
+    resize: vertical;
+    width: 100%;
     max-width: 100%;
 }
 
@@ -45,7 +45,8 @@ table {
     border-collapse: collapse;
 }
 
-th, td {
+th,
+td {
     padding: 5px;
     text-align: left;
 }
@@ -55,7 +56,7 @@ th, td {
 }
 
 th {
-    border-bottom: 3px solid #7D93BA;
+    border-bottom: 3px solid #7d93ba;
 }
 
 td {
@@ -86,7 +87,7 @@ td p {
 }
 
 .quantity-control button {
-    background-color: #7D93BA;
+    background-color: #7d93ba;
     border: none;
     padding: 5px 10px;
     cursor: pointer;
@@ -99,7 +100,6 @@ td p {
     background-color: #2980b9;
 }
 
-
 .quantity-control input {
     width: 50px;
     text-align: center;
@@ -110,15 +110,15 @@ td p {
 
 /* Tombol perbarui keranjang */
 .update-cart-btn {
-    margin-top: 10px; 
+    margin-top: 10px;
 }
 
 .update-cart-btn button {
-    background-color: #7D93BA; 
+    background-color: #7d93ba;
     padding: 8px;
     color: #fff;
     border-radius: 5px;
-    cursor: pointer; 
+    cursor: pointer;
     text-decoration: none;
     font-size: 14px;
     border: none;
@@ -160,7 +160,6 @@ td p {
 .order-history .information {
     display: flex;
     text-align: center;
-
 }
 
 ul li a {
@@ -176,7 +175,8 @@ ul li a {
     margin-bottom: 20px;
 }
 
-.form-group input, .form-group textarea {
+.form-group input,
+.form-group textarea {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
@@ -190,52 +190,53 @@ ul li a {
 }
 
 .form-group .info {
-	position: relative;
-	max-width: 100%;
-	background-color: #fff;
-	padding: 1.125em 1.5em;
-	border-radius: 1rem;
-    box-shadow:	0 0.125rem 0.5rem rgba(0, 0, 0, .3), 0 0.0625rem 0.125rem rgba(0, 0, 0, .2);
+    position: relative;
+    max-width: 100%;
+    background-color: #fff;
+    padding: 1.125em 1.5em;
+    border-radius: 1rem;
+    box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.3),
+        0 0.0625rem 0.125rem rgba(0, 0, 0, 0.2);
 }
 
 .form-group .info::before {
-    content: '';
-	position: absolute;
-	width: 0;
-	height: 0;
-	bottom: 100%;
-	left: 1.5em;
-    border: .75rem solid transparent;
-	border-top: none;
-	border-bottom-color: #fff;
-	filter: drop-shadow(0 -0.0625rem 0.0625rem rgba(0, 0, 0, .1));
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    bottom: 100%;
+    left: 1.5em;
+    border: 0.75rem solid transparent;
+    border-top: none;
+    border-bottom-color: #fff;
+    filter: drop-shadow(0 -0.0625rem 0.0625rem rgba(0, 0, 0, 0.1));
 }
 
 .shipping-options {
     display: flex;
     align-items: center;
-    gap: 15px; 
+    gap: 15px;
     margin-top: 20px;
 }
 
 .shipping-options label {
     cursor: pointer;
     display: flex;
-    align-items: center; 
-    gap: 10px; 
+    align-items: center;
+    gap: 10px;
     padding: 10px;
-    border: 1px solid #ddd; 
-    border-radius: 10px; 
-    transition: box-shadow 0.3s ease; 
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    transition: box-shadow 0.3s ease;
 }
 
 .shipping-options input[type="radio"] {
-    display: none; 
+    display: none;
 }
 
 .shipping-options input[type="radio"]:checked + label {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
-    border-color: #333; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-color: #333;
 }
 
 .shipping-options img {
@@ -248,7 +249,7 @@ ul li a {
 }
 
 .pay-btn {
-    background-color: #7D93BA;
+    background-color: #7d93ba;
     color: #fff;
     padding: 15px;
     border: none;
@@ -262,7 +263,6 @@ ul li a {
     background-color: #2980b9;
 }
 
-
 /* Overlay Css */
 .overlay {
     position: fixed;
@@ -270,7 +270,7 @@ ul li a {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6); 
+    background-color: rgba(0, 0, 0, 0.6);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -293,7 +293,7 @@ ul li a {
 }
 
 .btn-confirm {
-    background-color: #e57373; 
+    background-color: #e57373;
     color: white;
     padding: 10px 20px;
     margin: 5px;
@@ -304,7 +304,7 @@ ul li a {
 }
 
 .btn-cancel {
-    background-color: #7D93BA; 
+    background-color: #7d93ba;
     color: white;
     padding: 10px 20px;
     margin: 5px;
@@ -319,9 +319,8 @@ ul li a {
 }
 
 .btn-cancel:hover {
-    background-color: #66789A; 
+    background-color: #66789a;
 }
-
 
 /* Media queries untuk tampilan tablet */
 @media screen and (max-width: 1024px) {
@@ -329,7 +328,8 @@ ul li a {
         flex-direction: column;
     }
 
-    .cart-section, .details-section {
+    .cart-section,
+    .details-section {
         width: 100%;
         margin-bottom: 20px;
     }
@@ -354,7 +354,8 @@ ul li a {
         flex-direction: column;
     }
 
-    .cart-section, .details-section {
+    .cart-section,
+    .details-section {
         width: 100%;
         padding: 10px;
         margin-bottom: 10px;
@@ -447,3 +448,56 @@ ul li a {
     }
 }
 
+/* Validasi */
+.error-message {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 5px;
+    padding: 5px;
+    border-radius: 4px;
+    background-color: rgba(220, 53, 69, 0.1);
+    animation: fadeIn 0.3s ease-in;
+    display: none;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+.fade-out {
+    animation: fadeOut 0.3s ease-out;
+}
+
+.form-control {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.success-message {
+    color: #28a745;
+    font-size: 14px;
+    margin-top: 5px;
+    padding: 5px;
+    border-radius: 4px;
+    background-color: rgba(40, 167, 69, 0.1);
+    animation: fadeIn 0.3s ease-in;
+    display: none;
+}
