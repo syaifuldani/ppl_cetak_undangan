@@ -1,5 +1,0 @@
-config/
-databases/
-.env
-log/*
-vendor
