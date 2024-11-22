@@ -1,0 +1,21 @@
+<Files "notification.php">
+    Order allow,deny
+    Allow from all
+</Files>
+
+# .htaccess
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Allow Midtrans IPs (optional, untuk production)
+    # Order deny,allow
+    # Deny from all
+    # Allow from 103.208.24.0/23
+    # Allow from 103.127.14.0/23
+    # Allow from 103.127.16.0/23
+    
+    # Ensure PHP can handle the request
+    <Files "notification.php">
+        Allow from all
+    </Files>
+</IfModule>
