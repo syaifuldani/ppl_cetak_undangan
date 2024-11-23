@@ -1,3 +1,8 @@
+<?php
+require '../config/connection.php';
+require_once '../config/function.php';
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,6 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -21,9 +27,9 @@
     <div class="center-items">
         <ul class="nav-links" id="nav-links">
             <div class="search-bar">
-                <form action="" class="search-input">
-                    <label><img src="../resources/img/icons/search.png" alt=""></label>
-                    <input type="text" placeholder="Cari">
+                <form action="" method="POST" class="search-input">
+                    <label><img src="../resources/img/icons/search.png" alt="search"></label>
+                    <input type="text" id="navbarSearchBox" name="query" placeholder="Cari produk..." value="<?= isset($_POST['query']) ? htmlspecialchars($_POST['query']) : '' ?>">
                 </form>
             </div>
             <li><a href="dashboard.php" class="home">Home</a></li>
@@ -121,7 +127,7 @@
                 if (!empty($cartItems)) {
                     // Tampilkan setiap item di keranjang
                     foreach ($cartItems as $item) {
-                        ?>
+            ?>
                         <div class="cart-item">
                             <img src="<?= $item['gambar_satu'] ?>" alt="Product" class="cart-item-image">
                             <div class="item-details">
@@ -130,7 +136,7 @@
                                 <p class="item-price">Rp. <?= number_format($item['harga_produk'], 2, ',', '.') ?></p>
                             </div>
                         </div>
-                        <?php
+            <?php
                     }
 
                     // Menghitung total harga
@@ -183,18 +189,19 @@
         }
 
         // Event listener pada tombol keranjang
-        cartButton.addEventListener('click', function (event) {
+        cartButton.addEventListener('click', function(event) {
             event.preventDefault(); // Mencegah link agar tidak langsung mengarahkan ke URL lain
             toggleCartDropdown(); // Memanggil fungsi untuk menampilkan atau menyembunyikan dropdown
         });
 
         // Event listener untuk menutup dropdown jika klik di luar area dropdown
-        document.addEventListener('click', function (event) {
+        document.addEventListener('click', function(event) {
             if (!cartButton.contains(event.target) && !cartDropdown.contains(event.target)) {
                 cartDropdown.style.display = 'none'; // Sembunyikan dropdown
             }
         });
     </script>
+    <script src="../resources/js/livesearch.js"></script>
 </body>
 
 </html>

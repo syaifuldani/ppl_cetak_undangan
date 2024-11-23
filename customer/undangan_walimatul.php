@@ -1,10 +1,16 @@
 <?php
 session_start();
 require '../config/connection.php';
-require '../config/function.php'; 
+require '../config/function.php';
 
 // Ambil data produk undangan pernikahan dari function
 $products = getProductData('Walimatul');
+
+// Live Search
+if (isset($_POST['query'])) {
+    $searchTerm = $_POST['query'];
+    searchProducts($searchTerm);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,6 +31,10 @@ $products = getProductData('Walimatul');
         <nav class="navbar">
             <?php include 'layout/cusmrLayout/navbar.php'; ?>
         </nav>
+        <!-- Menampilkan hasil pencarian -->
+        <div id="navbarSearchResults" class="search-results">
+            <!-- Hasil pencarian akan ditampilkan di sini -->
+        </div>
 
         <!-- Items Product -->
         <div class="product-container">
@@ -36,7 +46,7 @@ $products = getProductData('Walimatul');
                 <?php elseif (empty($products)): ?>
                     <p>Produk tidak ditemukan untuk kategori ini.</p>
                 <?php else: ?>
-                <!-- Loop produk jika ditemukan -->
+                    <!-- Loop produk jika ditemukan -->
                     <?php foreach ($products as $product): ?>
                         <div class="product-card">
                             <img class="product" src="<?= $product['gambar_satu']; ?>"

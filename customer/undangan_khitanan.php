@@ -5,6 +5,12 @@ require '../config/function.php';
 
 // Ambil data produk Khitan dari function
 $products = getProductData('Khitan');
+
+// Live Search
+if (isset($_POST['query'])) {
+    $searchTerm = $_POST['query'];
+    searchProducts($searchTerm);
+}
 ?>
 
 <!DOCTYPE html>
@@ -26,6 +32,10 @@ $products = getProductData('Khitan');
         <nav class="navbar">
             <?php include 'layout/cusmrLayout/navbar.php'; ?>
         </nav>
+        <!-- Menampilkan hasil pencarian -->
+        <div id="navbarSearchResults" class="search-results">
+            <!-- Hasil pencarian akan ditampilkan di sini -->
+        </div>
 
         <!-- Items Product -->
         <div class="product-container">
@@ -63,4 +73,5 @@ $products = getProductData('Khitan');
         <script src="../resources/js/burgersidebar.js"></script>
     </div>
 </body>
+
 </html>

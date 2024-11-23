@@ -20,7 +20,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         $error_message = $update['message'];
     }
+}
 
+// Live Search
+if (isset($_POST['query'])) {
+    $searchTerm = $_POST['query'];
+    searchProducts($searchTerm);
 }
 
 ?>
@@ -44,6 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <nav class="navbar">
             <?php include 'layout/cusmrLayout/navbar.php'; ?>
         </nav>
+        <!-- Menampilkan hasil pencarian -->
+        <div id="navbarSearchResults" class="search-results">
+            <!-- Hasil pencarian akan ditampilkan di sini -->
+        </div>
 
         <div class="content">
             <div class="content-wrapper">
@@ -96,19 +105,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <!-- Cek apakah ada pesan sukse s atau error -->
     <script>
-    <?php if ($success_message): ?>
-    Swal.fire({
-        icon: 'success',
-        title: 'Berhasil',
-        text: '<?= $success_message ?>'
-    });
-    <?php elseif ($error_message): ?>
-    Swal.fire({
-        icon: 'error',
-        title: 'Gagal',
-        text: '<?= $error_message ?>'
-    });
-    <?php endif; ?>
+        <?php if ($success_message): ?>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: '<?= $success_message ?>'
+            });
+        <?php elseif ($error_message): ?>
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: '<?= $error_message ?>'
+            });
+        <?php endif; ?>
     </script>
     <script>
         document.querySelector('.profile-pic').addEventListener('click', function() {
@@ -125,20 +134,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 reader.readAsDataURL(file);
             }
         });
-    document.querySelector('.profile-pic').addEventListener('click', function() {
-        document.querySelector('#imageUpload').click();
-    });
+        document.querySelector('.profile-pic').addEventListener('click', function() {
+            document.querySelector('#imageUpload').click();
+        });
 
-    document.querySelector('#imageUpload').addEventListener('change', function() {
-        const file = this.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.querySelector('#profileImage').src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-    });
+        document.querySelector('#imageUpload').addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.querySelector('#profileImage').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
     </script>
 </body>
 

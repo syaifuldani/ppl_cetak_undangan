@@ -14,8 +14,14 @@ $cartItems = [];
 
 // Cek apakah pengguna sudah login
 if (isset($_SESSION['user_id'])) {
-    // Ambil item keranjang dari database
-    $cartItems = getCartItems($_SESSION['user_id']);
+  // Ambil item keranjang dari database
+  $cartItems = getCartItems($_SESSION['user_id']);
+}
+
+// Live Search
+if (isset($_POST['query'])) {
+  $searchTerm = $_POST['query'];
+  searchProducts($searchTerm);
 }
 ?>
 <!DOCTYPE html>
@@ -36,11 +42,15 @@ if (isset($_SESSION['user_id'])) {
     <nav class="navbar">
       <?php include 'layout/cusmrLayout/navbar.php'; ?>
     </nav>
+    <!-- Menampilkan hasil pencarian -->
+    <div id="navbarSearchResults" class="search-results">
+      <!-- Hasil pencarian akan ditampilkan di sini -->
+    </div>
 
     <!-- Hero Section -->
-    <section class="hero">
-      <h1>Selamat datang di layanan Cetak Undangan Online kami!</h1>
-      <p>
+    <section class="hero animate-slide-left">
+      <h1 class="animate-fade-in animate-delay-1">Selamat datang di layanan Cetak Undangan Online kami!</h1>
+      <p class="animate-fade-in animate-delay-2">
         Kami menyediakan berbagai template undangan yang siap Anda pilih sesuai dengan acara spesial Anda.
         Mulai dari undangan pernikahan yang elegan, undangan khitanan yang penuh makna, walimatul ursy yang
         istimewa,
@@ -53,48 +63,58 @@ if (isset($_SESSION['user_id'])) {
 
     <!-- Search Section -->
     <div class="section-search">
-      <section class="search">
-        <h2>Temukan Beragam Desain Undangan Elegan</h2>
-        <p>Pesan Sekarang, Kami Kirimkan ke Alamat Anda</p>
-        <form action="" class="search-input">
+      <section class="search animate-slide-right">
+        <h2 class="animate-fade-in animate-delay-1">
+          Temukan Beragam Desain Undangan Elegan
+        </h2>
+        <p class="animate-fade-in animate-delay-2">
+          Pesan Sekarang, Kami Kirimkan ke Alamat Anda
+        </p>
+        <form action="" method="POST" class="search-input animate-slide-right animate-delay-3">
           <label><img src="../resources/img/icons/search.png" alt=""></label>
-          <input type="text" placeholder="Cari undanganMu">
+          <input type="text" id="contentSearchBox" name="query" placeholder="Cari undanganMu"
+            value="<?= isset($_POST['query']) ? htmlspecialchars($_POST['query']) : '' ?>">
         </form>
+        <div id="contentSearchResults" class="search-results animate-slide-bottom animate-delay-4">
+          <!-- Hasil pencarian dari konten index -->
+        </div>
       </section>
-      <div class="image">
+      <div class="image animate-slide-left animate-delay-3">
         <img src="../resources/img/homeimg/promotion01.jpg" alt="">
       </div>
     </div>
 
     <!-- Product Section -->
-    <section class="products">
-      <h2>Pesan Undangan Menakjubkan dengan Mudah!</h2>
+    <section class="products animate-slide-bottom">
+      <h2 class="animate-fade-in animate-delay-1">
+        Pesan Undangan Menakjubkan dengan Mudah!
+      </h2>
       <div class="product-grid">
-        <div class="product-card-dsbrd">
+        <div class="product-card-dsbrd animate-slide-top animate-delay-2">
           <a href="undangan_pernikahan.php">
             <img src="../resources/img/homeimg/pernikahan.jpg" alt="Undangan Pernikahan">
             <p>Undangan Pernikahan</p>
           </a>
         </div>
-        <div class="product-card-dsbrd">
+        <div class="product-card-dsbrd animate-slide-top animate-delay-3">
           <a href="undangan_khitanan.php">
             <img src="../resources/img/homeimg/khitanan.jpeg" alt="Undangan Khitan">
-            <p>Undangan Khitan</p>
+            <p>Undangan Khitanan</p>
           </a>
         </div>
-        <div class="product-card-dsbrd">
+        <div class="product-card-dsbrd animate-slide-top animate-delay-4">
           <a href="undangan_walimatul.php">
             <img src="../resources/img/homeimg/walimatul.jpg" alt="Undangan Walimah">
             <p>Undangan Walimatul</p>
           </a>
         </div>
-        <div class="product-card-dsbrd">
+        <div class="product-card-dsbrd animate-slide-top animate-delay-5">
           <a href="undangan_tahlilkirimdoa.php">
             <img src="../resources/img/homeimg/tahlilkirimdoa.jpg" alt="Undangan Tahlil & Doa">
             <p>Undangan Tahlil & Doa</p>
           </a>
         </div>
-        <div class="product-card-dsbrd">
+        <div class="product-card-dsbrd animate-slide-top animate-delay-6">
           <a href="undangan_ulangtahun.php">
             <img src="../resources/img/homeimg/ulangtahun.jpeg" alt="Undangan Ulang Tahun">
             <p>Undangan Ulang Tahun</p>
@@ -103,9 +123,10 @@ if (isset($_SESSION['user_id'])) {
       </div>
     </section>
 
-    <div class="layout-wrapper">
+
+    <div class="layout-wrapper animate-slide-right animate-delay-3">
       <div class="instructions">
-        <div class="step">
+        <div class="step animate-slide-left animate-delay-1">
           <img src="../resources/img/icons/checkaction.png" alt="Pilih Undangan" class="icon">
           <div class="text">
             <h3>Pilih Undangan</h3>
@@ -113,7 +134,7 @@ if (isset($_SESSION['user_id'])) {
               dari berbagai template yang kami sediakan.</p>
           </div>
         </div>
-        <div class="step">
+        <div class="step animate-slide-left animate-delay-1">
           <img src="../resources/img/icons/cartaction.png" alt="Tambahkan ke Keranjang Belanja" class="icon">
           <div class="text">
             <h3>Tambahkan ke Keranjang Belanja</h3>
@@ -121,7 +142,7 @@ if (isset($_SESSION['user_id'])) {
               dicantumkan di undangan. Jangan lupa untuk memasukkan alamat pengiriman.</p>
           </div>
         </div>
-        <div class="step">
+        <div class="step animate-slide-left animate-delay-1">
           <img src="../resources/img/icons/payaction.png" alt="Pilih Metode Pembayaran" class="icon">
           <div class="text">
             <h3>Pilih Metode Pembayaran</h3>
@@ -130,19 +151,20 @@ if (isset($_SESSION['user_id'])) {
           </div>
         </div>
       </div>
-      <div class="preview">
+      <div class="preview slide-in-bottom">
         <img src="../resources/img/homeimg/promotion02.jpg" alt="Preview Undangan" class="preview-image">
       </div>
     </div>
   </div>
 
   <!-- Footers Promotions -->
-  <footer class="footer">
+  <footer class="footer animate-slide-top animate-delay-2">
     <?php include 'layout/cusmrLayout/footer.php'; ?>
   </footer>
   </div>
 
   <script src="../resources/js/burgersidebar.js"></script>
+  <script src="../resources/js/livesearch.js"></script>
 </body>
 
 </html>
