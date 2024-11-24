@@ -1,3 +1,13 @@
+<?php
+require '../config/connection.php';
+require '../config/function.php';
+
+// Live Search
+if (isset($_POST['query'])) {
+    $searchTerm = $_POST['query'];
+    searchProducts($searchTerm);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,6 +27,10 @@
         <nav class="navbar">
             <?php include 'layout/cusmrLayout/navbar.php'; ?>
         </nav>
+        <!-- Menampilkan hasil pencarian -->
+        <div id="navbarSearchResults" class="search-results">
+            <!-- Hasil pencarian akan ditampilkan di sini -->
+        </div>
 
         <!-- Konten Utama -->
         <div class="content">

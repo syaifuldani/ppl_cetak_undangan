@@ -95,6 +95,11 @@ $cartItems = getCartItems($userId);
 // Mendapatkan user_id dari session
 $userId = $_SESSION['user_id'];
 
+// Live Search
+if (isset($_POST['query'])) {
+    $searchTerm = $_POST['query'];
+    searchProducts($searchTerm);
+}
 
 ?>
 
@@ -122,6 +127,10 @@ $userId = $_SESSION['user_id'];
         <nav class="navbar">
             <?php include 'layout/cusmrLayout/navbar.php'; ?>
         </nav>
+        <!-- Menampilkan hasil pencarian -->
+        <div id="navbarSearchResults" class="search-results">
+            <!-- Hasil pencarian akan ditampilkan di sini -->
+        </div>
 
         <div class="content">
             <div class="cart-container">
@@ -291,7 +300,7 @@ $userId = $_SESSION['user_id'];
 
         // Tambahkan event listener pada tombol hapus
         document.querySelectorAll('.delete-item').forEach(button => {
-            button.addEventListener('click', function (e) {
+            button.addEventListener('click', function(e) {
                 e.preventDefault();
                 deleteUrl = this.getAttribute('href'); // Simpan URL penghapusan
                 deleteOverlay.style.display = 'flex'; // Tampilkan overlay
@@ -299,17 +308,17 @@ $userId = $_SESSION['user_id'];
         });
 
         // Tombol konfirmasi penghapusan
-        confirmDeleteBtn.addEventListener('click', function () {
+        confirmDeleteBtn.addEventListener('click', function() {
             window.location.href = deleteUrl; // Arahkan ke URL penghapusan
         });
 
         // Tombol batal
-        cancelDeleteBtn.addEventListener('click', function () {
+        cancelDeleteBtn.addEventListener('click', function() {
             deleteOverlay.style.display = 'none'; // Sembunyikan overlay
         });
     </script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const urlParams = new URLSearchParams(window.location.search);
             const updateOverlay = document.getElementById('updateOverlay');
             const closeUpdateOverlayBtn = document.getElementById('closeUpdateOverlay');
@@ -319,7 +328,7 @@ $userId = $_SESSION['user_id'];
             }
 
             // Tutup overlay saat tombol "OK" ditekan
-            closeUpdateOverlayBtn.addEventListener('click', function () {
+            closeUpdateOverlayBtn.addEventListener('click', function() {
                 updateOverlay.style.display = 'none';
                 // Menghapus parameter dari URL
                 window.history.replaceState({}, document.title, window.location.pathname);

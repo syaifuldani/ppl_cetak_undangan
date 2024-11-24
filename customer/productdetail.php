@@ -2,6 +2,12 @@
 session_start();
 require '../config/function.php';
 
+// Live Search
+if (isset($_POST['query'])) {
+    $searchTerm = $_POST['query'];
+    searchProducts($searchTerm);
+}
+
 // Fungsi untuk mengecek apakah user sudah login
 function isUserLoggedIn()
 {
@@ -79,6 +85,10 @@ $products = getRandomProducts(2);
         <nav class="navbar">
             <?php include 'layout/cusmrLayout/navbar.php'; ?>
         </nav>
+        <!-- Menampilkan hasil pencarian -->
+        <div id="navbarSearchResults" class="search-results">
+            <!-- Hasil pencarian akan ditampilkan di sini -->
+        </div>
 
         <div class="content">
             <div class="content-detail">

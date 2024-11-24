@@ -1,10 +1,15 @@
 <?php
 session_start();
 require '../config/connection.php';
-require '../config/function.php'; 
+require '../config/function.php';
 
 // Ambil data produk undangan pernikahan dari function
 $products = getProductData('UlangTahun');
+// Live Search
+if (isset($_POST['query'])) {
+    $searchTerm = $_POST['query'];
+    searchProducts($searchTerm);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,13 +30,16 @@ $products = getProductData('UlangTahun');
         <nav class="navbar">
             <?php include 'layout/cusmrLayout/navbar.php'; ?>
         </nav>
+        <!-- Menampilkan hasil pencarian -->
+        <div id="navbarSearchResults" class="search-results">
+            <!-- Hasil pencarian akan ditampilkan di sini -->
+        </div>
 
         <!-- Items Product -->
         <div class="product-container">
             <div class="product-content">
-
                 <!-- Jika ada error dalam mengambil produk -->
-                <?php if (empty($products)): ?>
+                <?php if (isset($products['error'])): ?>
                     <p>Error: <?= htmlspecialchars($products['error']); ?></p>
                 <?php elseif (empty($products)): ?>
                     <p>Produk tidak ditemukan untuk kategori ini.</p>
@@ -61,4 +69,5 @@ $products = getProductData('UlangTahun');
         <script src="../resources/js/burgersidebar.js"></script>
     </div>
 </body>
+
 </html>
