@@ -786,8 +786,9 @@ function addItemsToProduct($data)
 function getAllDataByCategory($category)
 {
     // Ambil data produk undangan khitan dari database
-    $sql = "SELECT product_id, nama_produk, deskripsi, harga_produk, gambar_satu, gambar_dua, gambar_tiga, kategori FROM products WHERE kategori = 'Pernikahan'";
+    $sql = "SELECT product_id, nama_produk, deskripsi, harga_produk, gambar_satu, gambar_dua, gambar_tiga, kategori FROM products WHERE kategori = :category";
     $stmt = $GLOBALS["db"]->prepare($sql);
+    $stmt->bindParam(':category', $category);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -856,6 +857,49 @@ function getOrderList($limit, $offset)
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function updateStatusByOrderId($orderID, $newStatus)
+{
+    try {
+        global $db;
+
+        // Validasi input
+        if (empty($orderID) || empty($newStatus)) {
+            throw new Exception("Data tidak lengkap");
+        }
+
+        // Validasi status yang diperbolehkan
+        $allowed_statuses = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
+        if (!in_array($newStatus, $allowed_statuses)) {
+            throw new Exception("Status tidak valid");
+        }
+
+        // Update status di database
+        $stmt = $db->prepare("
+            UPDATE orders 
+            SET transaction_status = :new_status, 
+                updated_at = NOW()
+            WHERE order_id = :order_id
+        ");
+
+        $stmt->bindParam(':new_status', $newStatus);
+        $stmt->bindParam(':order_id', $orderID);
+
+        if (!$stmt->execute()) {
+            throw new Exception("Gagal mengupdate status order");
+        }
+
+        return [
+            'status' => 'success',
+            'message' => "Status berhasil diupdate menjadi $newStatus"
+        ];
+
+    } catch (Exception $e) {
+        return [
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ];
+    }
+}
 
 // =================================================================
 

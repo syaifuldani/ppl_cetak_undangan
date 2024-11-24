@@ -53,6 +53,13 @@ if (isset($_SESSION['user_id'])) {
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $_POST['shipping_data'] = [
+            'courier' => $_POST['shipping_courier'],
+            'service' => $_POST['shipping_service'],
+            'cost' => $_POST['shipping_cost'],
+            'eta' => $_POST['shipping_eta']
+        ];
+
         $response = payment_handled($_POST, $userId);
     }
 
@@ -193,6 +200,11 @@ $userId = $_SESSION['user_id'];
                     </div>
 
                     <form id="payment-form" action="" method="POST">
+                        <!-- Hidden inputs akan ditambahkan secara dinamis oleh JavaScript -->
+                        <input type="hidden" name="shipping_cost" value="">
+                        <input type="hidden" name="shipping_eta" value="">
+                        <input type="hidden" name="shipping_courier" value="">
+                        <input type="hidden" name="shipping_service" value="">
                         <div class="form-section">
                             <!-- Tambahkan hidden input untuk snap token -->
                             <input type="hidden" name="snap_token" id="snap-token">
@@ -215,20 +227,98 @@ $userId = $_SESSION['user_id'];
                                     Dst.
                                 </p>
                             </div>
-                            <div class="form-group">
+                            <div class="shipping-form">
                                 <h3>Data Alamat Kirim</h3>
-                                <input name="namapenerima" type="text" placeholder="Nama Lengkap Penerima" required>
-                                <input name="email" type="email" placeholder="Email">
-                                <input name="notelppenerima" type="text"
-                                    placeholder="No. Telp Penerima (contoh: +6281234567890)" required>
-                                <textarea name="alamatpenerima" placeholder="Alamat Lengkap" required></textarea>
-                                <input name="kota" type="text" placeholder="Kota" required>
-                                <input name="kodepos" type="text" placeholder="Kode Pos" required>
 
-                                <p class="info">
-                                    Pastikan format nomor telepon diawali dengan +62 dan alamat diisi lengkap
-                                    termasuk kota dan kode pos untuk memastikan pengiriman lancar.
-                                </p>
+                                <div class="form-grid">
+                                    <!-- Kolom Kiri -->
+                                    <div class="form-column">
+                                        <div class="form-group">
+                                            <label>Nama Penerima</label>
+                                            <input type="text" name="namapenerima" placeholder="Nama Lengkap Penerima"
+                                                required>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input type="email" name="email" placeholder="Email (Opsional)">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Nomor Telepon</label>
+                                            <input type="text" name="notelppenerima" placeholder="+628123456789"
+                                                required>
+                                            <small class="helper-text">Diawali dengan +62</small>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Provinsi</label>
+                                            <select name="provinsi" id="provinsi" required>
+                                                <option value="">Pilih Provinsi</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Kabupaten/Kota</label>
+                                            <select name="kota" id="kota" required disabled>
+                                                <option value="">Pilih Kabupaten/Kota</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Kecamatan</label>
+                                            <input type="text" name="kecamatan" placeholder="Kecamatan" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Kolom Kanan -->
+                                    <div class="form-column">
+                                        <div class="form-group">
+                                            <label>Kelurahan/Desa</label>
+                                            <input type="text" name="kelurahan" placeholder="Kelurahan/Desa" required>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Alamat Lengkap</label>
+                                            <textarea name="alamatpenerima"
+                                                placeholder="Nama jalan, nomor rumah, RT/RW, patokan"
+                                                required></textarea>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Kode Pos</label>
+                                            <input type="text" name="kodepos" placeholder="Kode Pos" pattern="[0-9]{5}"
+                                                required>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Berat Barang (gram)</label>
+                                            <input type="number" name="weight" id="weight" min="100" step="100"
+                                                value="1000" required>
+                                            <small class="helper-text">Minimal 100 gram</small>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Pilih Kurir</label>
+                                            <select name="courier" id="courier" required>
+                                                <option value="">Pilih Kurir</option>
+                                                <option value="jne">JNE</option>
+                                                <!-- <option value="pos">POS Indonesia</option>
+                                                <option value="tiki">TIKI</option> -->
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Button cek ongkir di bawah grid -->
+                                <div class="form-actions">
+                                    <button type="button" id="check-shipping" class="btn-check-shipping">
+                                        Cek Ongkir
+                                    </button>
+                                </div>
+
+                                <!-- Hasil cek ongkir -->
+                                <div id="shipping-results" class="shipping-results"></div>
                             </div>
                             <button class="pay-btn" id="pay-btn">Bayar Sekarang</button>
                         </div>
@@ -343,7 +433,255 @@ $userId = $_SESSION['user_id'];
         }
     </script>
     <script src="..\resources\js\Order.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const checkShippingBtn = document.getElementById('check-shipping');
+            const shippingResults = document.getElementById('shipping-results');
+            const weightInput = document.getElementById('weight');
+            const courierSelect = document.getElementById('courier');
+            const provinsiSelect = document.getElementById('provinsi');
+            const kotaSelect = document.getElementById('kota');
 
+            // Load provinsi saat halaman dimuat
+            loadProvinsi();
+
+            // Event listener untuk perubahan provinsi
+            provinsiSelect.addEventListener('change', function () {
+                const provinsiId = this.value;
+                if (provinsiId) {
+                    loadKota(provinsiId);
+                } else {
+                    resetKotaSelect();
+                }
+            });
+
+            // Fungsi untuk memuat data provinsi
+            async function loadProvinsi() {
+                try {
+                    provinsiSelect.classList.add('loading');
+
+                    const response = await fetch('../config/get_location.php?action=provinces');
+                    const data = await response.json();
+
+                    if (data.rajaongkir?.results) {
+                        data.rajaongkir.results.forEach(province => {
+                            const option = document.createElement('option');
+                            option.value = province.province_id;
+                            option.textContent = province.province;
+                            provinsiSelect.appendChild(option);
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error loading provinces:', error);
+                    showError('Gagal memuat data provinsi');
+                } finally {
+                    provinsiSelect.classList.remove('loading');
+                }
+            }
+
+            // Fungsi untuk memuat data kota berdasarkan provinsi
+            async function loadKota(provinsiId) {
+                try {
+                    resetKotaSelect();
+                    kotaSelect.classList.add('loading');
+                    kotaSelect.disabled = true;
+
+                    const response = await fetch(
+                        `../config/get_location.php?action=cities&province_id=${provinsiId}`);
+                    const data = await response.json();
+
+                    if (data.rajaongkir?.results) {
+                        data.rajaongkir.results.forEach(city => {
+                            const option = document.createElement('option');
+                            option.value = city.city_id;
+                            option.textContent = `${city.type} ${city.city_name}`;
+                            kotaSelect.appendChild(option);
+                        });
+                        kotaSelect.disabled = false;
+                    }
+                } catch (error) {
+                    console.error('Error loading cities:', error);
+                    showError('Gagal memuat data kota');
+                } finally {
+                    kotaSelect.classList.remove('loading');
+                }
+            }
+
+            // Reset dropdown kota
+            function resetKotaSelect() {
+                kotaSelect.innerHTML = '<option value="">Pilih Kota/Kabupaten</option>';
+                kotaSelect.disabled = true;
+            }
+
+
+            checkShippingBtn.addEventListener('click', async function () {
+                // Validasi input
+                if (!validateShippingInputs()) {
+                    return;
+                }
+
+                try {
+                    showLoading();
+
+                    const formData = new FormData();
+                    formData.append('origin', '256'); // ID kota asal (sesuaikan dengan lokasi toko)
+                    formData.append('destination', kotaSelect.value);
+                    formData.append('weight', weightInput.value);
+                    formData.append('courier', courierSelect.value);
+
+                    const response = await fetch('../config/calculate_shipping.php', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const data = await response.json();
+                    console.log(data);
+
+                    if (data.rajaongkir?.results?.[0]?.costs) {
+                        displayShippingOptions(data.rajaongkir.results[0].costs);
+                    } else {
+                        throw new Error('Gagal mendapatkan data ongkos kirim');
+                    }
+
+                } catch (error) {
+                    showError('Terjadi kesalahan saat mengecek ongkos kirim');
+                } finally {
+                    hideLoading();
+                }
+            });
+
+            function validateShippingInputs() {
+                if (!kotaSelect.value) {
+                    showError('Pilih kota tujuan terlebih dahulu');
+                    return false;
+                }
+
+                if (!weightInput.value || weightInput.value < 100) {
+                    showError('Berat minimal 100 gram');
+                    return false;
+                }
+
+                if (!courierSelect.value) {
+                    showError('Pilih kurir pengiriman');
+                    return false;
+                }
+
+                return true;
+            }
+
+            function displayShippingOptions(costs) {
+                shippingResults.style.display = 'block';
+                shippingResults.innerHTML = costs.map(service => `
+            <div class="shipping-option">
+                <label>
+                    <input type="radio" 
+                           name="shipping_service" 
+                           value="${service.service}"
+                           data-cost="${service.cost[0].value}">
+                    <div class="shipping-info">
+                        <div>${courierSelect.value.toUpperCase()} ${service.service}</div>
+                        <div class="shipping-price">
+                            Rp ${service.cost[0].value.toLocaleString()}
+                        </div>
+                        <div class="shipping-eta">
+                            Estimasi ${service.cost[0].etd} hari
+                        </div>
+                    </div>
+                </label>
+            </div>
+        `).join('');
+
+                // Event listener untuk radio buttons
+                document.querySelectorAll('input[name="shipping_service"]').forEach(radio => {
+                    radio.addEventListener('change', function () {
+                        // Update hidden inputs dengan data pengiriman
+                        updateShippingData({
+                            cost: this.dataset.cost,
+                            eta: this.dataset.eta,
+                            courier: this.dataset.courier,
+                            service: this.dataset.service
+                        });
+
+                        updateTotal(parseInt(this.dataset.cost));
+                    });
+                });
+            }
+
+            function updateShippingData(shippingData) {
+                // Update atau buat hidden inputs untuk data pengiriman
+                const form = document.getElementById('payment-form');
+
+                ['cost', 'eta', 'courier', 'service'].forEach(field => {
+                    let input = form.querySelector(`input[name="shipping_${field}"]`);
+                    if (!input) {
+                        input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = `shipping_${field}`;
+                        form.appendChild(input);
+                    }
+                    input.value = shippingData[field];
+                });
+            }
+
+            function updateTotal(shippingCost) {
+                const subtotal = parseInt(document.getElementById('subtotal')?.dataset?.value || 0);
+                const total = subtotal + shippingCost;
+
+                // Update tampilan total
+                const totalElement = document.getElementById('total');
+                if (totalElement) {
+                    totalElement.textContent = `Rp ${total.toLocaleString()}`;
+                }
+
+                // Simpan shipping cost ke hidden input untuk disubmit
+                const shippingCostInput = document.createElement('input');
+                shippingCostInput.type = 'hidden';
+                shippingCostInput.name = 'shipping_cost';
+                shippingCostInput.value = shippingCost;
+
+                // Replace existing shipping cost input if exists
+                const existingInput = document.querySelector('input[name="shipping_cost"]');
+                if (existingInput) {
+                    existingInput.remove();
+                }
+                document.getElementById('payment-form').appendChild(shippingCostInput);
+            }
+
+            function showLoading() {
+                checkShippingBtn.disabled = true;
+                checkShippingBtn.textContent = 'Mengecek...';
+                shippingResults.style.display = 'none';
+
+                const loadingDiv = document.createElement('div');
+                loadingDiv.className = 'loading-indicator';
+                loadingDiv.style.display = 'block';
+                shippingResults.parentNode.insertBefore(loadingDiv, shippingResults);
+            }
+
+            function hideLoading() {
+                checkShippingBtn.disabled = false;
+                checkShippingBtn.textContent = 'Cek Ongkir';
+
+                const loadingDiv = document.querySelector('.loading-indicator');
+                if (loadingDiv) {
+                    loadingDiv.remove();
+                }
+            }
+
+            function showError(message) {
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+
+                shippingResults.parentNode.insertBefore(errorDiv, shippingResults);
+
+                setTimeout(() => {
+                    errorDiv.remove();
+                }, 3000);
+            }
+        });
+    </script>
 </body>
 
 </html>

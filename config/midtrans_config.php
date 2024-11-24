@@ -190,14 +190,43 @@ class PaymentHandler
         return $phone;
     }
 
+    // Fungsi untuk menggabungkan alamat
+    private function formatFullAddress($data)
+    {
+        $address_parts = [
+            $data['alamatpenerima'], // Alamat detail (nama jalan, nomor rumah, RT/RW)
+            "Kelurahan " . $data['kelurahan'],
+            "Kecamatan " . $data['kecamatan'],
+            $data['kota'],
+            $data['provinsi'],
+            $data['kodepos']
+        ];
+
+        // Filter out empty values dan gabungkan dengan koma
+        $full_address = implode(", ", array_filter($address_parts));
+
+        return $full_address;
+    }
+
     private function saveOrder($order_id, $data, $total_amount, $cart_items)
     {
         try {
             $this->db->beginTransaction();
 
+            // Format alamat lengkap
+            $alamat_parts = [
+                $data['alamatpenerima'],
+                "Kelurahan " . $data['kelurahan'],
+                "Kecamatan " . $data['kecamatan'],
+                $data['kota'],
+                $data['provinsi'],
+                $data['kodepos']
+            ];
+            $full_address = implode(", ", array_filter($alamat_parts));
+
             // 1. Simpan order terlebih dahulu
-            $sql = "INSERT INTO orders (order_id, user_id, total_harga, nama_penerima, nomor_penerima, alamat_penerima, transaction_status, keterangan_order) 
-                    VALUES (:order_id, :user_id, :total_harga, :nama_penerima, :nomor_penerima, :alamat_penerima, 'pending',:keterangan_order)";
+            $sql = "INSERT INTO orders (order_id, user_id, total_harga, nama_penerima, nomor_penerima, alamat_penerima, kota, kodepos, transaction_status, keterangan_order) 
+                    VALUES (:order_id, :user_id, :total_harga, :nama_penerima, :nomor_penerima, :alamat_penerima, :kota, :kodepos, 'pending',:keterangan_order)";
 
             $stmt = $this->db->prepare($sql);
             $stmt->execute([
@@ -206,7 +235,9 @@ class PaymentHandler
                 ':total_harga' => $total_amount,
                 ':nama_penerima' => $data['namapenerima'],
                 ':nomor_penerima' => $data['notelppenerima'],
-                ':alamat_penerima' => $data['alamatpenerima'],
+                ':alamat_penerima' => $full_address,
+                ':kota' => $data['kota'],
+                ':kodepos' => $data['kodepos'],
                 ':keterangan_order' => $data['keterangan_order']
             ]);
 
@@ -226,7 +257,6 @@ class PaymentHandler
                     ':product_id' => $item['product_id'],
                     ':jumlah_order' => $item['jumlah'],
                     ':harga_order' => $item['harga_produk'],
-
                 ]);
 
                 if (!$result) {
@@ -234,7 +264,21 @@ class PaymentHandler
                 }
             }
 
-            // 4. Hapus items dari cart setelah order berhasil
+            // 4. Insert data ke shipments
+            $shipping_data = $data['shipping_data'] ?? [];
+
+            $sql = "INSERT INTO shipments (order_id, ekspedisi, biaya_ongkir, estimasi_sampai, alamat_pengiriman)";
+
+            $stmt = $GLOBALS['db']->prepare($sql);
+            $stmt->execute([
+                ':order_id' => $data['order_id'],
+                ':ekspedisi' => $shipping_data['courier'] ?? null,
+                ':biaya_ongkir' => $shipping_data['cost'] ?? null,
+                ':estimasi_sampai' => $shipping_data['eta'] ?? null,
+                ':alamat_pengiriman' => $full_address,
+            ]);
+
+            // 5. Hapus items dari cart setelah order berhasil
             $sql = "DELETE FROM carts WHERE user_id = :user_id";
             $stmt = $this->db->prepare($sql);
             $stmt->execute([':user_id' => $this->user_id]);
@@ -444,6 +488,7 @@ class PaymentHandler
 function payment_handled($data, $user_id)
 {
     try {
+
         $paymentHandler = new PaymentHandler($GLOBALS['db'], $user_id);
         $result = $paymentHandler->processPayment($data);
 

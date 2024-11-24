@@ -1,8 +1,9 @@
 <?php
 session_start();
 
-// Cek apakah pengguna sudah login
-if (!isset($_SESSION['user_id'])) {
+// Cek apakah user adalah admin
+if (!isset($_SESSION['user_id']) && $_SESSION['user_id'] != 'admin') {
+    // Jika tidak ada session login, redirect ke halaman login
     header("Location: login_admin.php");
     exit();
 }
@@ -145,11 +146,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Edit Produk - PleeART</title>
     <link rel="stylesheet" href="./style/style.css">
     <style>
-    .delete-checkbox {
-        margin-left: 10px;
-        color: red;
-        cursor: pointer;
-    }
+        .delete-checkbox {
+            margin-left: 10px;
+            color: red;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -188,20 +189,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="form-group">
                         <label for="category">Kategori</label>
                         <select id="category" name="category" required>
-                            <option value="Pernikahan"
-                                <?php echo ($product['kategori'] == 'Pernikahan') ? 'selected' : ''; ?>>
+                            <option value="Pernikahan" <?php echo ($product['kategori'] == 'Pernikahan') ? 'selected' : ''; ?>>
                                 Undangan Pernikahan</option>
                             <option value="Khitan" <?php echo ($product['kategori'] == 'Khitan') ? 'selected' : ''; ?>>
                                 Undangan
                                 Khitan</option>
-                            <option value="Walimatul"
-                                <?php echo ($product['kategori'] == 'Walimatul') ? 'selected' : ''; ?>>Undangan
+                            <option value="Walimatul" <?php echo ($product['kategori'] == 'Walimatul') ? 'selected' : ''; ?>>Undangan
                                 Walimatul</option>
-                            <option value="Tahlil&KirimDoa"
-                                <?php echo ($product['kategori'] == 'Tahlil&KirimDoa') ? 'selected' : ''; ?>>
+                            <option value="Tahlil&KirimDoa" <?php echo ($product['kategori'] == 'Tahlil&KirimDoa') ? 'selected' : ''; ?>>
                                 Undangan Tahlil & Kirim Doa</option>
-                            <option value="UlangTahun"
-                                <?php echo ($product['kategori'] == 'UlangTahun') ? 'selected' : ''; ?>>
+                            <option value="UlangTahun" <?php echo ($product['kategori'] == 'UlangTahun') ? 'selected' : ''; ?>>
                                 Undangan Ulang Tahun</option>
                         </select>
                     </div>
@@ -220,31 +217,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <div id="image-preview-container" style="display: flex; gap: 10px; flex-wrap: wrap;">
                                 <!-- Tampilkan preview gambar yang sudah ada dengan opsi untuk menghapus -->
                                 <?php if ($product['gambar_satu']): ?>
-                                <div style="position: relative;">
-                                    <img src="data:image/jpeg;base64,<?php echo base64_encode($product['gambar_satu']); ?>"
-                                        style="max-width: 150px; border: 1px solid #ccc;">
-                                    <label class="delete-checkbox">
-                                        <input type="checkbox" name="delete_gambar_satu" value="1"> Hapus
-                                    </label>
-                                </div>
+                                    <div style="position: relative;">
+                                        <img src="data:image/jpeg;base64,<?php echo base64_encode($product['gambar_satu']); ?>"
+                                            style="max-width: 150px; border: 1px solid #ccc;">
+                                        <label class="delete-checkbox">
+                                            <input type="checkbox" name="delete_gambar_satu" value="1"> Hapus
+                                        </label>
+                                    </div>
                                 <?php endif; ?>
                                 <?php if ($product['gambar_dua']): ?>
-                                <div style="position: relative;">
-                                    <img src="data:image/jpeg;base64,<?php echo base64_encode($product['gambar_dua']); ?>"
-                                        style="max-width: 150px; border: 1px solid #ccc;">
-                                    <label class="delete-checkbox">
-                                        <input type="checkbox" name="delete_gambar_dua" value="1"> Hapus
-                                    </label>
-                                </div>
+                                    <div style="position: relative;">
+                                        <img src="data:image/jpeg;base64,<?php echo base64_encode($product['gambar_dua']); ?>"
+                                            style="max-width: 150px; border: 1px solid #ccc;">
+                                        <label class="delete-checkbox">
+                                            <input type="checkbox" name="delete_gambar_dua" value="1"> Hapus
+                                        </label>
+                                    </div>
                                 <?php endif; ?>
                                 <?php if ($product['gambar_tiga']): ?>
-                                <div style="position: relative;">
-                                    <img src="data:image/jpeg;base64,<?php echo base64_encode($product['gambar_tiga']); ?>"
-                                        style="max-width: 150px; border: 1px solid #ccc;">
-                                    <label class="delete-checkbox">
-                                        <input type="checkbox" name="delete_gambar_tiga" value="1"> Hapus
-                                    </label>
-                                </div>
+                                    <div style="position: relative;">
+                                        <img src="data:image/jpeg;base64,<?php echo base64_encode($product['gambar_tiga']); ?>"
+                                            style="max-width: 150px; border: 1px solid #ccc;">
+                                        <label class="delete-checkbox">
+                                            <input type="checkbox" name="delete_gambar_tiga" value="1"> Hapus
+                                        </label>
+                                    </div>
                                 <?php endif; ?>
                             </div>
                             <input type="file" id="file-upload" name="product_image[]"
@@ -264,26 +261,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
     <script>
-    function previewImages(event) {
-        var files = event.target.files;
-        var previewContainer = document.getElementById('image-preview-container');
-        previewContainer.innerHTML = '';
+        function previewImages(event) {
+            var files = event.target.files;
+            var previewContainer = document.getElementById('image-preview-container');
+            previewContainer.innerHTML = '';
 
-        Array.from(files).forEach(file => {
-            if (file && file.type.startsWith('image/')) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    var imgElement = document.createElement('img');
-                    imgElement.src = e.target.result;
-                    imgElement.style.maxWidth = '150px';
-                    imgElement.style.marginBottom = '10px';
-                    imgElement.style.border = '1px solid #ccc';
-                    previewContainer.appendChild(imgElement);
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    }
+            Array.from(files).forEach(file => {
+                if (file && file.type.startsWith('image/')) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var imgElement = document.createElement('img');
+                        imgElement.src = e.target.result;
+                        imgElement.style.maxWidth = '150px';
+                        imgElement.style.marginBottom = '10px';
+                        imgElement.style.border = '1px solid #ccc';
+                        previewContainer.appendChild(imgElement);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
     </script>
 </body>
 
