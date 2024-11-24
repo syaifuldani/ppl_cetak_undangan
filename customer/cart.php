@@ -102,6 +102,11 @@ $cartItems = getCartItems($userId);
 // Mendapatkan user_id dari session
 $userId = $_SESSION['user_id'];
 
+// Live Search
+if (isset($_POST['query'])) {
+    $searchTerm = $_POST['query'];
+    searchProducts($searchTerm);
+}
 
 ?>
 
@@ -129,6 +134,10 @@ $userId = $_SESSION['user_id'];
         <nav class="navbar">
             <?php include 'layout/cusmrLayout/navbar.php'; ?>
         </nav>
+        <!-- Menampilkan hasil pencarian -->
+        <div id="navbarSearchResults" class="search-results">
+            <!-- Hasil pencarian akan ditampilkan di sini -->
+        </div>
 
         <div class="content">
             <div class="cart-container">

@@ -41,7 +41,7 @@ if (isset($_SESSION['user_id'])) {
             <div class="promotion-text">
                 <h2>Buat Momen Spesial Lebih Berkesan dengan Undangan yang Elegan</h2>
                 <div class="nav-buttons">
-                    <a href="javascript:void(0);" onclick="showNextLayout()">Lanjut &#10230;</a>
+                    <a href="javascript:void(0);" onclick="showNextLayout()">Lanjut <img src="resources/img/icons/Arrow_right.png" alt=""></a>
                 </div>
             </div>
         </div>
@@ -63,8 +63,8 @@ if (isset($_SESSION['user_id'])) {
             <div class="promotion-text">
                 <h2>Cepat, Mudah, dan Personal Ciptakan Undangan yang Menginspirasi</h2>
                 <div class="nav-buttons">
-                    <a href="javascript:void(0);" onclick="showPreviousLayout()">&#10229; Kembali</a>
-                    <a href="customer/dashboard.php" onclick="showNextLayout()">Lanjut &#10230;</a>
+                    <a href="javascript:void(0);" onclick="showPreviousLayout()"><img src="resources/img/icons/Arrow_left.png" alt=""> Kembali</a>
+                    <a href="customer/dashboard.php" onclick="showNextLayout()">Lanjut <img src="resources/img/icons/Arrow_right.png" alt=""></a>
                 </div>
             </div>
         </div>

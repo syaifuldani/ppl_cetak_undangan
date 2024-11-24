@@ -465,6 +465,44 @@ function deleteCartItems($userId, $cartId)
     }
 }
 
+function searchProducts($searchTerm)
+{
+    global $db;
+    $searchResults = [];
+
+    // Mencari produk berdasarkan nama produk
+    $stmt = $db->prepare("SELECT product_id, nama_produk, kategori, gambar_satu FROM products WHERE nama_produk LIKE :searchTerm");
+    $stmt->bindValue(':searchTerm', '%' . $searchTerm . '%', PDO::PARAM_STR);
+    $stmt->execute();
+
+    // Ambil hasil pencarian
+    $searchResults = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Cek apakah request adalah AJAX
+    if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+        // Jika AJAX, kirimkan hasil pencarian dalam format HTML
+        if (!empty($searchResults)) {
+            foreach ($searchResults as $product) {
+                // Mengonversi gambar biner menjadi format base64
+                $base64Image = base64_encode($product['gambar_satu']);
+                echo '<a href="productdetail.php?id=' . $product['product_id'] . '" class="search-item">';
+                echo '<img src="data:image/jpeg;base64,' . $base64Image . '" alt="Produk">';
+                echo '<label>';
+                echo '<p>' . $product['nama_produk'] . '</p>';
+                echo '<p class="kategori"> Kategori Undangan : ' . $product['kategori'] . '</p>';
+                echo '</label>';
+                echo '</a>';
+            }
+        } else {
+            echo '<p>Undangan Tidak Ditemukan</p>';
+        }
+        exit;
+    }
+
+    return $searchResults;
+}
+
+
 // END CUSTOMER FUNCTIONS
 
 // ----------------------------------------------------------------
@@ -788,8 +826,7 @@ function getAllDataByCategory($category)
     // Ambil data produk undangan khitan dari database
     $sql = "SELECT product_id, nama_produk, deskripsi, harga_produk, gambar_satu, gambar_dua, gambar_tiga, kategori FROM products WHERE kategori = :category";
     $stmt = $GLOBALS["db"]->prepare($sql);
-    $stmt->bindParam(':category', $category);
-    $stmt->execute();
+    $stmt->execute(['kategori' => $category]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 }

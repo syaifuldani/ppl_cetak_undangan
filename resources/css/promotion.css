@@ -1,5 +1,7 @@
 body {
     font-family: Arial, sans-serif;
+    background: linear-gradient(to top,  #8da6d1 5%, transparent 100%);
+    background-attachment: fixed;
 }
 
 .promotion-section {
@@ -35,7 +37,7 @@ body {
 
 .promotion-text .nav-buttons a {
     font-size: 1.2rem;
-    color: #00A2FF;
+    color: #ffffff;
     text-decoration: none;
 }
 
@@ -64,4 +66,78 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+/* CSS responsif */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .promotion-section {
+        flex-direction: row;
+        gap: 20px;
+    }
+
+    .promotion-text {
+        max-width: 100%;
+        text-align: left;
+        font-size: 0.9rem; 
+    }
+
+    .promotion-text h2 {
+        font-size: 1.5rem; 
+    }
+
+    .promotion-text .nav-buttons {
+        justify-content: space-between; 
+    }
+
+    .promotion-images {
+        max-width: 40%;
+    }
+
+    .promotion-images img {
+        width: 100%;
+        height: auto;
+    }
+
+    .promotion-images .row {
+        gap: 10px;
+    }
+}
+
+/* Responsive design for mobile (max-width: 767px) */
+@media (max-width: 767px) {
+    .promotion-section {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .promotion-text {
+        max-width: 100%;
+        text-align: center;
+        font-size: 0.8rem; 
+    }
+
+    .promotion-text h2 {
+        font-size: 1.3rem; 
+    }
+
+    .promotion-text .nav-buttons {
+        justify-content: center;
+        gap: 10px; 
+    }
+
+    .promotion-images {
+        gap: 10px;
+        width: 100%;
+    }
+
+    .promotion-images .row {
+        flex-direction: column; 
+        gap: 10px;
+    }
+
+    .promotion-images img {
+        width: 100%;
+        height: auto;
+    }
 }

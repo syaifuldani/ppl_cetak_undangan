@@ -1,3 +1,8 @@
+<?php
+require '../config/connection.php';
+require_once '../config/function.php';
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,6 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -21,9 +27,9 @@
     <div class="center-items">
         <ul class="nav-links" id="nav-links">
             <div class="search-bar">
-                <form action="" class="search-input">
-                    <label><img src="../resources/img/icons/search.png" alt=""></label>
-                    <input type="text" placeholder="Cari">
+                <form action="" method="POST" class="search-input">
+                    <label><img src="../resources/img/icons/search.png" alt="search"></label>
+                    <input type="text" id="navbarSearchBox" name="query" placeholder="Cari produk..." value="<?= isset($_POST['query']) ? htmlspecialchars($_POST['query']) : '' ?>">
                 </form>
             </div>
             <li><a href="dashboard.php" class="home">Home</a></li>
@@ -195,6 +201,7 @@
             }
         });
     </script>
+    <script src="../resources/js/livesearch.js"></script>
 </body>
 
 </html>
