@@ -17,7 +17,7 @@ require '../config/connection.php'; // Pastikan path sesuai dengan struktur fold
 $pdo = $GLOBALS['db'];
 
 // Tentukan jumlah data per halaman
-$limit = 4;
+$limit = 8;
 
 // Ambil halaman saat ini dari URL, jika tidak ada set ke 1
 $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;

@@ -91,11 +91,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <option value="Walimatul">Undangan Walimatul</option>
                             <option value="Tahlil&KirimDoa">Undangan Tahlil & Kirim Doa</option>
                             <option value="UlangTahun">Undangan Ulang Tahun</option>
-                            <option value="Pernikahan">Undangan Pernikahan</option>
-                            <option value="Khitan">Undangan Khitan</option>
-                            <option value="Walimatul">Undangan Walimatul</option>
-                            <option value="Tahlil&KirimDoa">Undangan Tahlil & Kirim Doa</option>
-                            <option value="UlangTahun">Undangan Ulang Tahun</option>
                         </select>
                         <span
                             class="error-message"><?= isset($responseAddItems['category']) ? $responseAddItems['category'] : ''; ?></span>
@@ -134,8 +129,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <!-- Tombol Submit dan Cancel -->
                     <div class="button-group">
                         <button type="submit" class="btn btn-update">Tambah</button>
-                        <button type="button" class="btn btn-cancel"
-                            onclick="window.location.href='product.php'">CANCEL</button>
                         <button type="button" class="btn btn-cancel"
                             onclick="window.location.href='product.php'">CANCEL</button>
                     </div>
