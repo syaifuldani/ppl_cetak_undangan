@@ -91,11 +91,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <option value="Walimatul">Undangan Walimatul</option>
                             <option value="Tahlil&KirimDoa">Undangan Tahlil & Kirim Doa</option>
                             <option value="UlangTahun">Undangan Ulang Tahun</option>
-                            <option value="Pernikahan">Undangan Pernikahan</option>
-                            <option value="Khitan">Undangan Khitan</option>
-                            <option value="Walimatul">Undangan Walimatul</option>
-                            <option value="Tahlil&KirimDoa">Undangan Tahlil & Kirim Doa</option>
-                            <option value="UlangTahun">Undangan Ulang Tahun</option>
                         </select>
                         <span
                             class="error-message"><?= isset($responseAddItems['category']) ? $responseAddItems['category'] : ''; ?></span>
@@ -115,27 +110,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <!-- Product Gallery -->
                     <div class="product-gallery">
                         <label>Product Gallery (max 3)</label>
-                        <div class="image-upload" style="border: #000000 2px solid; margin-top:1rem;">
-                            <div id="image-preview-container" style="display: flex; gap: 10px; flex-wrap: wrap;"></div>
-                            <input type="file" id="file-upload" name="product_image[]"
-                                accept=".jpg,.jpeg,.png,.gif,.webp" multiple onchange="previewImages(event)">
-                            <input type="file" id="file-upload" name="product_image[]"
-                                accept=".jpg,.jpeg,.png,.gif,.webp" multiple onchange="previewImages(event)">
-                            <p>Drop your images here, or browse. Jpeg, png, gif, webp are allowed</p>
+                        
+                        <!-- Input untuk Gambar Satu -->
+                        <div class="image-upload" style="border: #000000 2px solid; margin-top: 1rem;">
+                            <label for="gambar_satu">Gambar Satu</label>
+                            <input type="file" id="gambar_satu" name="gambar_satu" accept=".jpg,.jpeg,.png,.gif,.webp" onchange="previewImage(event, 'preview-satu')">
+                            <div id="preview-satu" style="margin-top: 10px;"></div>
                         </div>
-                        <span
-                            class="error-message"><?= isset($responseAddItems['imageToLarge']) ? $responseAddItems['imageToLarge'] : ''; ?></span>
-                        <span
-                            class="error-message"><?= isset($responseAddItems['imageNotSupported']) ? $responseAddItems['imageNotSupported'] : ''; ?></span>
-                        <span
-                            class="error-message"><?= isset($responseAddItems['field']) ? $responseAddItems['field'] : ''; ?></span>
-                    </div>
+
+                        <!-- Input untuk Gambar Dua -->
+                        <div class="image-upload" style="border: #000000 2px solid; margin-top: 1rem;">
+                            <label for="gambar_dua">Gambar Dua</label>
+                            <input type="file" id="gambar_dua" name="gambar_dua" accept=".jpg,.jpeg,.png,.gif,.webp" onchange="previewImage(event, 'preview-dua')">
+                            <div id="preview-dua" style="margin-top: 10px;"></div>
+                        </div>
+
+                        <!-- Input untuk Gambar Tiga -->
+                        <div class="image-upload" style="border: #000000 2px solid; margin-top: 1rem;">
+                            <label for="gambar_tiga">Gambar Tiga</label>
+                            <input type="file" id="gambar_tiga" name="gambar_tiga" accept=".jpg,.jpeg,.png,.gif,.webp" onchange="previewImage(event, 'preview-tiga')">
+                            <div id="preview-tiga" style="margin-top: 10px;"></div>
+                        </div>
+
+                        <span class="error-message">
+                            <?= isset($responseAddItems['imageToLarge']) ? $responseAddItems['imageToLarge'] : ''; ?>
+                        </span>
+                        <span class="error-message">
+                            <?= isset($responseAddItems['imageNotSupported']) ? $responseAddItems['imageNotSupported'] : ''; ?>
+                        </span>
+                        <span class="error-message">
+                            <?= isset($responseAddItems['field']) ? $responseAddItems['field'] : ''; ?>
+                        </span>
+                    </div>           
 
                     <!-- Tombol Submit dan Cancel -->
                     <div class="button-group">
                         <button type="submit" class="btn btn-update">Tambah</button>
-                        <button type="button" class="btn btn-cancel"
-                            onclick="window.location.href='product.php'">CANCEL</button>
                         <button type="button" class="btn btn-cancel"
                             onclick="window.location.href='product.php'">CANCEL</button>
                     </div>
@@ -182,6 +192,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             });
         <?php endif; ?>
     </script>
+    <script>
+            function previewImage(event, previewId) {
+                const previewContainer = document.getElementById(previewId);
+                const file = event.target.files[0];
+
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        // Hapus konten lama jika ada
+                        previewContainer.innerHTML = '';
+                        // Tambahkan gambar baru
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.style.maxWidth = '100px';
+                        img.style.maxHeight = '100px';
+                        previewContainer.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    // Hapus pratinjau jika file dihapus
+                    previewContainer.innerHTML = '';
+                }
+            }
+            </script>
+
 </body>
 
 

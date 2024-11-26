@@ -28,6 +28,14 @@
                 </button>
             </a>
         </li>
+        <li>
+            <a href="./daftar_customer.php">
+                <button class="dashboard-button">
+                    <img src="./style/img/order.png" alt="Logo">
+                    <span>Daftar Customer</span>
+                </button>
+            </a>
+        </li>
     </ul>
     <div class="categories">
         <h4>Categories</h4>
