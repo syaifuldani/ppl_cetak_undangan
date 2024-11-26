@@ -63,38 +63,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $delete_gambar_dua = isset($_POST['delete_gambar_dua']) ? true : false;
     $delete_gambar_tiga = isset($_POST['delete_gambar_tiga']) ? true : false;
 
-    // Handle upload gambar (opsional)
+    // Handle upload gambar
     $gambar_satu = $product['gambar_satu'];
     $gambar_dua = $product['gambar_dua'];
     $gambar_tiga = $product['gambar_tiga'];
     $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 
-    if (isset($_FILES['product_image'])) {
-        for ($i = 0; $i < count($_FILES['product_image']['name']); $i++) {
-            if ($_FILES['product_image']['error'][$i] === 0) {
-                $file_extension = strtolower(pathinfo($_FILES['product_image']['name'][$i], PATHINFO_EXTENSION));
-                if (in_array($file_extension, $allowed_extensions)) {
-                    $image_data = file_get_contents($_FILES['product_image']['tmp_name'][$i]);
-                    if ($i == 0) {
-                        $gambar_satu = $image_data;
-                        // Jika ada gambar baru diupload, hapus flag penghapusan
-                        $delete_gambar_satu = false;
-                    } elseif ($i == 1) {
-                        $gambar_dua = $image_data;
-                        $delete_gambar_dua = false;
-                    } elseif ($i == 2) {
-                        $gambar_tiga = $image_data;
-                        $delete_gambar_tiga = false;
-                    }
-                } else {
-                    echo "Format gambar tidak didukung: " . htmlspecialchars($_FILES['product_image']['name'][$i]);
-                    exit();
-                }
+    $image_fields = [
+        'product_image_satu' => &$gambar_satu,
+        'product_image_dua' => &$gambar_dua,
+        'product_image_tiga' => &$gambar_tiga
+    ];
+
+    foreach ($image_fields as $field_name => &$image) {
+        if (isset($_FILES[$field_name]) && $_FILES[$field_name]['error'] === 0) {
+            $file_extension = strtolower(pathinfo($_FILES[$field_name]['name'], PATHINFO_EXTENSION));
+            if (in_array($file_extension, $allowed_extensions)) {
+                $image = file_get_contents($_FILES[$field_name]['tmp_name']);
+            } else {
+                echo "Format gambar tidak didukung: " . htmlspecialchars($_FILES[$field_name]['name']);
+                exit();
             }
         }
     }
 
-    // Jika gambar ditandai untuk dihapus, set ke null
+    // Hapus gambar jika checkbox diaktifkan
     if ($delete_gambar_satu) {
         $gambar_satu = null;
     }
@@ -128,7 +121,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
         $stmt->execute();
 
-        // Redirect atau tampilkan pesan sukses
         header("Location: product.php?status=success&message=Produk berhasil diperbarui");
         exit();
     } catch (PDOException $e) {
@@ -212,10 +204,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
 
                     <div class="product-gallery">
-                        <label>Product Gallery (max 3)</label>
+                        <label>Gambar Satu</label>
                         <div class="image-upload" style="border: #000000 2px solid; margin-top:1rem;">
-                            <div id="image-preview-container" style="display: flex; gap: 10px; flex-wrap: wrap;">
-                                <!-- Tampilkan preview gambar yang sudah ada dengan opsi untuk menghapus -->
+                            <div id="image-preview-container-satu" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                <!-- Preview Gambar Satu -->
                                 <?php if ($product['gambar_satu']): ?>
                                     <div style="position: relative;">
                                         <img src="data:image/jpeg;base64,<?php echo base64_encode($product['gambar_satu']); ?>"
@@ -225,6 +217,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         </label>
                                     </div>
                                 <?php endif; ?>
+                            </div>
+                            <input type="file" id="file-upload-satu" name="product_image_satu"
+                                accept=".jpg,.jpeg,.png,.gif,.webp"
+                                onchange="previewImages(event, 'image-preview-container-satu')">
+                        </div>
+                    </div>
+
+                    <div class="product-gallery">
+                        <label>Gambar Dua</label>
+                        <div class="image-upload" style="border: #000000 2px solid; margin-top:1rem;">
+                            <div id="image-preview-container-dua" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                <!-- Preview Gambar Dua -->
                                 <?php if ($product['gambar_dua']): ?>
                                     <div style="position: relative;">
                                         <img src="data:image/jpeg;base64,<?php echo base64_encode($product['gambar_dua']); ?>"
@@ -234,6 +238,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         </label>
                                     </div>
                                 <?php endif; ?>
+                            </div>
+                            <input type="file" id="file-upload-dua" name="product_image_dua"
+                                accept=".jpg,.jpeg,.png,.gif,.webp"
+                                onchange="previewImages(event, 'image-preview-container-dua')">
+                        </div>
+                    </div>
+
+                    <div class="product-gallery">
+                        <label>Gambar Tiga</label>
+                        <div class="image-upload" style="border: #000000 2px solid; margin-top:1rem;">
+                            <div id="image-preview-container-tiga" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                <!-- Preview Gambar Tiga -->
                                 <?php if ($product['gambar_tiga']): ?>
                                     <div style="position: relative;">
                                         <img src="data:image/jpeg;base64,<?php echo base64_encode($product['gambar_tiga']); ?>"
@@ -244,11 +260,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     </div>
                                 <?php endif; ?>
                             </div>
-                            <input type="file" id="file-upload" name="product_image[]"
-                                accept=".jpg,.jpeg,.png,.gif,.webp" multiple onchange="previewImages(event)">
-                            <p>Drop your images here, or browse. Jpeg, png, gif, webp are allowed</p>
+                            <input type="file" id="file-upload-tiga" name="product_image_tiga"
+                                accept=".jpg,.jpeg,.png,.gif,.webp"
+                                onchange="previewImages(event, 'image-preview-container-tiga')">
                         </div>
                     </div>
+
 
                     <div class="button-group">
                         <button type="submit" class="btn btn-update">Update</button>
@@ -261,16 +278,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
     <script>
-        function previewImages(event) {
-            var files = event.target.files;
-            var previewContainer = document.getElementById('image-preview-container');
+        function previewImages(event, containerId) {
+            const files = event.target.files;
+            const previewContainer = document.getElementById(containerId);
             previewContainer.innerHTML = '';
 
             Array.from(files).forEach(file => {
                 if (file && file.type.startsWith('image/')) {
-                    var reader = new FileReader();
+                    const reader = new FileReader();
                     reader.onload = function (e) {
-                        var imgElement = document.createElement('img');
+                        const imgElement = document.createElement('img');
                         imgElement.src = e.target.result;
                         imgElement.style.maxWidth = '150px';
                         imgElement.style.marginBottom = '10px';

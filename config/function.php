@@ -745,8 +745,6 @@ function addItemsToProduct($data)
         'UlangTahun'
     ];
 
-
-
     // Validasi input
     if (empty($nama_produk) || empty($deskripsi) || empty($kategori) || empty($harga_product)) {
         $errors['field'] = 'Semua field wajib diisi!';
@@ -754,7 +752,7 @@ function addItemsToProduct($data)
 
     // Validasi kategori
     if (!in_array($kategori, $allowed_categories)) {
-        $errors['category'] = 'Kategori wajib diisi!';
+        $errors['category'] = 'Kategori tidak valid!';
     }
 
     // Validasi harga_product adalah angka
@@ -762,35 +760,24 @@ function addItemsToProduct($data)
         $errors['number'] = 'Harga Produk harus berupa angka!';
     }
 
-    // Handle upload gambar (opsional)
+    // Handle upload gambar
     $gambar_satu = $gambar_dua = $gambar_tiga = null;
     $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+    $max_size = 2 * 1024 * 1024; // Maksimal 2MB per file
 
-    // Looping untuk memeriksa apakah ada file yang diunggah
-    if (isset($_FILES['product_image'])) {
-        for ($i = 0; $i < count($_FILES['product_image']['name']); $i++) {
-            if ($_FILES['product_image']['error'][$i] === 0) {
-                $file_extension = strtolower(pathinfo($_FILES['product_image']['name'][$i], PATHINFO_EXTENSION));
-                if (in_array($file_extension, $allowed_extensions)) {
-                    // Optional: Cek ukuran file (misalnya maksimal 2MB)
-                    $max_size = 2 * 1024 * 1024; // 2MB
-                    if ($_FILES['product_image']['size'][$i] > $max_size) {
-                        $errors['imageToLarge'] = "Ukuran gambar terlalu besar: " . htmlspecialchars($_FILES['product_image']['name'][$i]);
-                    }
+    // Gambar Satu
+    if (isset($_FILES['gambar_satu']) && $_FILES['gambar_satu']['error'] === 0) {
+        $gambar_satu = handleImageUpload($_FILES['gambar_satu'], $allowed_extensions, $max_size, $errors, 'gambar_satu');
+    }
 
-                    $image_data = file_get_contents($_FILES['product_image']['tmp_name'][$i]);
-                    if ($i == 0) {
-                        $gambar_satu = $image_data;
-                    } elseif ($i == 1) {
-                        $gambar_dua = $image_data;
-                    } elseif ($i == 2) {
-                        $gambar_tiga = $image_data;
-                    }
-                } else {
-                    $errors['imageNotSupported'] = "Format gambar tidak didukung: " . htmlspecialchars($_FILES['product_image']['name'][$i]);
-                }
-            }
-        }
+    // Gambar Dua
+    if (isset($_FILES['gambar_dua']) && $_FILES['gambar_dua']['error'] === 0) {
+        $gambar_dua = handleImageUpload($_FILES['gambar_dua'], $allowed_extensions, $max_size, $errors, 'gambar_dua');
+    }
+
+    // Gambar Tiga
+    if (isset($_FILES['gambar_tiga']) && $_FILES['gambar_tiga']['error'] === 0) {
+        $gambar_tiga = handleImageUpload($_FILES['gambar_tiga'], $allowed_extensions, $max_size, $errors, 'gambar_tiga');
     }
 
     // Jika ada error pada proses upload gambar, hentikan eksekusi
@@ -821,6 +808,31 @@ function addItemsToProduct($data)
 
     return $errors;
 }
+
+/**
+ * Fungsi untuk menangani upload gambar
+ */
+function handleImageUpload($file, $allowed_extensions, $max_size, &$errors, $field_name)
+{
+    $file_extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+
+    // Validasi ekstensi
+    if (!in_array($file_extension, $allowed_extensions)) {
+        $errors['imageNotSupported'] = "Format gambar tidak didukung: " . htmlspecialchars($file['name']);
+        return null;
+    }
+
+    // Validasi ukuran file
+    if ($file['size'] > $max_size) {
+        $errors['imageToLarge'] = "Ukuran gambar terlalu besar: " . htmlspecialchars($file['name']);
+        return null;
+    }
+
+    // Baca isi file
+    return file_get_contents($file['tmp_name']);
+}
+
+
 
 function getAllDataByCategory($category)
 {

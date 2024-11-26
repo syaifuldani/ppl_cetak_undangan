@@ -12,12 +12,10 @@ if (!isset($_SESSION['user_id']) && $_SESSION['user_id'] != 'admin') {
 
 // Data dari session setelah login
 $title = "PleeART";
-$jenishalaman = "Dashboard";
 $user_email = $_SESSION['user_email']; // Email user yang diambil dari session
 
 $title = "Undangan Pernikahan";
-$jenishalaman = "Pernikahan";
-$jenishalaman = "Pernikahan";
+$jenishalaman = "Undangan Pernikahan";
 
 // Ambil data produk undangan pernikahan dari database
 $kategori = "Pernikahan"; // Kategori yang ingin ditampilkan
@@ -48,12 +46,9 @@ $responsGetData = getAllDataByCategory($kategori);
                     <div class="product-item">
                         <img src="data:image/jpeg;base64,<?= base64_encode($product['gambar_satu']); ?>"
                             alt="<?= htmlspecialchars($product['nama_produk']); ?>" style="width: 300px; height: auto;">
-                        <img src="data:image/jpeg;base64,<?= base64_encode($product['gambar_satu']); ?>"
-                            alt="<?= htmlspecialchars($product['nama_produk']); ?>" style="width: 300px; height: auto;">
                         <div class="product-details">
                             <h3><?= htmlspecialchars($product['nama_produk']); ?></h3>
                             <p><?= htmlspecialchars($product['deskripsi']); ?></p>
-                            <p>Rp. <?= htmlspecialchars(number_format($product['harga_produk'], 2, ',', '.')); ?></p>
                             <p>Rp. <?= htmlspecialchars(number_format($product['harga_produk'], 2, ',', '.')); ?></p>
                             <p>Summary: <?= htmlspecialchars($product['summary'] ?? ''); ?></p>
                             <div class="stats">
@@ -65,7 +60,7 @@ $responsGetData = getAllDataByCategory($kategori);
                 <?php endforeach; ?>
             </section>
 
-            <div class="pagination">
+            <!-- <div class="pagination">
                 <a href="#">1</a>
                 <a href="#">2</a>
                 <a href="#">3</a>
@@ -73,7 +68,7 @@ $responsGetData = getAllDataByCategory($kategori);
                 <span>...</span>
                 <a href="#">10</a>
                 <a href="#">Next</a>
-            </div>
+            </div> -->
         </main>
     </div>
 </body>

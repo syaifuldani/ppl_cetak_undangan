@@ -11,12 +11,9 @@ if (!isset($_SESSION['user_id']) && $_SESSION['user_id'] != 'admin') {
 }
 
 // Data dari session setelah login
-$title = "PleeART";
-$jenishalaman = "Dashboard";
-$user_email = $_SESSION['user_email']; // Email user yang diambil dari session
 $title = "Undangan Khitan";
-$jenishalaman = "Khitan";
-$jenishalaman = "Khitan";
+$jenishalaman = "Undangan Khitan";
+$user_email = $_SESSION['user_email']; // Email user yang diambil dari session
 
 
 $kategori = "Khitan"; // Kategori yang ingin ditampilkan
@@ -60,7 +57,7 @@ $responsGetData = getAllDataByCategory($kategori);
                 <?php endforeach; ?>
             </section>
 
-            <div class="pagination">
+            <!-- <div class="pagination">
                 <a href="#">1</a>
                 <a href="#">2</a>
                 <a href="#">3</a>
@@ -68,7 +65,7 @@ $responsGetData = getAllDataByCategory($kategori);
                 <span>...</span>
                 <a href="#">10</a>
                 <a href="#">Next</a>
-            </div>
+            </div> -->
         </main>
     </div>
 </body>
