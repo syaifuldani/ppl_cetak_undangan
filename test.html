@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Kalkulator Sederhana</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: Arial, sans-serif;
+            }
+
+            body {
+                min-height: 100vh;
+                background: #f0f0f0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .calculator {
+                background: #fff;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                width: 300px;
+            }
+
+            .display {
+                background: #f8f8f8;
+                padding: 15px;
+                border-radius: 5px;
+                margin-bottom: 20px;
+                text-align: right;
+                font-size: 24px;
+                border: 1px solid #ddd;
+            }
+
+            .buttons {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 10px;
+            }
+
+            button {
+                padding: 15px;
+                font-size: 18px;
+                border: none;
+                background: #eee;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background 0.3s;
+            }
+
+            button:hover {
+                background: #ddd;
+            }
+
+            .operator {
+                background: #ff9500;
+                color: white;
+            }
+
+            .operator:hover {
+                background: #ff8000;
+            }
+
+            .equals {
+                background: #2196f3;
+                color: white;
+            }
+
+            .equals:hover {
+                background: #1976d2;
+            }
+
+            .clear {
+                background: #ff4646;
+                color: white;
+            }
+
+            .clear:hover {
+                background: #ff3333;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="calculator">
+            <div class="display">0</div>
+            <div class="buttons">
+                <button class="clear">C</button>
+                <button class="operator">←</button>
+                <button class="operator">%</button>
+                <button class="operator">÷</button>
+                <button>7</button>
+                <button>8</button>
+                <button>9</button>
+                <button class="operator">×</button>
+                <button>4</button>
+                <button>5</button>
+                <button>6</button>
+                <button class="operator">-</button>
+                <button>1</button>
+                <button>2</button>
+                <button>3</button>
+                <button class="operator">+</button>
+                <button>00</button>
+                <button>0</button>
+                <button>.</button>
+                <button class="equals">=</button>
+            </div>
+        </div>
+
+        <script>
+            const display = document.querySelector(".display");
+            const buttons = document.querySelectorAll("button");
+            let currentNumber = "0";
+            let firstOperand = null;
+            let operator = null;
+            let waitingForSecondOperand = false;
+
+            function updateDisplay() {
+                display.textContent = currentNumber;
+            }
+
+            function inputDigit(digit) {
+                if (waitingForSecondOperand) {
+                    currentNumber = digit;
+                    waitingForSecondOperand = false;
+                } else {
+                    currentNumber =
+                        currentNumber === "0" ? digit : currentNumber + digit;
+                }
+            }
+
+            function inputDecimal() {
+                if (!currentNumber.includes(".")) {
+                    currentNumber += ".";
+                }
+            }
+
+            function handleOperator(nextOperator) {
+                const inputValue = parseFloat(currentNumber);
+
+                if (firstOperand === null) {
+                    firstOperand = inputValue;
+                } else if (operator) {
+                    const result = calculate(
+                        firstOperand,
+                        inputValue,
+                        operator
+                    );
+                    currentNumber = String(result);
+                    firstOperand = result;
+                }
+
+                waitingForSecondOperand = true;
+                operator = nextOperator;
+            }
+
+            function calculate(first, second, op) {
+                switch (op) {
+                    case "+":
+                        return first + second;
+                    case "-":
+                        return first - second;
+                    case "×":
+                        return first * second;
+                    case "÷":
+                        return first / second;
+                    case "%":
+                        return first % second;
+                    default:
+                        return second;
+                }
+            }
+
+            buttons.forEach((button) => {
+                button.addEventListener("click", () => {
+                    if (button.classList.contains("clear")) {
+                        currentNumber = "0";
+                        firstOperand = null;
+                        operator = null;
+                        waitingForSecondOperand = false;
+                    } else if (button.classList.contains("equals")) {
+                        if (operator && !waitingForSecondOperand) {
+                            const secondOperand = parseFloat(currentNumber);
+                            currentNumber = String(
+                                calculate(firstOperand, secondOperand, operator)
+                            );
+                            firstOperand = null;
+                            operator = null;
+                        }
+                    } else if (button.classList.contains("operator")) {
+                        if (button.textContent === "←") {
+                            currentNumber = currentNumber.slice(0, -1);
+                            if (currentNumber === "") currentNumber = "0";
+                        } else {
+                            handleOperator(button.textContent);
+                        }
+                    } else if (button.textContent === ".") {
+                        inputDecimal();
+                    } else {
+                        inputDigit(button.textContent);
+                    }
+                    updateDisplay();
+                });
+            });
+        </script>
+    </body>
+</html>

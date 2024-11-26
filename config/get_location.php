@@ -1,5 +1,6 @@
 <?php
-require_once 'rajaongkir.php';
+
+require_once '../config/rajaOngkir.php';
 
 header('Content-Type: application/json');
 

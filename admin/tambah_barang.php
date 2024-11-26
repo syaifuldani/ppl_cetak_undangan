@@ -92,11 +92,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <option value="Walimatul">Undangan Walimatul</option>
                             <option value="Tahlil&KirimDoa">Undangan Tahlil & Kirim Doa</option>
                             <option value="UlangTahun">Undangan Ulang Tahun</option>
-                            <option value="Pernikahan">Undangan Pernikahan</option>
-                            <option value="Khitan">Undangan Khitan</option>
-                            <option value="Walimatul">Undangan Walimatul</option>
-                            <option value="Tahlil&KirimDoa">Undangan Tahlil & Kirim Doa</option>
-                            <option value="UlangTahun">Undangan Ulang Tahun</option>
                         </select>
                         <span
                             class="error-message"><?= isset($responseAddItems['category']) ? $responseAddItems['category'] : ''; ?></span>

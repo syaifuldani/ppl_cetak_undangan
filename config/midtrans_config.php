@@ -1,4 +1,5 @@
 <?php
+
 require_once __DIR__ . '/../vendor/midtrans/midtrans-php/Midtrans.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -115,6 +116,12 @@ class PaymentHandler
 
     private function prepareTransactionData($data, $cart_items, $order_id, $total_amount)
     {
+        // Get shipping cost information
+        $shipping_cost = isset($data['shipping_cost']) ? floatval($data['shipping_cost']) : 0;
+
+        // Calculate final total
+        $final_total = $total_amount + $shipping_cost;
+
         $item_details = array_map(function ($item) {
             return [
                 'id' => $item['product_id'],
@@ -124,10 +131,20 @@ class PaymentHandler
             ];
         }, $cart_items);
 
+        // Tambahkan biaya pengiriman sebagai item
+        if ($shipping_cost > 0) {
+            $item_details[] = [
+                'id' => 'SHIPPING',
+                'price' => (int) $shipping_cost,
+                'quantity' => 1,
+                'name' => $data['shipping_courier'] . ' Shipping Cost'
+            ];
+        }
+
         return [
             'transaction_details' => [
                 'order_id' => $order_id,
-                'gross_amount' => (int) $total_amount
+                'gross_amount' => (int) $final_total
             ],
             'item_details' => $item_details,
             'customer_details' => [
@@ -154,19 +171,6 @@ class PaymentHandler
         ];
     }
 
-    // Jika Anda perlu memisahkan nama lengkap menjadi first_name dan last_name
-    private function splitName($fullName)
-    {
-        $parts = explode(' ', trim($fullName));
-        $lastName = count($parts) > 1 ? array_pop($parts) : '';
-        $firstName = implode(' ', $parts);
-
-        return [
-            'first_name' => $firstName ?: $fullName,
-            'last_name' => $lastName
-        ];
-    }
-
     private function formatPhoneNumber($phone)
     {
         // Hapus semua karakter non-digit
@@ -190,24 +194,6 @@ class PaymentHandler
         return $phone;
     }
 
-    // Fungsi untuk menggabungkan alamat
-    private function formatFullAddress($data)
-    {
-        $address_parts = [
-            $data['alamatpenerima'], // Alamat detail (nama jalan, nomor rumah, RT/RW)
-            "Kelurahan " . $data['kelurahan'],
-            "Kecamatan " . $data['kecamatan'],
-            $data['kota'],
-            $data['provinsi'],
-            $data['kodepos']
-        ];
-
-        // Filter out empty values dan gabungkan dengan koma
-        $full_address = implode(", ", array_filter($address_parts));
-
-        return $full_address;
-    }
-
     private function saveOrder($order_id, $data, $total_amount, $cart_items)
     {
         try {
@@ -222,63 +208,105 @@ class PaymentHandler
                 $data['provinsi'],
                 $data['kodepos']
             ];
+
             $full_address = implode(", ", array_filter($alamat_parts));
 
-            // 1. Simpan order terlebih dahulu
-            $sql = "INSERT INTO orders (order_id, user_id, total_harga, nama_penerima, nomor_penerima, alamat_penerima, kota, kodepos, transaction_status, keterangan_order) 
-                    VALUES (:order_id, :user_id, :total_harga, :nama_penerima, :nomor_penerima, :alamat_penerima, :kota, :kodepos, 'pending',:keterangan_order)";
+            // Hitung total dengan biaya ongkir
+            $shipping_cost = !empty($data['shipping_cost']) ? floatval($data['shipping_cost']) : 0;
+            $total_with_shipping = $total_amount + $shipping_cost;
 
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute([
+            // 1. Simpan order terlebih dahulu
+            $sql = "INSERT INTO orders (
+            order_id, 
+            user_id, 
+            total_harga, 
+            nama_penerima, 
+            nomor_penerima, 
+            alamat_penerima, 
+            kota, 
+            kodepos, 
+            transaction_status, 
+            keterangan_order
+        ) VALUES (
+            :order_id, 
+            :user_id, 
+            :total_harga, 
+            :nama_penerima, 
+            :nomor_penerima, 
+            :alamat_penerima, 
+            :kota, 
+            :kodepos, 
+            :transaction_status,
+            :keterangan_order
+        )";
+
+            $params = [
                 ':order_id' => $order_id,
                 ':user_id' => $this->user_id,
-                ':total_harga' => $total_amount,
+                ':total_harga' => $total_with_shipping,
                 ':nama_penerima' => $data['namapenerima'],
                 ':nomor_penerima' => $data['notelppenerima'],
                 ':alamat_penerima' => $full_address,
                 ':kota' => $data['kota'],
                 ':kodepos' => $data['kodepos'],
-                ':keterangan_order' => $data['keterangan_order']
-            ]);
+                ':transaction_status' => 'pending',
+                ':keterangan_order' => $data['keterangan_order'] ?? ''
+            ];
 
-            // 2. Pastikan order tersimpan
-            if ($stmt->rowCount() === 0) {
-                throw new Exception("Gagal menyimpan order");
-            }
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute($params);
 
-            // 3. Simpan order details
-            $sql = "INSERT INTO order_details (order_id, product_id, jumlah_order, harga_order) 
-                    VALUES (:order_id, :product_id, :jumlah_order, :harga_order)";
+            // 2. Simpan order details
+            $sql = "INSERT INTO order_details (
+            order_id, 
+            product_id, 
+            jumlah_order, 
+            harga_order
+        ) VALUES (
+            :order_id, 
+            :product_id, 
+            :jumlah_order, 
+            :harga_order
+        )";
 
             $stmt = $this->db->prepare($sql);
             foreach ($cart_items as $item) {
-                $result = $stmt->execute([
+                $detail_params = [
                     ':order_id' => $order_id,
                     ':product_id' => $item['product_id'],
                     ':jumlah_order' => $item['jumlah'],
-                    ':harga_order' => $item['harga_produk'],
-                ]);
-
-                if (!$result) {
-                    throw new Exception("Gagal menyimpan detail order");
-                }
+                    ':harga_order' => $item['harga_produk']
+                ];
+                $stmt->execute($detail_params);
             }
 
-            // 4. Insert data ke shipments
-            $shipping_data = $data['shipping_data'] ?? [];
+            // 3. Insert data ke shipments
+            $sql = "INSERT INTO shipments (
+            order_id, 
+            ekspedisi, 
+            biaya_ongkir, 
+            estimasi_sampai, 
+            alamat_pengiriman
+        ) VALUES (
+            :order_id, 
+            :ekspedisi, 
+            :biaya_ongkir, 
+            :estimasi_sampai, 
+            :alamat_pengiriman
+        )";
 
-            $sql = "INSERT INTO shipments (order_id, ekspedisi, biaya_ongkir, estimasi_sampai, alamat_pengiriman)";
+            $shipping_params = [
+                ':order_id' => $order_id,
+                ':ekspedisi' => $data['shipping_courier'] ?? null,
+                ':biaya_ongkir' => $data['shipping_cost'] ?? null,
+                ':estimasi_sampai' => $data['shipping_eta'] ?? null,
+                ':alamat_pengiriman' => $full_address
+            ];
 
-            $stmt = $GLOBALS['db']->prepare($sql);
-            $stmt->execute([
-                ':order_id' => $data['order_id'],
-                ':ekspedisi' => $shipping_data['courier'] ?? null,
-                ':biaya_ongkir' => $shipping_data['cost'] ?? null,
-                ':estimasi_sampai' => $shipping_data['eta'] ?? null,
-                ':alamat_pengiriman' => $full_address,
-            ]);
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute($shipping_params);
 
-            // 5. Hapus items dari cart setelah order berhasil
+            // 4. Hapus items dari cart
             $sql = "DELETE FROM carts WHERE user_id = :user_id";
             $stmt = $this->db->prepare($sql);
             $stmt->execute([':user_id' => $this->user_id]);
@@ -421,18 +449,33 @@ class PaymentHandler
     public function processExistingOrder($order_id)
     {
         try {
-            // Get order data
-            $sql = "SELECT * FROM orders WHERE order_id = ? AND user_id = ?";
+            // Debug log awal
+            error_log("Starting processExistingOrder for order_id: $order_id and user_id: {$this->user_id}");
+
+            // Validasi input
+            if (!$order_id) {
+                throw new Exception("Order ID is required");
+            }
+
+            // Get order data dengan shipment dalam satu query
+            $sql = "SELECT o.*, s.biaya_ongkir, s.ekspedisi 
+                FROM orders o 
+                LEFT JOIN shipments s ON o.order_id = s.order_id 
+                WHERE o.order_id = ? AND o.user_id = ?";
+
             $stmt = $this->db->prepare($sql);
             $stmt->execute([$order_id, $this->user_id]);
             $order = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // Debug order data
+            error_log("Order data found: " . json_encode($order));
 
             if (!$order) {
                 throw new Exception("Order tidak ditemukan");
             }
 
             // Get order details
-            $sql = "SELECT od.*, p.nama_produk 
+            $sql = "SELECT od.*, p.nama_produk, p.paper_type, p.paper_size
                 FROM order_details od 
                 JOIN products p ON od.product_id = p.product_id 
                 WHERE od.order_id = ?";
@@ -444,26 +487,86 @@ class PaymentHandler
                 throw new Exception("Detail order tidak ditemukan");
             }
 
+            // Hitung total berat dari semua item
+            $totalWeight = 0;
+            foreach ($items as $item) {
+                try {
+                    $itemWeight = WeightCalculator::calculateWeight(
+                        $item['paper_type'],
+                        $item['paper_size'],
+                        $item['jumlah_order']
+                    );
+                    $totalWeight += $itemWeight;
+                } catch (Exception $e) {
+                    error_log("Error calculating weight: " . $e->getMessage());
+                    // Default weight jika kalkulasi gagal
+                    $totalWeight += 100 * $item['jumlah_order'];
+                }
+            }
+
+            // Debug items
+            error_log("Order items found: " . json_encode($items));
+
+            // Kalkulasi total dengan ongkir
+            $total_amount = floatval($order['total_harga']);
+            $shipping_cost = floatval($order['biaya_ongkir'] ?? 0);
+            $final_total = $total_amount + $shipping_cost;
+
+            // Debug totals
+            error_log("Calculations: total_amount = {$total_amount}, shipping_cost = {$shipping_cost}, final_total = {$final_total}");
+
+            // Prepare item details
+            $item_details = array_map(function ($item) {
+                return [
+                    'id' => $item['product_id'],
+                    'price' => (int) $item['harga_order'],
+                    'quantity' => (int) $item['jumlah_order'],
+                    'name' => $item['nama_produk']
+                ];
+            }, $items);
+
+            // Add shipping cost as separate item if exists
+            if ($shipping_cost > 0) {
+                $item_details[] = [
+                    'id' => 'SHIPPING',
+                    'price' => (int) $shipping_cost,
+                    'quantity' => 1,
+                    'name' => ($order['ekspedisi'] ? $order['ekspedisi'] . ' Shipping' : 'Shipping Cost')
+                ];
+            }
+
             // Prepare transaction data
             $transaction_data = [
                 'transaction_details' => [
                     'order_id' => $order['order_id'],
-                    'gross_amount' => (int) $order['total_harga']
+                    'gross_amount' => (int) $final_total
                 ],
-                'item_details' => array_map(function ($item) {
-                    return [
-                        'id' => $item['product_id'],
-                        'price' => (int) $item['harga_order'],
-                        'quantity' => (int) $item['jumlah_order'],
-                        'name' => $item['nama_produk']
-                    ];
-                }, $items),
+                'item_details' => $item_details,
                 'customer_details' => [
                     'first_name' => $order['nama_penerima'],
                     'phone' => $order['nomor_penerima'],
-                    'address' => $order['alamat_penerima']
+                    // 'email' => $order['email'] ?? '',
+                    'billing_address' => [
+                        'first_name' => $order['nama_penerima'],
+                        'phone' => $order['nomor_penerima'],
+                        'address' => $order['alamat_penerima'],
+                        'city' => $order['kota'],
+                        'postal_code' => $order['kodepos'],
+                        'country_code' => 'IDN'
+                    ],
+                    'shipping_address' => [
+                        'first_name' => $order['nama_penerima'],
+                        'phone' => $order['nomor_penerima'],
+                        'address' => $order['alamat_penerima'],
+                        'city' => $order['kota'],
+                        'postal_code' => $order['kodepos'],
+                        'country_code' => 'IDN'
+                    ]
                 ]
             ];
+
+            // Debug final transaction data
+            error_log("Final transaction data: " . json_encode($transaction_data));
 
             // Get Snap Token
             $snap_token = Snap::getSnapToken($transaction_data);
@@ -471,10 +574,10 @@ class PaymentHandler
             return [
                 'status' => 'success',
                 'snap_token' => $snap_token,
-                'order_id' => $order_id
             ];
 
         } catch (Exception $e) {
+            error_log("Error processing existing order: " . $e->getMessage());
             return [
                 'status' => 'error',
                 'message' => $e->getMessage()
@@ -522,17 +625,64 @@ function handle_notification()
 function process_existing_order($order_id, $user_id)
 {
     try {
+        // Debug log
+        error_log("Entering process_existing_order with order_id: $order_id, user_id: $user_id");
+
         $paymentHandler = new PaymentHandler($GLOBALS['db'], $user_id);
         $result = $paymentHandler->processExistingOrder($order_id);
+
+        // Debug log
+        error_log("Result from processExistingOrder: " . print_r($result, true));
 
         if ($result['status'] === 'success') {
             return $result['snap_token'];
         } else {
-            throw new Exception($result['message']);
+            throw new Exception($result['message'] ?? 'Unknown error occurred');
         }
 
     } catch (Exception $e) {
-        http_response_code(400);
+        error_log("Error in process_existing_order: " . $e->getMessage());
         throw new Exception($e->getMessage());
+    }
+}
+
+class WeightCalculator
+{
+    // Konstanta untuk gram per m² berbagai jenis kertas
+    private static $PAPER_WEIGHTS = [
+        'artpaper_120' => 120,
+        'artpaper_150' => 150,
+        'hvs_70' => 70,
+        'hvs_80' => 80
+        // Tambahkan jenis kertas lainnya
+    ];
+
+    // Konstanta untuk ukuran kertas (dalam cm)
+    private static $PAPER_SIZES = [
+        'a4' => ['width' => 21.0, 'height' => 29.7],
+        'a5' => ['width' => 14.8, 'height' => 21.0],
+        'f4' => ['width' => 21.5, 'height' => 33.0]
+        // Tambahkan ukuran lainnya
+    ];
+
+    public static function calculateWeight($paperType, $paperSize, $quantity)
+    {
+        // Validasi input
+        if (!isset(self::$PAPER_WEIGHTS[$paperType]) || !isset(self::$PAPER_SIZES[$paperSize])) {
+            throw new Exception("Invalid paper type or size");
+        }
+
+        // Ambil spesifikasi kertas
+        $gramPerM2 = self::$PAPER_WEIGHTS[$paperType];
+        $dimensions = self::$PAPER_SIZES[$paperSize];
+
+        // Hitung berat per lembar (dalam gram)
+        $weightPerSheet = ($dimensions['width'] * $dimensions['height'] * $gramPerM2) / 10000;
+
+        // Hitung total berat
+        $totalWeight = $weightPerSheet * $quantity;
+
+        // Bulatkan ke atas ke kelipatan 100 gram terdekat untuk keamanan
+        return ceil($totalWeight / 100) * 100;
     }
 }

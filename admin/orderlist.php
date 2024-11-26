@@ -81,8 +81,6 @@ $n = 0;
                                 <td><a
                                         href="detail_order.php?order_id=<?= htmlspecialchars($order['order_id']); ?>"><button>Rincian</button></a>
                                 </td>
-                                <td>Rp.<?= number_format($order['total_harga'], 2); ?></td>
-                                <td><a href=""><button>Rincian</button></a></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

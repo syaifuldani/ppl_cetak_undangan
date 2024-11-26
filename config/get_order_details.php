@@ -1,4 +1,5 @@
 <?php
+
 // get_order_details.php
 session_start();
 require_once '../config/connection.php';
@@ -40,6 +41,23 @@ try {
     if (!$order) {
         throw new Exception('Pesanan tidak ditemukan');
     }
+
+    // Get order details with shipment data
+    $sqlshipments = "SELECT o.order_id, u.email, s.ekspedisi, s.nomor_resi, s.biaya_ongkir, s.estimasi_sampai
+            FROM orders o 
+            JOIN users u ON o.user_id = u.user_id 
+            LEFT JOIN shipments s ON o.order_id = s.order_id
+            WHERE o.order_id = :order_id AND o.user_id = :user_id";
+
+    $statement = $db->prepare($sqlshipments);
+    $statement->execute([
+        ':order_id' => $order_id,
+        ':user_id' => $user_id
+    ]);
+
+    $shipments = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+    $order['shipments'] = $shipments;
 
     // Get order items
     $sql = "SELECT od.*, p.nama_produk, p.gambar_satu 

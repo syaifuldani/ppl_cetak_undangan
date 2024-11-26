@@ -123,7 +123,7 @@ class PaymentHandler {
                 throw new Error("Invalid order configuration");
             }
 
-            // console.log("Sending order_id:", this.orderId); // Debug log
+            console.log("Sending order_id:", this.orderId); // Debug log
 
             this.setLoadingState(true);
 

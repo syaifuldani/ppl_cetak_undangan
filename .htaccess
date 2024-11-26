@@ -1,9 +1,49 @@
+# Deny access to sensitive directories
+
+RedirectMatch 403 ^/config/?$
+RedirectMatch 403 ^/vendor/?$
+RedirectMatch 403 ^/node_modules/?$
+
+# Protect sensitive files
+
+<FilesMatch "^(\.env|composer\.json|composer\.lock|package\.json|package-lock\.json)$">
+Order Allow,Deny
+Deny from all
+</FilesMatch>
+
+# Only allow access to specific file types
+
+<FilesMatch "\.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$">
+Order Allow,Deny
+Allow from all
+</FilesMatch>
+
+# Protect .htaccess
+
+<Files .htaccess>
+Order Allow,Deny
+Deny from all
+</Files>
+
+# Disable directory browsing
+
+Options -Indexes
+
+# Force HTTPS (uncomment if using SSL)
+
+# RewriteEngine On
+
+# RewriteCond %{HTTPS} off
+
+# RewriteRule ^(.\*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
 <Files "notification.php">
-    Order allow,deny
-    Allow from all
+Order allow,deny
+Allow from all
 </Files>
 
 # .htaccess
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
     
@@ -15,7 +55,13 @@
     # Allow from 103.127.16.0/23
     
     # Ensure PHP can handle the request
-    <Files "notification.php">
+    <IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*)$ $1.php
+</IfModule>
+<Files "notification.php">
         Allow from all
     </Files>
 </IfModule>

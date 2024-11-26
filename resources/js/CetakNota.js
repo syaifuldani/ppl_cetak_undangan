@@ -129,7 +129,7 @@ function generateNota(orderId) {
             // Konfigurasi PDF yang lebih baik
             const opt = {
                 margin: [8, 8, 8, 8],
-                filename: `nota-${orderId}.pdf`,
+                filename: `invoice-${orderId}.pdf`,
                 image: { type: "jpeg", quality: 0.98 },
                 html2canvas: {
                     scale: 2,

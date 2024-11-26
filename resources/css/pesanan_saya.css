@@ -1,7 +1,7 @@
 .pesanan-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 6rem 20px 20px 20px;
 }
 
 .status-tabs {
@@ -285,7 +285,7 @@
     width: 80%;
     max-width: 800px;
     position: relative;
-    max-height: 90vh;
+    max-height: 84vh;
     overflow-y: auto;
 }
 
@@ -349,25 +349,29 @@
 }
 
 .detail-section {
-    margin-bottom: 25px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
 }
 
 .detail-section h3 {
-    font-size: 18px;
-    margin-bottom: 15px;
+    margin: 0 0 20px 0;
     color: #333;
+    font-size: 18px;
 }
 
 .detail-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
+    gap: 20px;
 }
 
 .detail-item {
     padding: 10px;
     background: #f8f9fa;
-    border-radius: 5px;
+    border-radius: 6px;
 }
 
 .detail-label {
@@ -377,9 +381,41 @@
 }
 
 .detail-value {
-    font-size: 16px;
+    font-size: 15px;
     color: #333;
     font-weight: 500;
+}
+
+.expedition-badge {
+    background: #4caf50;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+.tracking-number {
+    font-family: monospace;
+    background: #e9ecef;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.pending {
+    color: #856404;
+    background-color: #fff3cd;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+@media (max-width: 768px) {
+    .detail-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
 }
 
 .items-table {

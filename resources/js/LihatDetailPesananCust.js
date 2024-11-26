@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             const data = await response.json();
-            // console.log('Data received:', data);
+            // console.log("Data received:", data);
 
             if (!data.success) {
                 throw new Error(
@@ -133,22 +133,71 @@ document.addEventListener("DOMContentLoaded", function () {
     </div>
 
     <div class="detail-section">
-        <h3>Informasi Pengiriman</h3>
-        <div class="detail-grid">
-            <div class="detail-item">
-                <div class="detail-label">Nama Penerima</div>
-                <div class="detail-value">${order.nama_penerima || "-"}</div>
-            </div>
-            <div class="detail-item">
-                <div class="detail-label">Nomor Telepon</div>
-                <div class="detail-value">${order.nomor_penerima || "-"}</div>
-            </div>
-            <div class="detail-item">
-                <div class="detail-label">Alamat Pengiriman</div>
-                <div class="detail-value">${order.alamat_penerima || "-"}</div>
+            <h3>Informasi Pengiriman</h3>
+            <div class="detail-grid">
+                <!-- Informasi Penerima -->
+                <div class="detail-item">
+                    <div class="detail-label">Nama Penerima</div>
+                    <div class="detail-value">${
+                        order.nama_penerima || "-"
+                    }</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Nomor Telepon</div>
+                    <div class="detail-value">${
+                        order.nomor_penerima || "-"
+                    }</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Alamat Pengiriman</div>
+                    <div class="detail-value">${
+                        order.alamat_penerima || "-"
+                    }</div>
+                </div>
+
+                <!-- Informasi Ekspedisi -->
+                <div class="detail-item">
+                    <div class="detail-label">Ekspedisi</div>
+                    <div class="detail-value">
+                        <span class="expedition-badge">
+                            ${order.shipments[0]?.ekspedisi || "-"} 
+                        </span>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Nomor Resi</div>
+                    <div class="detail-value">
+                        ${
+                            order.shipments[0]?.nomor_resi
+                                ? `<span class="tracking-number">${order.shipments[0]?.nomor_resi}</span>`
+                                : '<span class="pending">Menunggu nomor resi</span>'
+                        }
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Biaya Ongkir</div>
+                    <div class="detail-value">
+                        Rp ${
+                            order.shipments[0]?.biaya_ongkir
+                                ? Number(
+                                      order.shipments[0].biaya_ongkir
+                                  ).toLocaleString()
+                                : "-"
+                        }
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Estimasi Pengiriman</div>
+                    <div class="detail-value">
+                        ${
+                            order.shipments[0]?.estimasi_sampai
+                                ? `${order.shipments[0].estimasi_sampai} hari`
+                                : "-"
+                        }
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
     <div class="detail-section">
         <h3>Produk yang Dipesan</h3>

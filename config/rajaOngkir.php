@@ -1,11 +1,16 @@
 <?php
+
+require_once '../config/connection.php';
+require_once '../config/WeightCalculator.php'; // Class untuk kalkulasi berat
+header('Content-Type: application/json');
+
 class RajaOngkir
 {
     private $apiKey = "9dbeae2fb67ac68be056d572d047c462";
     private $baseUrl = "https://api.rajaongkir.com/starter/";
 
     // Tambahkan konstanta untuk origin
-    private const ORIGIN_CITY = '256'; // Kabupaten Mojokerto
+    private const ORIGIN_CITY = '289'; // Kabupaten Mojokerto
     private const ORIGIN_CITY_NAME = 'Kabupaten Mojokerto';
     private const ORIGIN_PROVINCE = '11'; // Jawa Timur
 
@@ -77,8 +82,10 @@ class RajaOngkir
         return json_decode($response, true);
     }
 
+
+
     // Fungsi untuk menghitung ongkir
-    public function calculateShipping($destination, $weight, $courier)
+    public function calculateShipping($destination, $courier, $weight)
     {
         $curl = curl_init();
 
@@ -101,6 +108,7 @@ class RajaOngkir
             ),
         ));
 
+
         $response = curl_exec($curl);
         $err = curl_error($curl);
         curl_close($curl);
@@ -111,4 +119,5 @@ class RajaOngkir
 
         return json_decode($response, true);
     }
+
 }
