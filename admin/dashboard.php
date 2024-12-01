@@ -3,15 +3,26 @@ session_start();
 
 // Cek apakah pengguna sudah login
 if (!isset($_SESSION['user_id'])) {
-    // Jika tidak ada session login, redirect ke halaman login
     header("Location: login_admin.php");
     exit();
 }
 
-// Data dari session setelah login
+// Include file konfigurasi koneksi database
+require '../config/connection.php';
+require '../config/function.php';
+
+// Data untuk halaman
 $title = "PleeART";
 $jenishalaman = "Dashboard";
 $user_email = $_SESSION['user_email']; // Email user yang diambil dari session
+
+// Mengambil data menggunakan fungsi yang sudah dibuat
+$total_pemesanan = getTotalPemesanan();
+$total_penjualan_selesai = getTotalPenjualanSelesai();
+$penjualan_per_bulan = getPenjualanPerBulan();
+$penjualan_terbanyak = getPenjualanTerbanyak();
+$pesanan_terbaru = getPesananTerbaru();
+$penjualan_chart = getPenjualanChart();
 ?>
 
 <!DOCTYPE html>
@@ -20,179 +31,186 @@ $user_email = $_SESSION['user_email']; // Email user yang diambil dari session
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $title ?></title>
+    <title><?= htmlspecialchars($title) ?></title>
     <link rel="icon" href="resources/img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="./style/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
 </head>
 
 <body>
     <div class="container">
-
         <?php require "template/sidebar.php"; ?>
-
-        <main class="main-content">
-
+        <main id="content-to-download" class="main-content">
             <?php require "template/header.php"; ?>
-
+            <!-- Dashboard Cards -->
             <section class="dashboard-cards">
                 <div class="card">
                     <h3>Total Orders</h3>
-                    <p>1</p>
+                    <p><?= htmlspecialchars($total_pemesanan) ?></p>
                 </div>
                 <div class="card">
                     <h3>Pesanan Selesai</h3>
-                    <p>0</p>
+                    <p><?= htmlspecialchars($total_penjualan_selesai) ?></p>
                 </div>
             </section>
 
+            <!-- Chart Section -->
             <section class="chart-section">
                 <h3>Grafik Penjualan</h3>
-                <div class="chart-controls">
-                    <button>Mingguan</button>
-                    <button>Bulan</button>
-                    <button>Tahunan</button>
-                </div>
-
-                <!-- Cart -->
-                <div class="chart">
-                    <canvas id="myChart1"></canvas>
-
-                    <canvas id="myChart2"></canvas>
+                <div class="charts">
+                    <div class="chart">
+                        <canvas id="myChart1"></canvas>
+                    </div>
+                    <div class="chart">
+                        <canvas id="myChart2"></canvas>
+                    </div>
                 </div>
             </section>
 
-            <section class="sales-section">
+            <!-- Sales Section -->
+            <section class="recent-orders">
                 <h3>Penjualan Terbanyak</h3>
                 <div class="sales-list">
-                    <div class="sales-item">
-                        <p>Undangan Pernikahan</p>
-                        <p>Rp. 126.50 (250 sales)</p>
-                    </div>
-                    <div class="sales-item">
-                        <p>Undangan Khitan</p>
-                        <p>Rp. 126.50 (100 sales)</p>
-                    </div>
-                    <div class="sales-item">
-                        <p>Undangan Ulang Tahun</p>
-                        <p>Rp. 126.50 (66 sales)</p>
-                    </div>
-                    <button>Report</button>
+                    <table class="sales-table">
+                        <thead>
+                            <tr>
+                                <th>Nama Produk</th>
+                                <th>Jumlah Order</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($penjualan_terbanyak as $item): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($item['nama_produk']) ?></td>
+                                    <td><?= htmlspecialchars($item['jumlah_terjual']) ?> orders</td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                    <button id="download-pdf">Download Report</button>
                 </div>
             </section>
 
+            <!-- Recent Orders -->
             <section class="recent-orders">
                 <h3>Pesanan Terbaru</h3>
                 <table>
                     <thead>
                         <tr>
-                            <th>Product</th>
-                            <th>Order ID</th>
-                            <th>Date</th>
-                            <th>Customer Name</th>
+                            <th>Nama Customer</th>
+                            <th>Nomor Penerima</th>
+                            <th>Alamat</th>
+                            <th>Kode Pos</th>
+                            <th>Keterangan Order</th>
+                            <th>Pembayaran</th>
+                            <th>Total Harga</th>
                             <th>Status</th>
-                            <th>Amount</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Lorem Ipsum</td>
-                            <td>#25425</td>
-                            <td>Nov 8th, 2023</td>
-                            <td>Kavin</td>
-                            <td>
-                                <select id="cars">
-                                    <option value="perludibayar">Perlu Dibayar</option>
-                                    <option value="terkirim">Terkirim</option>
-                                    <option value="dikemas">Dikemas</option>
-                                    <option value="selesai">Selesai</option>
-                                    <option value="dibatalkan">Dibatalkan</option>
-                                    <option value="perludikirim">Perlu Dikirim</option>
-                                </select>
-                            </td>
-                            <td>₹200.00</td>
-                        </tr>
-                        <tr>
-                            <td>Lorem Ipsum</td>
-                            <td>#25423</td>
-                            <td>Nov 6th, 2023</td>
-                            <td>Komal</td>
-                            <td>
-                                <select id="cars">
-                                    <option value="perludibayar">Perlu Dibayar</option>
-                                    <option value="terkirim">Terkirim</option>
-                                    <option value="dikemas">Dikemas</option>
-                                    <option value="selesai">Selesai</option>
-                                    <option value="dibatalkan">Dibatalkan</option>
-                                    <option value="perludikirim">Perlu Dikirim</option>
-                                </select>
-                            </td>
-                            <td>₹200.00</td>
-                        </tr>
-                        <!-- Add more rows as needed -->
+                        <?php foreach ($pesanan_terbaru as $item): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($item['nama_penerima']) ?></td>
+                                <td><?= htmlspecialchars($item['nomor_penerima']) ?></td>
+                                <td><?= htmlspecialchars($item['alamat_penerima']) ?></td>
+                                <td><?= htmlspecialchars($item['kodepos']) ?></td>
+                                <td><?= htmlspecialchars($item['keterangan_order']) ?></td>
+                                <td><?= htmlspecialchars($item['payment_type']) ?></td>
+                                <td>Rp.<?= number_format($item['total_harga']) ?></td>
+                                <td><?= htmlspecialchars($item['transaction_status']) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </section>
         </main>
     </div>
-    <script src="../node_modules/chart.js/dist/chart.umd.js"></script>
-    <script>
-        const xValues1 = [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150];
-        const yValues1 = [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
 
-        new Chart("myChart1", {
-            type: "line",
+    <script>
+        // Ambil data dari PHP ke dalam JavaScript
+        const bulan = <?php echo json_encode(array_column($penjualan_chart, 'bulan')); ?>;
+        const totalPenjualan = <?php echo json_encode(array_column($penjualan_chart, 'total')); ?>;
+
+        // Inisialisasi grafik garis dengan Chart.js
+        const ctx1 = document.getElementById('myChart1').getContext('2d');
+        const myChart1 = new Chart(ctx1, {
+            type: 'line',
             data: {
-                labels: xValues1,
+                labels: bulan,
                 datasets: [{
-                    backgroundColor: "rgba(0,0,255,1.0)",
-                    borderColor: "rgba(0,0,255,0.1)",
-                    data: yValues1
+                    label: 'Total Penjualan',
+                    data: totalPenjualan,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderWidth: 1
                 }]
             },
             options: {
-                maintainAspectRatio: false, // Prevent chart from resizing
-                responsive: false, // Disable responsiveness
-                legend: {
-                    display: false
-                },
+                responsive: true,
                 scales: {
-                    yAxes: [{
-                        ticks: {
-                            min: 6,
-                            max: 16
-                        }
-                    }],
+                    y: {
+                        beginAtZero: true
+                    }
                 }
             }
         });
 
-
-        var xValues2 = ["Italy", "France", "Spain", "USA", "Argentina"];
-        var yValues2 = [55, 49, 44, 24, 15];
-        var barColors = ["red", "green", "blue", "orange", "brown"];
-
-        new Chart("myChart2", {
-            type: "bar",
+        // Inisialisasi grafik batang dengan Chart.js
+        const ctx2 = document.getElementById('myChart2').getContext('2d');
+        const myChart2 = new Chart(ctx2, {
+            type: 'bar',
             data: {
-                labels: xValues2,
+                labels: bulan,
                 datasets: [{
-                    backgroundColor: barColors,
-                    data: yValues2
+                    label: 'Total Penjualan',
+                    data: totalPenjualan,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
                 }]
             },
             options: {
-                maintainAspectRatio: false, // Prevent chart from resizing
-                responsive: false, // Disable responsiveness
-                legend: {
-                    display: false
-                },
-                title: {
-                    display: true,
-                    text: "World Wine Production 2018"
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
                 }
             }
         });
     </script>
+
+    <script>
+        // Fungsi untuk mengunduh halaman sebagai PDF
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('download-pdf').addEventListener('click', function () {
+                const element = document.getElementById('content-to-download'); // Tentukan elemen khusus untuk diunduh
+                const options = {
+                    margin: 7,          // Mengurangi margin untuk memberi ruang lebih
+                    filename: 'report_penjualan.pdf', // Nama file PDF
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: {
+                        scale: 0.5, // Mengurangi skala untuk memastikan konten lebih kecil dan muat
+                        logging: true, // Logging untuk debugging
+                        letterRendering: true
+                    },
+                    jsPDF: {
+                        unit: 'mm',
+                        format: [490, 500], // Ukuran A2 dalam mm (594mm x 420mm)
+                        orientation: 'landscape', // Orientasi landscape
+                        pagesplit: true // Membagi konten ke beberapa halaman jika diperlukan
+                    }
+                };
+                html2pdf().from(element).set(options).save(); // Mengunduh elemen dengan pengaturan yang ditentukan
+            });
+        });
+    </script>
+
+
+
+
+
 </body>
 
 </html>

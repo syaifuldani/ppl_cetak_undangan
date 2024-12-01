@@ -1,16 +1,28 @@
-// Fungsi untuk menampilkan overlay
+window.onload = function() {
+    // Cek apakah URL mengandung parameter 'success'
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('success')) {
+        // Jika ada parameter success, panggil fungsi showOverlay dengan pesan sukses
+        showOverlay('Produk berhasil ditambahkan ke keranjang.');
+    } else if (urlParams.has('error')) {
+        // Jika ada parameter error, tampilkan pesan gagal dengan alert
+        alert('Gagal menambahkan produk ke keranjang.');
+    }
+};
+
 function showOverlay(message) {
     const overlay = document.getElementById('overlay');
     const overlayMessage = document.getElementById('overlayMessage');
-    overlayMessage.innerText = message; 
-    overlay.style.display = 'flex'; 
+
+    overlayMessage.innerText = message; // Set pesan ke overlay
+    overlay.style.display = 'flex'; // Tampilkan overlay dengan display flex untuk centering
 }
 
-// Fungsi untuk menyembunyikan overlay
 function hideOverlay() {
     const overlay = document.getElementById('overlay');
-    overlay.style.display = 'none'; 
+    overlay.style.display = 'none'; // Sembunyikan overlay
 }
+
 function decreaseQuantity() {
     const quantityInput = document.getElementById('quantityInput');
     let quantity = parseInt(quantityInput.value, 10);
