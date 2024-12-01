@@ -29,25 +29,31 @@ error_log("Raw POST data: " . $raw_post);
 error_log("POST array: " . print_r($_POST, true));
 
 try {
-    // Inisialisasi notifikasi Midtrans
     $notif = new Midtrans\Notification();
+    $transaction = $notif->transaction_status;
+    $order_id = $notif->order_id;
 
-    // Log notifikasi object
     error_log("Notification object: " . print_r($notif, true));
 
     $transaction = $notif->transaction_status;
     $type = $notif->payment_type;
-    $order_id = $notif->order_id;
     $fraud = $notif->fraud_status;
 
+    // Cek apakah ini order dengan suffix
+    $original_order_id = $order_id;
+    if (strpos($order_id, '-') !== false) {
+        $original_order_id = explode('-', $order_id)[0];
+    }
+
     error_log("Processing payment notification: " . json_encode([
-        'order_id' => $order_id,
+        'original_order_id' => $original_order_id,
+        'received_order_id' => $order_id,
         'transaction_status' => $transaction,
         'payment_type' => $type,
         'fraud_status' => $fraud
     ]));
 
-    // Update database
+    // Update database untuk order asli
     $sql = "UPDATE orders SET 
             payment_type = :payment_type,
             transaction_status = :transaction_status,
@@ -62,7 +68,9 @@ try {
         'transaction_id' => $notif->transaction_id,
         'status_code' => $notif->status_code,
         'status_message' => $notif->status_message,
-        'gross_amount' => $notif->gross_amount
+        'gross_amount' => $notif->gross_amount,
+        'original_order_id' => $original_order_id,
+        'payment_order_id' => $order_id
     ]);
 
     $params = [
@@ -71,19 +79,17 @@ try {
         ':transaction_time' => date('Y-m-d H:i:s'),
         ':payment_details' => $paymentDetails,
         ':fraud_status' => $fraud,
-        ':order_id' => $order_id
+        ':order_id' => $original_order_id  // Gunakan original order ID
     ];
 
-    // Log parameters
     error_log("Update parameters: " . json_encode($params));
 
-    // Execute update
     $result = $stmt->execute($params);
 
     if ($result) {
-        // Verify update
+        // Verifikasi update
         $verifyStmt = $GLOBALS['db']->prepare("SELECT * FROM orders WHERE order_id = ?");
-        $verifyStmt->execute([$order_id]);
+        $verifyStmt->execute([$original_order_id]);
         $updatedOrder = $verifyStmt->fetch(PDO::FETCH_ASSOC);
         error_log("Updated order data: " . json_encode($updatedOrder));
 

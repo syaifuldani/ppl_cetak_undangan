@@ -839,7 +839,8 @@ function getAllDataByCategory($category)
     // Ambil data produk undangan khitan dari database
     $sql = "SELECT product_id, nama_produk, deskripsi, harga_produk, gambar_satu, gambar_dua, gambar_tiga, kategori FROM products WHERE kategori = :category";
     $stmt = $GLOBALS["db"]->prepare($sql);
-    $stmt->execute(['kategori' => $category]);
+    $stmt->bindParam(':category', $category);
+    $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 }
@@ -863,31 +864,30 @@ function getOrdersByID($userId)
 {
     global $db;
 
-    $sql = "SELECT o.*, 
-            GROUP_CONCAT(
-                JSON_OBJECT(
-                    'product_id', od.product_id,
-                    'nama_produk', p.nama_produk,
-                    'gambar_satu', p.gambar_satu,
-                    'jumlah_order', od.jumlah_order,
-                    'harga_order', od.harga_order
-                )
-            ) as items
-            FROM orders o
-            LEFT JOIN order_details od ON o.order_id = od.order_id
-            LEFT JOIN products p ON od.product_id = p.product_id
-            WHERE o.user_id = :user_id
-            GROUP BY o.order_id
+    // Query utama untuk orders
+    $sql = "SELECT o.* FROM orders o 
+            WHERE o.user_id = :user_id 
             ORDER BY o.created_at DESC";
 
     $stmt = $db->prepare($sql);
     $stmt->execute([':user_id' => $userId]);
-
     $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Parse the JSON string of items
+    // Query tambahan untuk mendapatkan items per order
     foreach ($orders as &$order) {
-        $order['items'] = json_decode('[' . $order['items'] . ']', true);
+        $itemSql = "SELECT 
+                    od.product_id,
+                    p.nama_produk,
+                    p.gambar_satu,
+                    od.jumlah_order,
+                    od.harga_order
+                FROM order_details od
+                JOIN products p ON od.product_id = p.product_id
+                WHERE od.order_id = :order_id";
+
+        $itemStmt = $db->prepare($itemSql);
+        $itemStmt->execute([':order_id' => $order['order_id']]);
+        $order['items'] = $itemStmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     return $orders;
@@ -949,6 +949,52 @@ function updateStatusByOrderId($orderID, $newStatus)
             'message' => $e->getMessage()
         ];
     }
+}
+
+function updateResi($orderID, $nomor_resi)
+{
+    try {
+        // Validasi input
+        if (empty($orderID) || empty($nomor_resi)) {
+            throw new Exception("Order ID dan nomor resi tidak boleh kosong");
+        }
+
+        // Cek apakah order exist
+        $checkOrder = "SELECT order_id FROM shipments WHERE order_id = :order_id";
+        $checkStmt = $GLOBALS['db']->prepare($checkOrder);
+        $checkStmt->execute([':order_id' => $orderID]);
+
+        if ($checkStmt->fetch()) {
+            // Update jika data sudah ada
+            $sql = "UPDATE shipments SET nomor_resi = :nomor_resi WHERE order_id = :order_id";
+        } else {
+            // Insert jika data belum ada
+            $sql = "INSERT INTO shipments (order_id, nomor_resi) VALUES (:order_id, :nomor_resi)";
+        }
+
+        // Update nomor resi
+        $stmt = $GLOBALS['db']->prepare($sql);
+        $result = $stmt->execute([
+            ':nomor_resi' => $nomor_resi,
+            ':order_id' => $orderID
+        ]);
+
+        if (!$result) {
+            throw new Exception("Gagal mengupdate nomor resi");
+        }
+
+        return [
+            'success' => true,
+            'message' => 'Nomor resi berhasil diupdate'
+        ];
+    } catch (PDOException $e) {
+        echo "<script>
+        alert('Error: Gagal mengupdate nomor resi - " . $e->getMessage() . "');
+        window.history.back();
+    </script>";
+        exit;
+    }
+
 }
 
 // =================================================================

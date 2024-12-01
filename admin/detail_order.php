@@ -11,10 +11,28 @@ if (!isset($_SESSION['user_id']) && $_SESSION['user_id'] != 'admin') {
     exit;
 }
 // var_dump($_SESSION['user_id']);
-
 // Ambil order_id dari parameter URL
 $order_id = $_GET['order_id'] ?? null;
 // var_dump($order_id);
+
+if (isset($_POST['update_resi'])) {
+    $result = updateResi($_POST['order_id'], $_POST['nomor_resi']);
+
+    if ($result['success']) {
+        echo "<script>
+            alert('Nomor resi berhasil diupdate');
+            window.location.href = window.location.href.split('?')[0] + '?order_id=" . $order_id . "';
+        </script>";
+        exit;
+    } else {
+        echo "<script>
+            alert('Error: Gagal mengupdate nomor resi - " . $e->getMessage() . "');
+            window.history.back();
+        </script>";
+        exit;
+    }
+}
+
 
 if (!$order_id) {
     die('Order ID tidak valid');
@@ -49,14 +67,19 @@ try {
     $order = $stmt->fetch(PDO::FETCH_ASSOC);
 
     // Get order items
-    $stmt = $db->prepare("
+    $stmtOI = $db->prepare("
         SELECT od.*, p.nama_produk, p.gambar_satu
         FROM order_details od
         JOIN products p ON od.product_id = p.product_id
         WHERE od.order_id = ?
     ");
-    $stmt->execute([$order_id]);
-    $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmtOI->execute([$order_id]);
+    $items = $stmtOI->fetchAll(PDO::FETCH_ASSOC);
+
+    $stmtshipments = $db->prepare("SELECT nomor_resi FROM shipments WHERE order_id = ?");
+    $stmtshipments->execute([$order_id]);
+    $shipments = $stmtshipments->fetchAll(PDO::FETCH_ASSOC);
+    // var_dump($shipments);
 
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
@@ -163,24 +186,38 @@ try {
                         </tbody>
                     </table>
 
-                    <form class="status-form" method="POST"
-                        action="<?= $_SERVER['PHP_SELF'] ?>?order_id=<?= $order['order_id'] ?>">
-                        <input type="hidden" name="order_id" value="<?= htmlspecialchars($order['order_id']) ?>">
-                        <h3>Update Status Pesanan</h3>
-                        <select name="status" class="status-select">
-                            <option value="pending" <?= $order['transaction_status'] == 'pending' ? 'selected' : '' ?>>
-                                Pending</option>
-                            <option value="processing" <?= $order['transaction_status'] == 'processing' ? 'selected' : '' ?>>
-                                Dikemas</option>
-                            <option value="shipped" <?= $order['transaction_status'] == 'shipped' ? 'selected' : '' ?>>
-                                Dikirim</option>
-                            <option value="delivered" <?= $order['transaction_status'] == 'delivered' ? 'selected' : '' ?>>
-                                Terkirim</option>
-                            <option value="cancelled" <?= $order['transaction_status'] == 'cancelled' ? 'selected' : '' ?>>
-                                Cancelled</option>
-                        </select>
-                        <button type="submit" name="update_status" class="update-btn">Update Status</button>
-                    </form>
+                    <div class="d-flex gap-4">
+                        <!-- Form Update Status -->
+                        <form class="status-form" method="POST"
+                            action="<?= $_SERVER['PHP_SELF'] ?>?order_id=<?= $order['order_id'] ?>">
+                            <input type="hidden" name="order_id" value="<?= htmlspecialchars($order['order_id']) ?>">
+                            <h3>Update Status Pesanan</h3>
+                            <select name="status" class="status-select">
+                                <option value="pending" <?= $order['transaction_status'] == 'pending' ? 'selected' : '' ?>>
+                                    Pending</option>
+                                <option value="processing" <?= $order['transaction_status'] == 'processing' ? 'selected' : '' ?>>Dikemas</option>
+                                <option value="shipped" <?= $order['transaction_status'] == 'shipped' ? 'selected' : '' ?>>
+                                    Dikirim</option>
+                                <option value="delivered" <?= $order['transaction_status'] == 'delivered' ? 'selected' : '' ?>>
+                                    Terkirim</option>
+                                <option value="cancelled" <?= $order['transaction_status'] == 'cancelled' ? 'selected' : '' ?>>
+                                    Cancelled</option>
+                            </select>
+                            <button type="submit" name="update_status" class="update-btn">Update Status</button>
+                        </form>
+
+                        <!-- Form Input Resi -->
+                        <form class="resi-form" method="POST"
+                            action="<?= $_SERVER['PHP_SELF'] ?>?order_id=<?= $order['order_id'] ?>">
+                            <input type="hidden" name="order_id" value="<?= htmlspecialchars($order['order_id']) ?>">
+                            <h3>Input Nomor Resi</h3>
+                            <div class="input-group">
+                                <input type="text" name="nomor_resi" class="resi-input" placeholder="Masukkan nomor resi"
+                                    value="<?= isset($shipments[0]['nomor_resi']) ? htmlspecialchars($shipments[0]['nomor_resi']) : '' ?>">
+                                <button type="submit" name="update_resi" class="resi-btn">Simpan Resi</button>
+                            </div>
+                        </form>
+                    </div>
                 <?php else: ?>
                     <p>Order tidak ditemukan</p>
                 <?php endif; ?>

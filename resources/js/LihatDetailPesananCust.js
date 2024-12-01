@@ -59,42 +59,41 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     window.viewOrderDetails = async function (orderId) {
+        if (!orderId) {
+            console.error("Order ID tidak valid:", orderId);
+            return;
+        }
+
         const loadingHtml = `
-<div class="loading-spinner" style="text-align: center; padding: 20px;">
-    <div class="spinner"></div>
-    <p>Memuat detail pesanan...</p>
-</div>
-`;
+            <div class="loading-spinner" style="text-align: center; padding: 20px;">
+                <div class="spinner"></div>
+                <p>Memuat detail pesanan...</p>
+            </div>
+        `;
 
         const modal = document.getElementById("orderDetailModal");
         const content = document.getElementById("orderDetailContent");
 
-        // Show modal with loading state
         content.innerHTML = loadingHtml;
         modal.style.display = "block";
 
         try {
-            // console.log('Fetching order details for:', orderId);
-            const response = await fetch(
-                `../config/get_order_details.php?order_id=${orderId}`,
-                {
-                    headers: {
-                        "X-Requested-With": "XMLHttpRequest", // Tandai sebagai AJAX request
-                    },
-                }
-            );
+            // Debug: log order ID
+            console.log("Requesting order details for ID:", orderId);
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+            // Lakukan fetch dengan error handling
+            const response = await fetch(
+                `../config/get_order_details.php?order_id=${orderId}`
+            );
+            // Log response status
+
+            console.log("Response received:", response.status);
 
             const data = await response.json();
-            // console.log("Data received:", data);
+            console.log("Response text:", data);
 
             if (!data.success) {
-                throw new Error(
-                    data.message || "Failed to fetch order details"
-                );
+                throw new Error(data.message || "Gagal memuat detail pesanan");
             }
 
             const order = data.order;
@@ -113,7 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="detail-grid">
             <div class="detail-item">
                 <div class="detail-label">Order ID</div>
-                <div class="detail-value">${order.order_id}</div>
+                <div class="detail-value"></div>${order.order_id}
             </div>
             <div class="detail-item">
                 <div class="detail-label">Tanggal Pesanan</div>
@@ -160,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <div class="detail-label">Ekspedisi</div>
                     <div class="detail-value">
                         <span class="expedition-badge">
-                            ${order.shipments[0]?.ekspedisi || "-"} 
+                            ${order.ekspedisi || "-"} 
                         </span>
                     </div>
                 </div>
@@ -168,8 +167,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     <div class="detail-label">Nomor Resi</div>
                     <div class="detail-value">
                         ${
-                            order.shipments[0]?.nomor_resi
-                                ? `<span class="tracking-number">${order.shipments[0]?.nomor_resi}</span>`
+                            order.nomor_resi
+                                ? `<span class="tracking-number">${order.nomor_resi}</span>`
                                 : '<span class="pending">Menunggu nomor resi</span>'
                         }
                     </div>
@@ -178,10 +177,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     <div class="detail-label">Biaya Ongkir</div>
                     <div class="detail-value">
                         Rp ${
-                            order.shipments[0]?.biaya_ongkir
-                                ? Number(
-                                      order.shipments[0].biaya_ongkir
-                                  ).toLocaleString()
+                            order.biaya_ongkir
+                                ? Number(order.biaya_ongkir).toLocaleString()
                                 : "-"
                         }
                     </div>
@@ -190,8 +187,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     <div class="detail-label">Estimasi Pengiriman</div>
                     <div class="detail-value">
                         ${
-                            order.shipments[0]?.estimasi_sampai
-                                ? `${order.shipments[0].estimasi_sampai} hari`
+                            order.estimasi_sampai
+                                ? `${order.estimasi_sampai} hari`
                                 : "-"
                         }
                     </div>
@@ -211,37 +208,47 @@ document.addEventListener("DOMContentLoaded", function () {
                 </tr>
             </thead>
             <tbody>
-                ${
-                    order.items
-                        ? order.items
-                              .map(
-                                  (item) => `
-                    <tr>
-                        <td>
-                            <div class="product-cell">
-                                <img src="${
-                                    item.gambar_satu
-                                }" class="product-image" alt="${
-                                      item.nama_produk
-                                  }">
-                                <div>${item.nama_produk}</div>
-                            </div>
-                        </td>
-                        <td>Rp ${formatNumber(item.harga_order)}</td>
-                        <td>${item.jumlah_order}</td>
-                        <td>Rp ${formatNumber(
-                            item.harga_order * item.jumlah_order
-                        )}</td>
-                    </tr>
-                `
-                              )
-                              .join("")
-                        : '<tr><td colspan="4">Tidak ada item</td></tr>'
-                }
-            </tbody>
+                        ${
+                            order.items && order.items.length > 0
+                                ? order.items
+                                      .map(
+                                          (item) => `
+                                <tr>
+                                    <td style="padding: 12px; border: 1px solid #ddd;">
+                                        <div style="font-weight: 500; color: #333;">${
+                                            item.nama_produk
+                                        }</div>
+                                    </td>
+                                    <td style="padding: 12px; border: 1px solid #ddd; text-align: right; color: #666;">
+                                        Rp ${formatNumber(item.harga_order)}
+                                    </td>
+                                    <td style="padding: 12px; border: 1px solid #ddd; text-align: center; color: #666;">
+                                        ${item.jumlah_order}
+                                    </td>
+                                    <td style="padding: 12px; border: 1px solid #ddd; text-align: right; color: #333; font-weight: 500;">
+                                        Rp ${formatNumber(
+                                            item.harga_order * item.jumlah_order
+                                        )}
+                                    </td>
+                                </tr>
+                            `
+                                      )
+                                      .join("")
+                                : '<tr><td colspan="4" style="padding: 12px; border: 1px solid #ddd; text-align: center;">Tidak ada item</td></tr>'
+                        }
+                    </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="3" style="text-align: right;"><strong>Total Pesanan:</strong></td>
+                    <td colspan="3" style="text-align: right;">Biaya Ongkir :</td>
+                    <td>Rp${
+                        order.biaya_ongkir
+                            ? Number(order.biaya_ongkir).toLocaleString()
+                            : "-"
+                    }
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" style="text-align: right;"><strong>Total Pesanan :</strong></td>
                     <td><strong>Rp ${formatNumber(
                         order.total_harga
                     )}</strong></td>
@@ -258,13 +265,13 @@ document.addEventListener("DOMContentLoaded", function () {
     </div>
 `;
         } catch (error) {
-            // console.error('Error fetching order details:', error);
+            console.error("Error:", error);
             content.innerHTML = `
-    <div class="error-message" style="text-align: center; padding: 20px; color: #dc3545;">
-        <p>Gagal memuat detail pesanan: ${error.message}</p>
-        <button onclick="closeModal()" class="btn-secondary">Tutup</button>
-    </div>
-`;
+                <div class="error-message" style="text-align: center; padding: 20px; color: #dc3545;">
+                    <p>Gagal memuat detail pesanan: ${error.message}</p>
+                    <button onclick="closeModal()" class="btn-secondary">Tutup</button>
+                </div>
+            `;
         }
     };
 });
@@ -310,6 +317,7 @@ window.closeModal = function () {
     document.getElementById("orderDetailModal").style.display = "none";
 };
 
+// Event listeners
 // Event listeners
 document.addEventListener("DOMContentLoaded", function () {
     const modal = document.getElementById("orderDetailModal");

@@ -20,7 +20,8 @@ try {
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_CUSTOMREQUEST => "GET",
                 CURLOPT_HTTPHEADER => array(
-                    "key: 9dbeae2fb67ac68be056d572d047c462"  // Ganti dengan API key Anda
+                    "key: 9dbeae2fb67ac68be056d572d047c462
+"  // Ganti dengan API key Anda
                 ),
             ));
 
@@ -51,7 +52,8 @@ try {
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_CUSTOMREQUEST => "GET",
                 CURLOPT_HTTPHEADER => array(
-                    "key: 9dbeae2fb67ac68be056d572d047c462"  // Ganti dengan API key Anda
+                    "key: 9dbeae2fb67ac68be056d572d047c462
+"  // Ganti dengan API key Anda
                 ),
             ));
 

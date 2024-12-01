@@ -69,7 +69,7 @@ class PaymentHandler {
             // console.log("Response status:", response.status);
 
             const text = await response.text();
-            // console.log("Raw response:", text);
+            console.log("Raw response:", text);
 
             if (!response.ok) {
                 throw new Error(text || "Server error");
@@ -142,7 +142,7 @@ class PaymentHandler {
             );
 
             const text = await response.text();
-            // console.log("Server response:", text);
+            console.log("Server response:", text);
 
             try {
                 const data = JSON.parse(text);

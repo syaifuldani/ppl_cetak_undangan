@@ -1,91 +1,82 @@
 <?php
-
-// get_order_details.php
+ob_start();
 session_start();
 require_once '../config/connection.php';
 
+if (ob_get_length())
+    ob_clean();
 header('Content-Type: application/json');
 
 try {
-    // Check if user is logged in
     if (!isset($_SESSION['user_id'])) {
-        throw new Exception('Silakan login terlebih dahulu');
+        throw new Exception('Unauthorized');
     }
 
-    $user_id = $_SESSION['user_id'];
-
-    // Check if order_id is provided
-    if (!isset($_GET['order_id'])) {
-        throw new Exception('ID pesanan tidak ditemukan');
+    $order_id = $_GET['order_id'] ?? null;
+    if (!$order_id) {
+        throw new Exception('Order ID is required');
     }
 
-    $order_id = $_GET['order_id'];
+    // Get order and shipment details
+    $orderQuery = "SELECT o.*, s.ekspedisi, s.nomor_resi, s.biaya_ongkir, s.estimasi_sampai
+                  FROM orders o
+                  LEFT JOIN shipments s ON o.order_id = s.order_id
+                  WHERE o.order_id = ? AND o.user_id = ?";
 
-    // Debug log
-    error_log("Fetching order details - User ID: $user_id, Order ID: $order_id");
+    $orderStmt = $db->prepare($orderQuery);
+    $orderStmt->execute([$order_id, $_SESSION['user_id']]);
+    $orderData = $orderStmt->fetch(PDO::FETCH_ASSOC);
 
-    // Get order details
-    $sql = "SELECT o.*, u.email 
-            FROM orders o 
-            JOIN users u ON o.user_id = u.user_id 
-            WHERE o.order_id = :order_id AND o.user_id = :user_id";
-
-    $stmt = $db->prepare($sql);
-    $stmt->execute([
-        ':order_id' => $order_id,
-        ':user_id' => $user_id
-    ]);
-
-    $order = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if (!$order) {
-        throw new Exception('Pesanan tidak ditemukan');
+    if (!$orderData) {
+        throw new Exception('Order not found');
     }
-
-    // Get order details with shipment data
-    $sqlshipments = "SELECT o.order_id, u.email, s.ekspedisi, s.nomor_resi, s.biaya_ongkir, s.estimasi_sampai
-            FROM orders o 
-            JOIN users u ON o.user_id = u.user_id 
-            LEFT JOIN shipments s ON o.order_id = s.order_id
-            WHERE o.order_id = :order_id AND o.user_id = :user_id";
-
-    $statement = $db->prepare($sqlshipments);
-    $statement->execute([
-        ':order_id' => $order_id,
-        ':user_id' => $user_id
-    ]);
-
-    $shipments = $statement->fetchAll(PDO::FETCH_ASSOC);
-
-    $order['shipments'] = $shipments;
 
     // Get order items
-    $sql = "SELECT od.*, p.nama_produk, p.gambar_satu 
-            FROM order_details od
-            JOIN products p ON od.product_id = p.product_id
-            WHERE od.order_id = :order_id";
+    $itemsQuery = "SELECT od.*, p.nama_produk
+                  FROM order_details od
+                  JOIN products p ON od.product_id = p.product_id
+                  WHERE od.order_id = ?";
 
-    $stmt = $db->prepare($sql);
-    $stmt->execute([':order_id' => $order_id]);
-    $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $itemsStmt = $db->prepare($itemsQuery);
+    $itemsStmt->execute([$order_id]);
+    $items = $itemsStmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Add items to order data
-    $order['items'] = $items;
-
-    // Debug log
-    error_log("Order details found: " . json_encode($order));
-
-    echo json_encode([
+    // Format response
+    $response = [
         'success' => true,
-        'order' => $order
-    ]);
+        'order' => [
+            'order_id' => $orderData['order_id'],
+            'created_at' => $orderData['created_at'],
+            'nama_penerima' => $orderData['nama_penerima'],
+            'nomor_penerima' => $orderData['nomor_penerima'],
+            'alamat_penerima' => $orderData['alamat_penerima'],
+            'total_harga' => $orderData['total_harga'],
+            'transaction_status' => $orderData['transaction_status'],
+            'payment_type' => $orderData['payment_type'],
+            'ekspedisi' => $orderData['ekspedisi'],
+            'nomor_resi' => $orderData['nomor_resi'],
+            'biaya_ongkir' => $orderData['biaya_ongkir'],
+            'estimasi_sampai' => $orderData['estimasi_sampai'],
+            'items' => array_map(function ($item) {
+                return [
+                    'nama_produk' => $item['nama_produk'],
+                    'harga_order' => $item['harga_order'],
+                    'jumlah_order' => $item['jumlah_order'],
+                ];
+            }, $items)
+        ]
+    ];
+
+    ob_clean();
+    echo json_encode($response);
+    exit;
 
 } catch (Exception $e) {
-    error_log("Error in get_order_details.php: " . $e->getMessage());
-
+    ob_clean();
     http_response_code(400);
     echo json_encode([
         'success' => false,
         'message' => $e->getMessage()
     ]);
+    exit;
 }

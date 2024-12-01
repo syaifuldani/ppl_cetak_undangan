@@ -14,7 +14,7 @@ function setSecurityHeaders()
 
     // Protect against XSS and other injections
     // Update Content Security Policy untuk mengizinkan cdnjs
-    header("Content-Security-Policy: default-src 'self' https://*.midtrans.com; script-src 'self' https://*.midtrans.com https://cdnjs.cloudflare.com 'unsafe-inline' 'unsafe-eval';  style-src 'self' 'unsafe-inline';  img-src 'self' data: https:;  frame-src https://*.midtrans.com");
+    header("Content-Security-Policy: script-src 'self' https://*.midtrans.com https://cdnjs.cloudflare.com https://code.jquery.com 'unsafe-inline' 'unsafe-eval'");
 
     // Prevent MIME-type sniffing
     header("X-Content-Type-Options: nosniff");
@@ -42,6 +42,8 @@ if (!isset($_SESSION['user_id'])) {
 }
 $userId = $_SESSION['user_id'];
 $orders = getOrdersByID($userId);
+// var_dump($userId);
+// var_dump($orders);
 
 ?>
 
@@ -57,7 +59,8 @@ $orders = getOrdersByID($userId);
     <title>Riwayat Pesanan</title>
     <link rel="icon" href="../resources/img/icons/pleart.png" type="image/png">
     <!-- // Cetak Note Script -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- Ganti URL jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="../resources/css/cart.css">
     <link rel="stylesheet" href="../resources/css/navbar.css">
     <link rel="stylesheet" href="../resources/css/pesanan_saya.css">
@@ -122,26 +125,33 @@ $orders = getOrdersByID($userId);
 
                         <div class="order-body">
                             <div class="order-items">
-                                <?php foreach ($order['items'] as $item): ?>
-                                    <div class="item">
-                                        <img src="<?= $item['gambar_satu'] ?>" alt="<?= $item['nama_produk'] ?>"
-                                            class="item-image">
-                                        <div class="item-details">
-                                            <h4><?= $item['nama_produk'] ?></h4>
-                                            <p><?= $item['jumlah_order'] ?> x Rp
-                                                <?= number_format($item['harga_order'], 0, ',', '.') ?>
-                                            </p>
+                                <?php if (isset($order['items']) && is_array($order['items'])): ?>
+                                    <?php foreach ($order['items'] as $item): ?>
+                                        <div class="item">
+                                            <img src="<?= htmlspecialchars($item['gambar_satu']) ?>"
+                                                alt="<?= htmlspecialchars($item['nama_produk']) ?>" class="item-image">
+                                            <div class="item-details">
+                                                <h4><?= htmlspecialchars($item['nama_produk']) ?></h4>
+                                                <p><?= $item['jumlah_order'] ?> x Rp
+                                                    <?= number_format($item['harga_order'], 0, ',', '.') ?>
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                <?php endforeach; ?>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <p>Tidak ada item dalam pesanan ini.</p>
+                                <?php endif; ?>
                             </div>
 
+                            <!-- Di bagian tampilan -->
                             <div class="order-info">
                                 <div class="total-items">
-                                    <?= count($order['items']) ?> Produk
+                                    <?= isset($order['items']) && is_array($order['items']) ? count($order['items']) : 0 ?>
+                                    Produk
                                 </div>
                                 <div class="total-price">
-                                    Total Pesanan: <span>Rp <?= number_format($order['total_harga'], 0, ',', '.') ?></span>
+                                    Total Pesanan: <span>Rp
+                                        <?= number_format($order['total_harga'] ?? 0, 0, ',', '.') ?></span>
                                 </div>
                             </div>
                         </div>
@@ -158,7 +168,8 @@ $orders = getOrdersByID($userId);
                                     Pesanan Diterima
                                 </button>
                             <?php endif; ?>
-                            <button class="btn-details" onclick="viewOrderDetails('<?= $order['order_id'] ?>')">Lihat
+                            <button class="btn-details"
+                                onclick="viewOrderDetails('<?= htmlspecialchars($order['order_id']) ?>')">Lihat
                                 Detail</button>
                         </div>
                     </div>
@@ -230,9 +241,11 @@ $orders = getOrdersByID($userId);
             return false;
         }
     </script>
-    <script src="..\resources\js\LihatDetailPesananCust.js"></script>
-    <script src="..\resources\js\Order.js"></script>
-    <script src="..\resources\js\CetakNota.js"></script>
+    <!-- Tambahkan di bagian head -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="../resources/js/LihatDetailPesananCust.js"></script>
+    <script src="../resources/js/Order.js"></script>
+    <script src="../resources/js/CetakNota.js"></script>
 
 </body>
 

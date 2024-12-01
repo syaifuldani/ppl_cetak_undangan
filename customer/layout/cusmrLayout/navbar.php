@@ -29,7 +29,8 @@ require_once '../config/function.php';
             <div class="search-bar">
                 <form action="" method="POST" class="search-input">
                     <label><img src="../resources/img/icons/search.png" alt="search"></label>
-                    <input type="text" id="navbarSearchBox" name="query" placeholder="Cari produk..." value="<?= isset($_POST['query']) ? htmlspecialchars($_POST['query']) : '' ?>">
+                    <input type="text" id="navbarSearchBox" name="query" placeholder="Cari produk..."
+                        value="<?= isset($_POST['query']) ? htmlspecialchars($_POST['query']) : '' ?>">
                 </form>
             </div>
             <li><a href="dashboard.php" class="home">Home</a></li>

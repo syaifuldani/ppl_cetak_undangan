@@ -457,6 +457,22 @@ class PaymentHandler
                 throw new Exception("Order ID is required");
             }
 
+            // Cek status order
+            $check_status = "SELECT transaction_status FROM orders WHERE order_id = ?";
+            $stmt = $this->db->prepare($check_status);
+            $stmt->execute([$order_id]);
+            $current_status = $stmt->fetchColumn();
+
+            // Jika status pending, batalkan transaksi sebelumnya di Midtrans
+            if ($current_status === 'pending') {
+                try {
+                    \Midtrans\Transaction::cancel($order_id);
+                } catch (Exception $e) {
+                    // Abaikan error jika transaksi sudah expired/cancelled
+                    error_log("Cancel transaction warning: " . $e->getMessage());
+                }
+            }
+
             // Get order data dengan shipment dalam satu query
             $sql = "SELECT o.*, s.biaya_ongkir, s.ekspedisi 
                 FROM orders o 
@@ -544,8 +560,8 @@ class PaymentHandler
                 'item_details' => $item_details,
                 'customer_details' => [
                     'first_name' => $order['nama_penerima'],
+                    // 'email' => $data['email'] ?? '',
                     'phone' => $order['nomor_penerima'],
-                    // 'email' => $order['email'] ?? '',
                     'billing_address' => [
                         'first_name' => $order['nama_penerima'],
                         'phone' => $order['nomor_penerima'],
