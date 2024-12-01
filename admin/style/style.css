@@ -119,56 +119,26 @@ body {
 .dashboard-cards {
     display: flex;
     justify-content: flex-start;
-    margin: 20px 10;
+    margin: 20px 20;
     margin-top: 2rem;
 }
 
 .card {
     background-color: rgb(255, 179, 0);
-    padding: 10px;
+    padding: 30px;
     width: 20%;
-    border-radius: 10px;
+    border-radius: 20px;
 
     box-shadow: 10px 8px 6px rgba(0, 0, 0, 0.1);
-    margin: 10px;
+    margin: 20px;
 }
 
 .card h3 {
     margin-bottom: 10px;
 }
-
-.chart-section {
-    margin: 20px 0;
-}
-
-.chart-controls button {
-    background-color: #ddd;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    margin-right: 10px;
-    margin-top: 6px;
-}
-.chart {
-    display: flex; /* Align canvases side by side */
-    justify-content: space-between; /* Space between charts */
-    background-color: white;
-    padding: 20px;
-    gap: 20px;
-    border-radius: 8px;
-    margin-top: 10px;
-    -webkit-border-radius: 8px;
-    -moz-border-radius: 8px;
-    -ms-border-radius: 8px;
-    -o-border-radius: 8px;
-}
-
-.chart canvas {
-    width: 550px !important; /* Fixed width */
-    height: 360px !important; /* Fixed height */
-    background-color: #f9f9f9; /* Optional background color for visibility */
-    padding: 10px;
-    border-radius: 8px;
+.card p {   
+    margin-bottom: 10px;
+    font-size: 20px;
 }
 
 .sales-section {
@@ -179,11 +149,8 @@ body {
     background-color: white;
     padding: 14px;
     margin-top: 6px;
-    border-radius: 8px;
-    -webkit-border-radius: 8px;
-    -moz-border-radius: 8px;
-    -ms-border-radius: 8px;
-    -o-border-radius: 8px;
+    border-radius: 8px; /* Menggunakan border-radius standar untuk semua browser */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Menambahkan bayangan untuk tampilan lebih menarik */
 }
 
 .sales-item {
@@ -192,13 +159,47 @@ body {
     margin-bottom: 10px;
 }
 
+.sales-table {
+    width: 100%;
+    border-collapse: collapse; /* Menghilangkan ruang antar sel */
+}
+
+.sales-table th, .sales-table td {
+    padding: 12px 15px; /* Padding yang nyaman di dalam tabel */
+    text-align: left; 
+    border: 1px solid #ddd; /* Garis pemisah antar sel */
+}
+
+.sales-table th {
+    background-color: #f4f4f4; /* Warna latar belakang header */
+    font-weight: bold;
+    color: #333;
+}
+
+.sales-table tr:nth-child(even) {
+    background-color: #f9f9f9; /* Latar belakang baris genap */
+}
+
+.sales-table tr:hover {
+    background-color: #f1f1f1; /* Efek hover untuk baris */
+}
+
 .sales-list button {
-    background-color: #007bff;
+    background-color: #007bff; /* Warna latar belakang tombol */
     color: white;
     border: none;
-    padding: 10px;
+    padding: 10px 20px; /* Padding yang lebih besar untuk tombol */
     cursor: pointer;
+    border-radius: 5px; /* Sudut melengkung pada tombol */
+    margin-top: 20px;
+    display: block; /* Tombol berada di bawah tabel */
+    width: 100%; /* Lebar tombol penuh */
 }
+
+.sales-list button:hover {
+    background-color: #0056b3; /* Efek hover tombol */
+}
+
 
 .recent-orders {
     margin-top: 20px;
@@ -955,3 +956,39 @@ body {
     background-color: #c82333;
 }
 /* EndOrder List */
+
+/* Style chart */
+.chart-section {
+    margin-top: 20px;
+}
+
+.chart-controls {
+    margin-bottom: 15px;    
+}
+
+.chart-controls button {
+    padding: 10px;
+    margin-right: 5px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+
+.chart-controls button:hover {
+    background-color: #45a049;
+}
+
+/* Styling Flex untuk chart */
+.charts {
+    display: flex;
+    justify-content: space-between;
+}
+
+.chart {
+    width: 48%; /* Membuat kedua chart memiliki lebar yang sama */
+    background-color: white; /* Menambahkan latar belakang putih */
+    padding: 20px; /* Memberikan sedikit ruang di sekitar chart */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Menambahkan bayangan ringan untuk efek */
+    border-radius: 8px; /* Menambahkan sudut yang lebih halus */
+}

@@ -1,20 +1,10 @@
-window.onload = function() {
-    const burger = document.getElementById('burger');
-    const navLinks = document.getElementById('nav-links');
-    const centerItems = document.querySelector('.center-items');
-    let menuOpen = false;
+// Ambil elemen burger icon dan sidebar
+const burgerIcon = document.getElementById('burger-icon');
+const sidebar = document.getElementById('sidebar');
 
-    burger.addEventListener('click', () => {
-        if (!menuOpen) {
-            navLinks.classList.remove('nav-close');
-            navLinks.classList.add('nav-active');
-            centerItems.style.display = 'block'; // Tampilkan center-items
-        } else {
-            navLinks.classList.remove('nav-active');
-            navLinks.classList.add('nav-close');
-            centerItems.style.display = 'none'; // Sembunyikan center-items
-        }
-        menuOpen = !menuOpen;
-        burger.classList.toggle('toggle');
-    });
-};
+// Tambahkan event listener ke burger icon untuk mendeteksi klik
+burgerIcon.addEventListener('click', function() {
+    // Toggle class 'open' untuk burger icon dan sidebar
+    burgerIcon.classList.toggle('open');
+    sidebar.classList.toggle('open');
+});
