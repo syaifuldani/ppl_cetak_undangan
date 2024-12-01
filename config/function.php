@@ -996,6 +996,122 @@ function updateResi($orderID, $nomor_resi)
     }
 
 }
+// ADMIN FUNCTIONS DASHBOARD
+function getPenjualanChart()
+{
+    // Gunakan koneksi PDO yang sudah ada
+    global $db;
+
+    // Query untuk mengambil data total penjualan per bulan
+    $sql = "
+        SELECT 
+            DATE_FORMAT(created_at, '%Y-%m') AS bulan, 
+            SUM(jumlah_order) AS total
+        FROM 
+            order_details
+        GROUP BY 
+            bulan
+        ORDER BY 
+            bulan ASC
+    ";
+
+    // Menjalankan query dan menangani kemungkinan error
+    try {
+        // Prepare dan eksekusi query
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+
+        // Mengambil hasil query dalam bentuk array asosiatif
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        // Tangani error jika query gagal
+        die("Query gagal: " . $e->getMessage());
+    }
+
+    return $data;
+}
+
+
+
+// Fungsi untuk menghitung jumlah pemesanan
+function getTotalPemesanan()
+{
+    global $db;
+    $sqlPemesanan = "SELECT COUNT(DISTINCT order_id) AS total_pemesanan FROM order_details";
+    $stmt = $db->prepare($sqlPemesanan);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['total_pemesanan'] ?? 0;
+}
+
+// Fungsi untuk menghitung total penjualan selesai
+function getTotalPenjualanSelesai()
+{
+    global $db;
+    $sqlPenjualanSelesai = "SELECT COUNT(*) AS total_penjualan_selesai FROM orders WHERE transaction_status = 'delivered'";
+    $stmt = $db->prepare($sqlPenjualanSelesai);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['total_penjualan_selesai'] ?? 0;
+}
+
+// Fungsi untuk mengambil data penjualan per bulan
+function getPenjualanPerBulan()
+{
+    global $db;
+    $sqlPenjualan = "SELECT MONTH(transaction_time) AS bulan, SUM(gross_amount) AS total_penjualan
+                     FROM payments
+                     GROUP BY MONTH(transaction_time)
+                     ORDER BY bulan ASC";
+    $stmt = $db->prepare($sqlPenjualan);
+    $stmt->execute();
+    $data = [];
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $data[] = $row;
+    }
+    return $data;
+}
+
+// Fungsi untuk mendapatkan penjualan terbanyak
+function getPenjualanTerbanyak()
+{
+    global $db;
+    $sqlPenjualanTerbanyak = "SELECT 
+        p.nama_produk AS nama_produk,
+        SUM(od.jumlah_order) AS jumlah_terjual
+    FROM 
+        order_details od
+    JOIN 
+        products p ON od.product_id = p.product_id
+    GROUP BY 
+        od.product_id
+    ORDER BY 
+        jumlah_terjual DESC
+    LIMIT 5";
+    $stmt = $db->prepare($sqlPenjualanTerbanyak);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// Fungsi untuk mendapatkan pesanan terbaru
+function getPesananTerbaru()
+{
+    global $db;
+    $sqlPesananTerbaru = "SELECT 
+        o.nama_penerima,
+        o.nomor_penerima,
+        o.alamat_penerima,
+        o.kodepos, 
+        o.keterangan_order,
+        o.payment_type,
+        o.total_harga,
+        o.transaction_status
+    FROM orders o
+    ORDER BY o.created_at DESC";
+    $stmt = $db->prepare($sqlPesananTerbaru);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
 // =================================================================
 
