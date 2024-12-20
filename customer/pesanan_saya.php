@@ -64,7 +64,8 @@ $orders = getOrdersByID($userId);
     <link rel="stylesheet" href="../resources/css/cart.css">
     <link rel="stylesheet" href="../resources/css/navbar.css">
     <link rel="stylesheet" href="../resources/css/pesanan_saya.css">
-    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key=<?php $_ENV['MIDTRANS_CLIENT_KEY'] ?> crossorigin="anonymous" importance="high" async></script>
+    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key=<?php $_ENV['MIDTRANS_CLIENT_KEY'] ?> crossorigin="anonymous" importance="high" async></script>
     <!-- Note: replace with src="https://app.midtrans.com/snap/snap.js" for Production environment -->
     <script src="../resources/js/alert-detailorder-admin.js"></script>
 </head>
@@ -109,70 +110,70 @@ $orders = getOrdersByID($userId);
             <!-- Orders Container -->
             <div class="orders-container">
                 <?php foreach ($orders as $order): ?>
-                    <div class="order-card" data-status="<?= $order['transaction_status'] ?>">
-                        <div class="order-header">
-                            <div class="order-date">
-                                <i class="fas fa-calendar"></i>
-                                <?= date('d F Y', strtotime($order['created_at'])) ?>
-                            </div>
-                            <div class="order-status <?= strtolower($order['transaction_status']) ?>">
-                                <span
-                                    class="order-status status-<?= !empty($order['transaction_status']) ? strtolower($order['transaction_status']) : 'pending' ?>">
-                                    <?= getStatusLabel($order['transaction_status']) ?>
-                                </span>
-                            </div>
+                <div class="order-card" data-status="<?= $order['transaction_status'] ?>">
+                    <div class="order-header">
+                        <div class="order-date">
+                            <i class="fas fa-calendar"></i>
+                            <?= date('d F Y', strtotime($order['created_at'])) ?>
                         </div>
-
-                        <div class="order-body">
-                            <div class="order-items">
-                                <?php if (isset($order['items']) && is_array($order['items'])): ?>
-                                    <?php foreach ($order['items'] as $item): ?>
-                                        <div class="item">
-                                            <img src="<?= htmlspecialchars($item['gambar_satu']) ?>"
-                                                alt="<?= htmlspecialchars($item['nama_produk']) ?>" class="item-image">
-                                            <div class="item-details">
-                                                <h4><?= htmlspecialchars($item['nama_produk']) ?></h4>
-                                                <p><?= $item['jumlah_order'] ?> x Rp
-                                                    <?= number_format($item['harga_order'], 0, ',', '.') ?>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
-                                    <p>Tidak ada item dalam pesanan ini.</p>
-                                <?php endif; ?>
-                            </div>
-
-                            <!-- Di bagian tampilan -->
-                            <div class="order-info">
-                                <div class="total-items">
-                                    <?= isset($order['items']) && is_array($order['items']) ? count($order['items']) : 0 ?>
-                                    Produk
-                                </div>
-                                <div class="total-price">
-                                    Total Pesanan: <span>Rp
-                                        <?= number_format($order['total_harga'] ?? 0, 0, ',', '.') ?></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="order-footer">
-                            <?php if ($order['transaction_status'] == 'pending'): ?>
-                                <button class="btn-pay" onclick="payOrder('<?= htmlspecialchars($order['order_id']) ?>')"
-                                    data-order-id="<?= htmlspecialchars($order['order_id']) ?>" type="button">
-                                    Bayar Sekarang
-                                </button>
-                            <?php elseif ($order['transaction_status'] == 'shipped'): ?>
-                                <button class="btn-receive" onclick="return handleReceived(this, '<?= $order['order_id'] ?>')"
-                                    data-order-id="<?= $order['order_id'] ?>" type="button">
-                                    Pesanan Diterima
-                                </button>
-                            <?php endif; ?>
-                            <button class="btn-details"
-                                onclick="viewOrderDetails('<?= htmlspecialchars($order['order_id']) ?>')">Lihat
-                                Detail</button>
+                        <div class="order-status <?= strtolower($order['transaction_status']) ?>">
+                            <span
+                                class="order-status status-<?= !empty($order['transaction_status']) ? strtolower($order['transaction_status']) : 'pending' ?>">
+                                <?= getStatusLabel($order['transaction_status']) ?>
+                            </span>
                         </div>
                     </div>
+
+                    <div class="order-body">
+                        <div class="order-items">
+                            <?php if (isset($order['items']) && is_array($order['items'])): ?>
+                            <?php foreach ($order['items'] as $item): ?>
+                            <div class="item">
+                                <img src="<?= htmlspecialchars($item['gambar_satu']) ?>"
+                                    alt="<?= htmlspecialchars($item['nama_produk']) ?>" class="item-image">
+                                <div class="item-details">
+                                    <h4><?= htmlspecialchars($item['nama_produk']) ?></h4>
+                                    <p><?= $item['jumlah_order'] ?> x Rp
+                                        <?= number_format($item['harga_order'], 0, ',', '.') ?>
+                                    </p>
+                                </div>
+                            </div>
+                            <?php endforeach; ?>
+                            <?php else: ?>
+                            <p>Tidak ada item dalam pesanan ini.</p>
+                            <?php endif; ?>
+                        </div>
+
+                        <!-- Di bagian tampilan -->
+                        <div class="order-info">
+                            <div class="total-items">
+                                <?= isset($order['items']) && is_array($order['items']) ? count($order['items']) : 0 ?>
+                                Produk
+                            </div>
+                            <div class="total-price">
+                                Total Pesanan: <span>Rp
+                                    <?= number_format($order['total_harga'] ?? 0, 0, ',', '.') ?></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-footer">
+                        <?php if ($order['transaction_status'] == 'pending'): ?>
+                        <button class="btn-pay" onclick="payOrder('<?= htmlspecialchars($order['order_id']) ?>')"
+                            data-order-id="<?= htmlspecialchars($order['order_id']) ?>" type="button">
+                            Bayar Sekarang
+                        </button>
+                        <?php elseif ($order['transaction_status'] == 'shipped'): ?>
+                        <button class="btn-receive" onclick="return handleReceived(this, '<?= $order['order_id'] ?>')"
+                            data-order-id="<?= $order['order_id'] ?>" type="button">
+                            Pesanan Diterima
+                        </button>
+                        <?php endif; ?>
+                        <button class="btn-details"
+                            onclick="viewOrderDetails('<?= htmlspecialchars($order['order_id']) ?>')">Lihat
+                            Detail</button>
+                    </div>
+                </div>
                 <?php endforeach; ?>
             </div>
         </div>
@@ -190,56 +191,56 @@ $orders = getOrdersByID($userId);
     </div>
 
     <?php if (isset($_SESSION['success'])): ?>
-        <script>
-            showAlert('<?= $_SESSION['success'] ?>', 'success');
-        </script>
-        <?php unset($_SESSION['success']); ?>
+    <script>
+    showAlert('<?= $_SESSION['success'] ?>', 'success');
+    </script>
+    <?php unset($_SESSION['success']); ?>
     <?php endif; ?>
 
     <?php if (isset($_SESSION['error'])): ?>
-        <script>
-            showAlert('<?= $_SESSION['error'] ?>', 'error');
-        </script>
-        <?php unset($_SESSION['error']); ?>
+    <script>
+    showAlert('<?= $_SESSION['error'] ?>', 'error');
+    </script>
+    <?php unset($_SESSION['error']); ?>
     <?php endif; ?>
 
     <script>
-        function handleReceived(button, orderId) {
-            console.log('Handling order:', orderId);
-            if (confirm('Apakah Anda yakin pesanan sudah diterima?')) {
-                button.disabled = true;
-                button.innerHTML = 'Memproses...';
+    function handleReceived(button, orderId) {
+        console.log('Handling order:', orderId);
+        if (confirm('Apakah Anda yakin pesanan sudah diterima?')) {
+            button.disabled = true;
+            button.innerHTML = 'Memproses...';
 
-                const formData = new FormData();
-                formData.append('order_id', orderId);
-                formData.append('status', 'delivered');
+            const formData = new FormData();
+            formData.append('order_id', orderId);
+            formData.append('status', 'delivered');
 
-                fetch('../config/updateStatusAfterDelivered.php', {
+            fetch('../config/updateStatusAfterDelivered.php', {
                     method: 'POST',
                     body: formData
                 })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            showAlert('Pesanan berhasil dikonfirmasi diterima', 'success');
-                            setTimeout(() => {
-                                window.location.reload();
-                            }, 1000);
-                        } else {
-                            showAlert(data.message || 'Gagal mengupdate status', 'error');
-                            button.disabled = false;
-                            button.innerHTML = 'Pesanan Diterima';
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        showAlert('Terjadi kesalahan saat memproses permintaan', 'error');
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        showAlert('Pesanan berhasil dikonfirmasi diterima', 'success');
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);
+                    } else {
+                        showAlert(data.message || 'Gagal mengupdate status', 'error');
                         button.disabled = false;
                         button.innerHTML = 'Pesanan Diterima';
-                    });
-            }
-            return false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showAlert('Terjadi kesalahan saat memproses permintaan', 'error');
+                    button.disabled = false;
+                    button.innerHTML = 'Pesanan Diterima';
+                });
         }
+        return false;
+    }
     </script>
     <!-- Tambahkan di bagian head -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>

@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         const data = await response.json();
-        console.log("Shipping response:", data);
+        // console.log("Shipping response:", data);
 
         // Di bagian pemrosesan response
         if (data[0]?.rajaongkir?.results?.[0]?.costs) {
@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
             `../config/get_cart_items.php?order_id=${orderId}`
         );
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
 
         if (data.status === "success") {
             return data.items;

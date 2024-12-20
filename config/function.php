@@ -832,7 +832,62 @@ function handleImageUpload($file, $allowed_extensions, $max_size, &$errors, $fie
     return file_get_contents($file['tmp_name']);
 }
 
+function processForgotPassword($data)
+{
+    global $db; // Gunakan koneksi $db dari PDO
+    $errors = [];
 
+    // Validasi email
+    if (empty($data['email'])) {
+        $errors['email'] = 'Email wajib diisi.';
+    } else {
+        $email = htmlspecialchars($data['email']);
+
+        // Query untuk memeriksa apakah email ada di database
+        $sql = "SELECT * FROM users WHERE email = :email";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$user) {
+            $errors['email'] = 'Email tidak ditemukan.';
+        }
+    }
+
+    // Validasi password baru
+    if (empty($data['new_password'])) {
+        $errors['new_password'] = 'Password baru wajib diisi.';
+    } elseif (strlen($data['new_password']) < 6) {
+        $errors['new_password'] = 'Password minimal 6 karakter.';
+    }
+
+    // Validasi konfirmasi password
+    if (empty($data['confirm_password'])) {
+        $errors['confirm_password'] = 'Konfirmasi password wajib diisi.';
+    } elseif ($data['new_password'] !== $data['confirm_password']) {
+        $errors['confirm_password'] = 'Konfirmasi password tidak cocok.';
+    }
+
+    // Jika tidak ada error, proses reset password
+    if (empty($errors)) {
+        $hashedPassword = password_hash($data['new_password'], PASSWORD_BCRYPT);
+        $updateSql = "UPDATE users SET password = :password WHERE email = :email";
+        $updateStmt = $db->prepare($updateSql);
+        $updateStmt->bindParam(':password', $hashedPassword);
+        $updateStmt->bindParam(':email', $email);
+
+        if ($updateStmt->execute()) {
+            $_SESSION['message'] = 'Password berhasil direset. Silakan login.';
+            header('Location: login.php');
+            exit();
+        } else {
+            $errors['general'] = 'Terjadi kesalahan. Coba lagi nanti.';
+        }
+    }
+
+    return $errors;
+}
 
 function getAllDataByCategory($category)
 {

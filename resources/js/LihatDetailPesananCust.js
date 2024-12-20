@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         try {
             // Debug: log order ID
-            console.log("Requesting order details for ID:", orderId);
+            // console.log("Requesting order details for ID:", orderId);
 
             // Lakukan fetch dengan error handling
             const response = await fetch(
@@ -87,10 +87,10 @@ document.addEventListener("DOMContentLoaded", function () {
             );
             // Log response status
 
-            console.log("Response received:", response.status);
+            // console.log("Response received:", response.status);
 
             const data = await response.json();
-            console.log("Response text:", data);
+            // console.log("Response text:", data);
 
             if (!data.success) {
                 throw new Error(data.message || "Gagal memuat detail pesanan");

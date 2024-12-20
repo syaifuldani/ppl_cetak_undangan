@@ -76,7 +76,7 @@ if (isset($_SESSION['user_id'])) {
     }
 
     // Ambil item keranjang dari database
-    $cartItems = getCartItems(userId: $userId);
+    $cartItems = getCartItems($userId);
 } else {
     // Set status HTTP menjadi 404 (Not Found)
     http_response_code(404);
@@ -219,9 +219,9 @@ if (isset($_POST['query'])) {
                             <input type="hidden" name="snap_token" id="snap-token">
                             <div class="form-group">
                                 <h3>Data Undangan</h3>
-                                <input type="date" name="tanggalacara" placeholder="Tanggal dan Waktu Acara" required>
-                                <input type="text" name="lokasiacara" placeholder="Tempat/Lokasi Acara" required>
-                                <textarea name="keterangan_order" placeholder="Keterangan Tambahan" required></textarea>
+                                <input type="date" name="tanggalacara" placeholder="Tanggal dan Waktu Acara">
+                                <input type="text" name="lokasiacara" placeholder="Tempat/Lokasi Acara">
+                                <textarea name="keterangan_order" placeholder="Keterangan Tambahan"></textarea>
                                 <p class="info">
                                     Tuliskan keterangan tambahan seperti nama orang tua dan calon mempelai, teks
                                     doa,
@@ -244,39 +244,37 @@ if (isset($_POST['query'])) {
                                     <div class="form-column">
                                         <div class="form-group">
                                             <label>Nama Penerima</label>
-                                            <input type="text" name="namapenerima" placeholder="Nama Lengkap Penerima"
-                                                required>
+                                            <input type="text" name="namapenerima" placeholder="Nama Lengkap Penerima">
                                         </div>
 
                                         <div class="form-group">
                                             <label>Email</label>
-                                            <input type="email" name="email" placeholder="Email (Opsional)">
+                                            <input type="email" name="email" placeholder="Email">
                                         </div>
 
                                         <div class="form-group">
                                             <label>Nomor Telepon</label>
-                                            <input type="text" name="notelppenerima" placeholder="+628123456789"
-                                                required>
+                                            <input type="text" name="notelppenerima" placeholder="+628123456789">
                                             <small class="helper-text">Diawali dengan +62</small>
                                         </div>
 
                                         <div class="form-group">
                                             <label>Provinsi</label>
-                                            <select name="provinsi" id="provinsi" required>
+                                            <select name="provinsi" id="provinsi">
                                                 <option value="">Pilih Provinsi</option>
                                             </select>
                                         </div>
 
                                         <div class="form-group">
                                             <label>Kabupaten/Kota</label>
-                                            <select name="kota" id="kota" required disabled>
+                                            <select name="kota" id="kota" disabled>
                                                 <option value="">Pilih Kabupaten/Kota</option>
                                             </select>
                                         </div>
 
                                         <div class="form-group">
                                             <label>Kecamatan</label>
-                                            <input type="text" name="kecamatan" placeholder="Kecamatan" required>
+                                            <input type="text" name="kecamatan" placeholder="Kecamatan">
                                         </div>
                                     </div>
 
@@ -284,24 +282,22 @@ if (isset($_POST['query'])) {
                                     <div class="form-column">
                                         <div class="form-group">
                                             <label>Kelurahan/Desa</label>
-                                            <input type="text" name="kelurahan" placeholder="Kelurahan/Desa" required>
+                                            <input type="text" name="kelurahan" placeholder="Kelurahan/Desa">
                                         </div>
 
                                         <div class="form-group">
                                             <label>Alamat Lengkap</label>
                                             <textarea name="alamatpenerima"
-                                                placeholder="Nama jalan, nomor rumah, RT/RW, patokan"
-                                                required></textarea>
+                                                placeholder="Nama jalan, nomor rumah, RT/RW, patokan"></textarea>
                                         </div>
 
                                         <div class="form-group">
                                             <label>Kode Pos</label>
-                                            <input type="text" name="kodepos" placeholder="Kode Pos" pattern="[0-9]{5}"
-                                                required>
+                                            <input type="text" name="kodepos" placeholder="Kode Pos" pattern="[0-9]{5}">
                                         </div>
                                         <div class="form-group">
                                             <label>Pilih Kurir</label>
-                                            <select name="courier" id="courier" required>
+                                            <select name="courier" id="courier">
                                                 <option value="">Pilih Kurir</option>
                                                 <option value="jne">JNE</option>
                                                 <!-- <option value="pos">POS Indonesia</option>
@@ -435,6 +431,7 @@ if (isset($_POST['query'])) {
     </script>
     <script src="..\resources\js\Order.js"></script>
     <script src="..\resources\js\CheckOngkir.js"></script>
+    <script src="..\resources\js\validateInputCart.js"></script>
 </body>
 
 </html>

@@ -12,6 +12,7 @@ if (!isset($_GET['order_id'])) {
 
 try {
     $order_id = $_GET['order_id'];
+    // var_dump($order_id);
 
     // Verifikasi order belongs to current user
     $sql = "SELECT o.*, u.email 
@@ -22,6 +23,7 @@ try {
     $stmt = $db->prepare($sql);
     $stmt->execute([$order_id, $_SESSION['user_id']]);
     $order = $stmt->fetch(PDO::FETCH_ASSOC);
+    // var_dump($order);
 
     if (!$order) {
         throw new Exception('Order tidak ditemukan');
@@ -99,15 +101,15 @@ try {
                 <div class="order-items">
                     <h3>Produk yang Dipesan</h3>
                     <?php foreach ($orderItems as $item): ?>
-                        <div class="item-card">
-                            <img src="<?= htmlspecialchars($item['gambar_satu']) ?>"
-                                alt="<?= htmlspecialchars($item['nama_produk']) ?>" class="item-image">
-                            <div class="item-info">
-                                <h4><?= htmlspecialchars($item['nama_produk']) ?></h4>
-                                <p>Jumlah: <?= $item['jumlah_order'] ?></p>
-                                <p>Harga: Rp <?= number_format($item['harga_order'], 0, ',', '.') ?></p>
-                            </div>
+                    <div class="item-card">
+                        <img src="<?= htmlspecialchars($item['gambar_satu']) ?>"
+                            alt="<?= htmlspecialchars($item['nama_produk']) ?>" class="item-image">
+                        <div class="item-info">
+                            <h4><?= htmlspecialchars($item['nama_produk']) ?></h4>
+                            <p>Jumlah: <?= $item['jumlah_order'] ?></p>
+                            <p>Harga: Rp <?= number_format($item['harga_order'], 0, ',', '.') ?></p>
                         </div>
+                    </div>
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -125,17 +127,17 @@ try {
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Ambil payment result dari sessionStorage jika ada
-            const paymentResult = sessionStorage.getItem('paymentResult');
-            if (paymentResult) {
-                const result = JSON.parse(paymentResult);
-                // console.log('Payment Result:', result);
+    document.addEventListener('DOMContentLoaded', function() {
+        // Ambil payment result dari sessionStorage jika ada
+        const paymentResult = sessionStorage.getItem('paymentResult');
+        if (paymentResult) {
+            const result = JSON.parse(paymentResult);
+            console.log('Payment Result:', result);
 
-                // Bersihkan sessionStorage
-                sessionStorage.removeItem('paymentResult');
-            }
-        });
+            // Bersihkan sessionStorage
+            sessionStorage.removeItem('paymentResult');
+        }
+    });
     </script>
 </body>
 

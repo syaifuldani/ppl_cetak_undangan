@@ -1,6 +1,6 @@
 async function generateNota(orderId) {
     try {
-        console.log("Generating nota for order:", orderId);
+        // console.log("Generating nota for order:", orderId);
 
         const response = await fetch(
             `../config/getOrderDetailForPrintNote.php?order_id=${orderId}`

@@ -1,108 +1,86 @@
 <?php
-
-// Buat file baru: notification.php
-require_once __DIR__ . '/midtrans_config.php';
-require_once __DIR__ . '/connection.php';
-
-use Dotenv\Dotenv;
-use Midtrans\Config;
-use Midtrans\Snap;
+require_once __DIR__ . '../../config/midtrans_config.php';
+require_once __DIR__ . '../../config/connection.php';
 use Midtrans\Notification;
 
-$dotenv = Dotenv::createImmutable(__DIR__ . '');
-$dotenv->load();
-
-Config::$serverKey = $_ENV['MIDTRANS_SERVER_KEY'];
-Config::$isProduction = false;
-Config::$isSanitized = true;
-Config::$is3ds = true;
-
-// Enable error logging
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-header("Content-Type: application/json");
-
-// Log raw request
-$raw_post = file_get_contents('php://input');
-error_log("Raw POST data: " . $raw_post);
-error_log("POST array: " . print_r($_POST, true));
-
 try {
-    $notif = new Midtrans\Notification();
-    $transaction = $notif->transaction_status;
+    $notif = new Notification();
+    error_log("Received notification: " . json_encode($notif));
+
+    $transaction_status = $notif->transaction_status;
     $order_id = $notif->order_id;
+    $payment_type = $notif->payment_type;
+    $fraud_status = $notif->fraud_status;
 
-    error_log("Notification object: " . print_r($notif, true));
+    // Extract base order_id (remove any suffix)
+    $base_order_id = preg_replace('/-[a-f0-9]+$/', '', $order_id);
 
-    $transaction = $notif->transaction_status;
-    $type = $notif->payment_type;
-    $fraud = $notif->fraud_status;
+    $db->beginTransaction();
 
-    // Cek apakah ini order dengan suffix
-    $original_order_id = $order_id;
-    if (strpos($order_id, '-') !== false) {
-        $original_order_id = explode('-', $order_id)[0];
-    }
+    try {
+        // Selalu update ke status terbaru jika settlement
+        if ($transaction_status === 'settlement') {
+            $sql = "UPDATE orders SET 
+                    payment_type = :payment_type,
+                    transaction_status = :transaction_status,
+                    transaction_time = :transaction_time,
+                    payment_details = :payment_details,
+                    fraud_status = :fraud_status,
+                    updated_at = NOW()
+                    WHERE order_id = :order_id";
 
-    error_log("Processing payment notification: " . json_encode([
-        'original_order_id' => $original_order_id,
-        'received_order_id' => $order_id,
-        'transaction_status' => $transaction,
-        'payment_type' => $type,
-        'fraud_status' => $fraud
-    ]));
+            $paymentDetails = json_encode([
+                'transaction_id' => $notif->transaction_id,
+                'payment_type' => $payment_type,
+                'transaction_time' => $notif->transaction_time,
+                'transaction_status' => $transaction_status,
+                'gross_amount' => $notif->gross_amount,
+                'fraud_status' => $fraud_status,
+                'status_code' => $notif->status_code,
+                'status_message' => $notif->status_message,
+                'original_order_id' => $order_id
+            ]);
 
-    // Update database untuk order asli
-    $sql = "UPDATE orders SET 
-            payment_type = :payment_type,
-            transaction_status = :transaction_status,
-            transaction_time = :transaction_time,
-            payment_details = :payment_details,
-            fraud_status = :fraud_status
-            WHERE order_id = :order_id";
+            $stmt = $db->prepare($sql);
+            $params = [
+                ':payment_type' => $payment_type,
+                ':transaction_status' => $transaction_status,
+                ':transaction_time' => $notif->transaction_time,
+                ':payment_details' => $paymentDetails,
+                ':fraud_status' => $fraud_status,
+                ':order_id' => $base_order_id
+            ];
 
-    $stmt = $GLOBALS['db']->prepare($sql);
+            if (!$stmt->execute($params)) {
+                throw new Exception("Failed to update order status");
+            }
 
-    $paymentDetails = json_encode([
-        'transaction_id' => $notif->transaction_id,
-        'status_code' => $notif->status_code,
-        'status_message' => $notif->status_message,
-        'gross_amount' => $notif->gross_amount,
-        'original_order_id' => $original_order_id,
-        'payment_order_id' => $order_id
-    ]);
+            // Verify the update
+            $verify_sql = "SELECT transaction_status FROM orders WHERE order_id = ?";
+            $verify_stmt = $db->prepare($verify_sql);
+            $verify_stmt->execute([$base_order_id]);
+            $updated_status = $verify_stmt->fetchColumn();
 
-    $params = [
-        ':payment_type' => $type,
-        ':transaction_status' => $transaction,
-        ':transaction_time' => date('Y-m-d H:i:s'),
-        ':payment_details' => $paymentDetails,
-        ':fraud_status' => $fraud,
-        ':order_id' => $original_order_id  // Gunakan original order ID
-    ];
+            if ($updated_status !== 'settlement') {
+                throw new Exception("Failed to update to settlement status");
+            }
+        }
 
-    error_log("Update parameters: " . json_encode($params));
+        $db->commit();
 
-    $result = $stmt->execute($params);
-
-    if ($result) {
-        // Verifikasi update
-        $verifyStmt = $GLOBALS['db']->prepare("SELECT * FROM orders WHERE order_id = ?");
-        $verifyStmt->execute([$original_order_id]);
-        $updatedOrder = $verifyStmt->fetch(PDO::FETCH_ASSOC);
-        error_log("Updated order data: " . json_encode($updatedOrder));
-
+        http_response_code(200);
         echo json_encode([
             'status' => 'success',
-            'message' => 'Payment notification processed successfully'
+            'message' => 'Notification processed successfully'
         ]);
-    } else {
-        throw new Exception("Failed to update order status");
+
+    } catch (Exception $e) {
+        $db->rollBack();
+        throw $e;
     }
 
 } catch (Exception $e) {
-    error_log("Notification Error: " . $e->getMessage());
+    error_log("Error processing notification: " . $e->getMessage());
     error_log("Stack trace: " . $e->getTraceAsString());
 
     http_response_code(500);

@@ -50,13 +50,18 @@ class PaymentHandler
             $order_id = $this->generateOrderId();
 
             $data['notelppenerima'] = $this->formatPhoneNumber($data['notelppenerima']);
-            $transaction_data = $this->prepareTransactionData($data, $cart_items, $order_id, $total_amount);
+            $transaction_data = $this->prepareTransactionData($data, $cart_items, $order_id, total_amount: $total_amount);
 
             // Get Snap Token
             $snap_token = Snap::getSnapToken($transaction_data);
 
-            // Save order to database
-            $this->saveOrder($order_id, $data, $total_amount, $cart_items);
+            // Simpan data sementara di session
+            $_SESSION['pending_order'] = [
+                'order_id' => $order_id,
+                'data' => $data,
+                'total_amount' => $total_amount,
+                'cart_items' => $cart_items
+            ];
 
             return [
                 'status' => 'success',
@@ -146,6 +151,15 @@ class PaymentHandler
                 'order_id' => $order_id,
                 'gross_amount' => (int) $final_total
             ],
+            'enabled_payments' => [
+                'credit_card',
+                'bank_transfer',
+                'gopay',
+                'shopeepay',
+                'qris',
+                'dana',
+                'ovo'
+            ],
             'item_details' => $item_details,
             'customer_details' => [
                 'first_name' => htmlspecialchars($data['namapenerima']),
@@ -192,132 +206,6 @@ class PaymentHandler
         }
 
         return $phone;
-    }
-
-    private function saveOrder($order_id, $data, $total_amount, $cart_items)
-    {
-        try {
-            $this->db->beginTransaction();
-
-            // Format alamat lengkap
-            $alamat_parts = [
-                $data['alamatpenerima'],
-                "Kelurahan " . $data['kelurahan'],
-                "Kecamatan " . $data['kecamatan'],
-                $data['kota'],
-                $data['provinsi'],
-                $data['kodepos']
-            ];
-
-            $full_address = implode(", ", array_filter($alamat_parts));
-
-            // Hitung total dengan biaya ongkir
-            $shipping_cost = !empty($data['shipping_cost']) ? floatval($data['shipping_cost']) : 0;
-            $total_with_shipping = $total_amount + $shipping_cost;
-
-            // 1. Simpan order terlebih dahulu
-            $sql = "INSERT INTO orders (
-            order_id, 
-            user_id, 
-            total_harga, 
-            nama_penerima, 
-            nomor_penerima, 
-            alamat_penerima, 
-            kota, 
-            kodepos, 
-            transaction_status, 
-            keterangan_order
-        ) VALUES (
-            :order_id, 
-            :user_id, 
-            :total_harga, 
-            :nama_penerima, 
-            :nomor_penerima, 
-            :alamat_penerima, 
-            :kota, 
-            :kodepos, 
-            :transaction_status,
-            :keterangan_order
-        )";
-
-            $params = [
-                ':order_id' => $order_id,
-                ':user_id' => $this->user_id,
-                ':total_harga' => $total_with_shipping,
-                ':nama_penerima' => $data['namapenerima'],
-                ':nomor_penerima' => $data['notelppenerima'],
-                ':alamat_penerima' => $full_address,
-                ':kota' => $data['kota'],
-                ':kodepos' => $data['kodepos'],
-                ':transaction_status' => 'pending',
-                ':keterangan_order' => $data['keterangan_order'] ?? ''
-            ];
-
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute($params);
-
-            // 2. Simpan order details
-            $sql = "INSERT INTO order_details (
-            order_id, 
-            product_id, 
-            jumlah_order, 
-            harga_order
-        ) VALUES (
-            :order_id, 
-            :product_id, 
-            :jumlah_order, 
-            :harga_order
-        )";
-
-            $stmt = $this->db->prepare($sql);
-            foreach ($cart_items as $item) {
-                $detail_params = [
-                    ':order_id' => $order_id,
-                    ':product_id' => $item['product_id'],
-                    ':jumlah_order' => $item['jumlah'],
-                    ':harga_order' => $item['harga_produk']
-                ];
-                $stmt->execute($detail_params);
-            }
-
-            // 3. Insert data ke shipments
-            $sql = "INSERT INTO shipments (
-            order_id, 
-            ekspedisi, 
-            biaya_ongkir, 
-            estimasi_sampai, 
-            alamat_pengiriman
-        ) VALUES (
-            :order_id, 
-            :ekspedisi, 
-            :biaya_ongkir, 
-            :estimasi_sampai, 
-            :alamat_pengiriman
-        )";
-
-            $shipping_params = [
-                ':order_id' => $order_id,
-                ':ekspedisi' => $data['shipping_courier'] ?? null,
-                ':biaya_ongkir' => $data['shipping_cost'] ?? null,
-                ':estimasi_sampai' => $data['shipping_eta'] ?? null,
-                ':alamat_pengiriman' => $full_address
-            ];
-
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute($shipping_params);
-
-            // 4. Hapus items dari cart
-            $sql = "DELETE FROM carts WHERE user_id = :user_id";
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute([':user_id' => $this->user_id]);
-
-            $this->db->commit();
-            return true;
-
-        } catch (Exception $e) {
-            $this->db->rollBack();
-            throw new Exception('Gagal menyimpan order: ' . $e->getMessage());
-        }
     }
 
     public function handleNotification()
@@ -463,16 +351,6 @@ class PaymentHandler
             $stmt->execute([$order_id]);
             $current_status = $stmt->fetchColumn();
 
-            // Jika status pending, batalkan transaksi sebelumnya di Midtrans
-            if ($current_status === 'pending') {
-                try {
-                    \Midtrans\Transaction::cancel($order_id);
-                } catch (Exception $e) {
-                    // Abaikan error jika transaksi sudah expired/cancelled
-                    error_log("Cancel transaction warning: " . $e->getMessage());
-                }
-            }
-
             // Get order data dengan shipment dalam satu query
             $sql = "SELECT o.*, s.biaya_ongkir, s.ekspedisi 
                 FROM orders o 
@@ -556,6 +434,15 @@ class PaymentHandler
                 'transaction_details' => [
                     'order_id' => $order['order_id'],
                     'gross_amount' => (int) $final_total
+                ],
+                'enabled_payments' => [
+                    'credit_card',
+                    'bank_transfer',
+                    'gopay',
+                    'shopeepay',
+                    'qris',
+                    'dana',
+                    'ovo'
                 ],
                 'item_details' => $item_details,
                 'customer_details' => [

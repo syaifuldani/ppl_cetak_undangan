@@ -53,7 +53,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pembayaran Berhasil</title>
+    <title>Pembayaran Pending</title>
     <link rel="stylesheet" href="../../resources/css/pendinghandling.css">
 </head>
 
@@ -99,15 +99,15 @@ try {
                 <div class="order-items">
                     <h3>Produk yang Dipesan</h3>
                     <?php foreach ($orderItems as $item): ?>
-                        <div class="item-card">
-                            <img src="<?= htmlspecialchars($item['gambar_satu']) ?>"
-                                alt="<?= htmlspecialchars($item['nama_produk']) ?>" class="item-image">
-                            <div class="item-info">
-                                <h4><?= htmlspecialchars($item['nama_produk']) ?></h4>
-                                <p>Jumlah: <?= $item['jumlah_order'] ?></p>
-                                <p>Harga: Rp <?= number_format($item['harga_order'], 0, ',', '.') ?></p>
-                            </div>
+                    <div class="item-card">
+                        <img src="<?= htmlspecialchars($item['gambar_satu']) ?>"
+                            alt="<?= htmlspecialchars($item['nama_produk']) ?>" class="item-image">
+                        <div class="item-info">
+                            <h4><?= htmlspecialchars($item['nama_produk']) ?></h4>
+                            <p>Jumlah: <?= $item['jumlah_order'] ?></p>
+                            <p>Harga: Rp <?= number_format($item['harga_order'], 0, ',', '.') ?></p>
                         </div>
+                    </div>
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -125,17 +125,17 @@ try {
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Ambil payment result dari sessionStorage jika ada
-            const paymentResult = sessionStorage.getItem('paymentResult');
-            if (paymentResult) {
-                const result = JSON.parse(paymentResult);
-                // console.log('Payment Result:', result);
+    document.addEventListener('DOMContentLoaded', function() {
+        // Ambil payment result dari sessionStorage jika ada
+        const paymentResult = sessionStorage.getItem('paymentResult');
+        if (paymentResult) {
+            const result = JSON.parse(paymentResult);
+            // console.log('Payment Result:', result);
 
-                // Bersihkan sessionStorage
-                sessionStorage.removeItem('paymentResult');
-            }
-        });
+            // Bersihkan sessionStorage
+            sessionStorage.removeItem('paymentResult');
+        }
+    });
     </script>
 </body>
 
