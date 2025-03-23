@@ -540,7 +540,7 @@ function process_existing_order($order_id, $user_id)
         if ($result['status'] === 'success') {
             return $result['snap_token'];
         } else {
-            throw new Exception($result['message'] ?? 'Unknown error occurred');
+            throw new Exception(message: $result['message'] ?? 'Unknown error occurred');
         }
 
     } catch (Exception $e) {
