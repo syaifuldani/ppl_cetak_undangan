@@ -19,6 +19,17 @@ try {
     }
 
     // Proses pembayaran
+    $orderData = array_merge($_POST, [
+        'shipping_courier' => $_POST['shipping_courier'] ?? null,
+        'shipping_service' => $_POST['shipping_service'] ?? null,
+        'shipping_cost' => $_POST['shipping_cost'] ?? null,
+        'shipping_eta' => $_POST['shipping_eta'] ?? null
+    ]);
+
+    // Debug
+    error_log("Order data before processing: " . print_r($orderData, true));
+
+    // Proses pembayaran
     $snap_token = payment_handled($_POST, $_SESSION['user_id']);
 
     // Return snap token

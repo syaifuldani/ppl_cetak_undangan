@@ -3,8 +3,8 @@ session_start();
 require '../config/connection.php'; // Pastikan path sesuai dengan struktur folder Anda
 require '../config/function.php'; // Pastikan path sesuai dengan struktur folder Anda
 
-// Cek apakah pengguna sudah login
-if (!isset($_SESSION['user_id'])) {
+// Cek apakah user adalah admin
+if (!isset($_SESSION['user_id']) && $_SESSION['user_id'] != 'admin') {
     // Jika tidak ada session login, redirect ke halaman login
     header("Location: login_admin.php");
     exit();
@@ -63,7 +63,7 @@ $n = 0;
                             <th>Nama Kustomer</th>
                             <th>Status Transaksi</th>
                             <th>Total Harga</th>
-                            <th></th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -78,7 +78,9 @@ $n = 0;
                                         class="<?= strtolower($order['transaction_status']); ?>"><?= ucfirst($order['transaction_status']); ?></span>
                                 </td>
                                 <td>Rp.<?= number_format($order['total_harga'], 2); ?></td>
-                                <td><a href=""><button>Rincian</button></a></td>
+                                <td><a
+                                        href="detail_order.php?order_id=<?= htmlspecialchars($order['order_id']); ?>"><button>Rincian</button></a>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

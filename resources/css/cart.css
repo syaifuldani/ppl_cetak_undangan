@@ -450,16 +450,16 @@ ul li a {
 
 /* Validasi */
 .error-message {
-    color: #dc3545;
-    font-size: 14px;
+    color: red;
+    font-size: 12px;
     margin-top: 5px;
-    padding: 5px;
-    border-radius: 4px;
-    background-color: rgba(220, 53, 69, 0.1);
-    animation: fadeIn 0.3s ease-in;
-    display: none;
 }
 
+.form-group input.error,
+.form-group select.error,
+.form-group textarea.error {
+    border-color: red;
+}
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -500,4 +500,166 @@ ul li a {
     background-color: rgba(40, 167, 69, 0.1);
     animation: fadeIn 0.3s ease-in;
     display: none;
+}
+
+.shipping-form {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+}
+
+.form-column {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #4caf50;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
+}
+
+.helper-text {
+    font-size: 12px;
+    color: #666;
+    margin-top: -2px;
+}
+
+.btn-check-shipping {
+    width: 100%;
+    padding: 12px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-check-shipping:hover {
+    background-color: #45a049;
+}
+
+.shipping-results {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.shipping-option {
+    display: flex;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.shipping-option:last-child {
+    border-bottom: none;
+}
+
+.shipping-option input[type="radio"] {
+    margin-top: 3px;
+    margin-right: 12px;
+}
+
+.shipping-info {
+    flex: 1;
+}
+
+.service-name {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.shipping-price {
+    color: #2e7d32;
+    font-weight: bold;
+    font-size: 15px;
+    margin-bottom: 2px;
+}
+
+.shipping-eta {
+    color: #666;
+    font-size: 13px;
+}
+
+select:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+}
+
+/* Loading state untuk select */
+.select-loading {
+    position: relative;
+}
+
+.select-loading::after {
+    content: "";
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #4caf50;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: translateY(-50%) rotate(0deg);
+    }
+    100% {
+        transform: translateY(-50%) rotate(360deg);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .shipping-form {
+        padding: 16px;
+    }
 }

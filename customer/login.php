@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </form>
             <div class="footer">
                 <p>Belum punya akun? <a href="register.php">Registrasi</a></p>
-                <p><a href="#">Lupa Password?</a></p>
+                <p><a href="../customer/forgot_password.php">Lupa Password?</a></p>
             </div>
         </div>
     </div>

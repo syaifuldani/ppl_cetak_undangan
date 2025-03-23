@@ -3,8 +3,9 @@ session_start();
 require '../config/connection.php'; // Menghubungkan ke database
 require '../config/function.php'; //
 
-// Cek apakah pengguna sudah login
-if (!isset($_SESSION['user_id'])) {
+// Cek apakah user adalah admin
+if (!isset($_SESSION['user_id']) && $_SESSION['user_id'] != 'admin') {
+    // Jika tidak ada session login, redirect ke halaman login
     header("Location: login_admin.php");
     exit();
 }

@@ -1,4 +1,13 @@
 <?php
+session_start();
+// Cek apakah pengguna sudah login
+if (isset($_SESSION['user_id'])) {
+    // Jika tidak ada session login, redirect ke halaman login
+    header("Location: dashboard.php");
+    exit();
+}
+?>
+<?php
 require '../config/connection.php';
 require_once '../config/function.php';
 

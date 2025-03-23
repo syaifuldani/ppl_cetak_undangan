@@ -1,4 +1,5 @@
 <?php
+
 require_once __DIR__ . '/../vendor/midtrans/midtrans-php/Midtrans.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -49,13 +50,18 @@ class PaymentHandler
             $order_id = $this->generateOrderId();
 
             $data['notelppenerima'] = $this->formatPhoneNumber($data['notelppenerima']);
-            $transaction_data = $this->prepareTransactionData($data, $cart_items, $order_id, $total_amount);
+            $transaction_data = $this->prepareTransactionData($data, $cart_items, $order_id, total_amount: $total_amount);
 
             // Get Snap Token
             $snap_token = Snap::getSnapToken($transaction_data);
 
-            // Save order to database
-            $this->saveOrder($order_id, $data, $total_amount, $cart_items);
+            // Simpan data sementara di session
+            $_SESSION['pending_order'] = [
+                'order_id' => $order_id,
+                'data' => $data,
+                'total_amount' => $total_amount,
+                'cart_items' => $cart_items
+            ];
 
             return [
                 'status' => 'success',
@@ -115,6 +121,12 @@ class PaymentHandler
 
     private function prepareTransactionData($data, $cart_items, $order_id, $total_amount)
     {
+        // Get shipping cost information
+        $shipping_cost = isset($data['shipping_cost']) ? floatval($data['shipping_cost']) : 0;
+
+        // Calculate final total
+        $final_total = $total_amount + $shipping_cost;
+
         $item_details = array_map(function ($item) {
             return [
                 'id' => $item['product_id'],
@@ -124,10 +136,29 @@ class PaymentHandler
             ];
         }, $cart_items);
 
+        // Tambahkan biaya pengiriman sebagai item
+        if ($shipping_cost > 0) {
+            $item_details[] = [
+                'id' => 'SHIPPING',
+                'price' => (int) $shipping_cost,
+                'quantity' => 1,
+                'name' => $data['shipping_courier'] . ' Shipping Cost'
+            ];
+        }
+
         return [
             'transaction_details' => [
                 'order_id' => $order_id,
-                'gross_amount' => (int) $total_amount
+                'gross_amount' => (int) $final_total
+            ],
+            'enabled_payments' => [
+                'credit_card',
+                'bank_transfer',
+                'gopay',
+                'shopeepay',
+                'qris',
+                'dana',
+                'ovo'
             ],
             'item_details' => $item_details,
             'customer_details' => [
@@ -154,19 +185,6 @@ class PaymentHandler
         ];
     }
 
-    // Jika Anda perlu memisahkan nama lengkap menjadi first_name dan last_name
-    private function splitName($fullName)
-    {
-        $parts = explode(' ', trim($fullName));
-        $lastName = count($parts) > 1 ? array_pop($parts) : '';
-        $firstName = implode(' ', $parts);
-
-        return [
-            'first_name' => $firstName ?: $fullName,
-            'last_name' => $lastName
-        ];
-    }
-
     private function formatPhoneNumber($phone)
     {
         // Hapus semua karakter non-digit
@@ -188,64 +206,6 @@ class PaymentHandler
         }
 
         return $phone;
-    }
-
-    private function saveOrder($order_id, $data, $total_amount, $cart_items)
-    {
-        try {
-            $this->db->beginTransaction();
-
-            // 1. Simpan order terlebih dahulu
-            $sql = "INSERT INTO orders (order_id, user_id, total_harga, nama_penerima, nomor_penerima, alamat_penerima, transaction_status, keterangan_order) 
-                    VALUES (:order_id, :user_id, :total_harga, :nama_penerima, :nomor_penerima, :alamat_penerima, 'pending',:keterangan_order)";
-
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute([
-                ':order_id' => $order_id,
-                ':user_id' => $this->user_id,
-                ':total_harga' => $total_amount,
-                ':nama_penerima' => $data['namapenerima'],
-                ':nomor_penerima' => $data['notelppenerima'],
-                ':alamat_penerima' => $data['alamatpenerima'],
-                ':keterangan_order' => $data['keterangan_order']
-            ]);
-
-            // 2. Pastikan order tersimpan
-            if ($stmt->rowCount() === 0) {
-                throw new Exception("Gagal menyimpan order");
-            }
-
-            // 3. Simpan order details
-            $sql = "INSERT INTO order_details (order_id, product_id, jumlah_order, harga_order) 
-                    VALUES (:order_id, :product_id, :jumlah_order, :harga_order)";
-
-            $stmt = $this->db->prepare($sql);
-            foreach ($cart_items as $item) {
-                $result = $stmt->execute([
-                    ':order_id' => $order_id,
-                    ':product_id' => $item['product_id'],
-                    ':jumlah_order' => $item['jumlah'],
-                    ':harga_order' => $item['harga_produk'],
-
-                ]);
-
-                if (!$result) {
-                    throw new Exception("Gagal menyimpan detail order");
-                }
-            }
-
-            // 4. Hapus items dari cart setelah order berhasil
-            $sql = "DELETE FROM carts WHERE user_id = :user_id";
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute([':user_id' => $this->user_id]);
-
-            $this->db->commit();
-            return true;
-
-        } catch (Exception $e) {
-            $this->db->rollBack();
-            throw new Exception('Gagal menyimpan order: ' . $e->getMessage());
-        }
     }
 
     public function handleNotification()
@@ -377,18 +337,39 @@ class PaymentHandler
     public function processExistingOrder($order_id)
     {
         try {
-            // Get order data
-            $sql = "SELECT * FROM orders WHERE order_id = ? AND user_id = ?";
+            // Debug log awal
+            error_log("Starting processExistingOrder for order_id: $order_id and user_id: {$this->user_id}");
+
+            // Validasi input
+            if (!$order_id) {
+                throw new Exception("Order ID is required");
+            }
+
+            // Cek status order
+            $check_status = "SELECT transaction_status FROM orders WHERE order_id = ?";
+            $stmt = $this->db->prepare($check_status);
+            $stmt->execute([$order_id]);
+            $current_status = $stmt->fetchColumn();
+
+            // Get order data dengan shipment dalam satu query
+            $sql = "SELECT o.*, s.biaya_ongkir, s.ekspedisi 
+                FROM orders o 
+                LEFT JOIN shipments s ON o.order_id = s.order_id 
+                WHERE o.order_id = ? AND o.user_id = ?";
+
             $stmt = $this->db->prepare($sql);
             $stmt->execute([$order_id, $this->user_id]);
             $order = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // Debug order data
+            error_log("Order data found: " . json_encode($order));
 
             if (!$order) {
                 throw new Exception("Order tidak ditemukan");
             }
 
             // Get order details
-            $sql = "SELECT od.*, p.nama_produk 
+            $sql = "SELECT od.*, p.nama_produk, p.paper_type, p.paper_size
                 FROM order_details od 
                 JOIN products p ON od.product_id = p.product_id 
                 WHERE od.order_id = ?";
@@ -400,26 +381,95 @@ class PaymentHandler
                 throw new Exception("Detail order tidak ditemukan");
             }
 
+            // Hitung total berat dari semua item
+            $totalWeight = 0;
+            foreach ($items as $item) {
+                try {
+                    $itemWeight = WeightCalculator::calculateWeight(
+                        $item['paper_type'],
+                        $item['paper_size'],
+                        $item['jumlah_order']
+                    );
+                    $totalWeight += $itemWeight;
+                } catch (Exception $e) {
+                    error_log("Error calculating weight: " . $e->getMessage());
+                    // Default weight jika kalkulasi gagal
+                    $totalWeight += 100 * $item['jumlah_order'];
+                }
+            }
+
+            // Debug items
+            error_log("Order items found: " . json_encode($items));
+
+            // Kalkulasi total dengan ongkir
+            $total_amount = floatval($order['total_harga']);
+            $shipping_cost = floatval($order['biaya_ongkir'] ?? 0);
+            $final_total = $total_amount + $shipping_cost;
+
+            // Debug totals
+            error_log("Calculations: total_amount = {$total_amount}, shipping_cost = {$shipping_cost}, final_total = {$final_total}");
+
+            // Prepare item details
+            $item_details = array_map(function ($item) {
+                return [
+                    'id' => $item['product_id'],
+                    'price' => (int) $item['harga_order'],
+                    'quantity' => (int) $item['jumlah_order'],
+                    'name' => $item['nama_produk']
+                ];
+            }, $items);
+
+            // Add shipping cost as separate item if exists
+            if ($shipping_cost > 0) {
+                $item_details[] = [
+                    'id' => 'SHIPPING',
+                    'price' => (int) $shipping_cost,
+                    'quantity' => 1,
+                    'name' => ($order['ekspedisi'] ? $order['ekspedisi'] . ' Shipping' : 'Shipping Cost')
+                ];
+            }
+
             // Prepare transaction data
             $transaction_data = [
                 'transaction_details' => [
                     'order_id' => $order['order_id'],
-                    'gross_amount' => (int) $order['total_harga']
+                    'gross_amount' => (int) $final_total
                 ],
-                'item_details' => array_map(function ($item) {
-                    return [
-                        'id' => $item['product_id'],
-                        'price' => (int) $item['harga_order'],
-                        'quantity' => (int) $item['jumlah_order'],
-                        'name' => $item['nama_produk']
-                    ];
-                }, $items),
+                'enabled_payments' => [
+                    'credit_card',
+                    'bank_transfer',
+                    'gopay',
+                    'shopeepay',
+                    'qris',
+                    'dana',
+                    'ovo'
+                ],
+                'item_details' => $item_details,
                 'customer_details' => [
                     'first_name' => $order['nama_penerima'],
+                    // 'email' => $data['email'] ?? '',
                     'phone' => $order['nomor_penerima'],
-                    'address' => $order['alamat_penerima']
+                    'billing_address' => [
+                        'first_name' => $order['nama_penerima'],
+                        'phone' => $order['nomor_penerima'],
+                        'address' => $order['alamat_penerima'],
+                        'city' => $order['kota'],
+                        'postal_code' => $order['kodepos'],
+                        'country_code' => 'IDN'
+                    ],
+                    'shipping_address' => [
+                        'first_name' => $order['nama_penerima'],
+                        'phone' => $order['nomor_penerima'],
+                        'address' => $order['alamat_penerima'],
+                        'city' => $order['kota'],
+                        'postal_code' => $order['kodepos'],
+                        'country_code' => 'IDN'
+                    ]
                 ]
             ];
+
+            // Debug final transaction data
+            error_log("Final transaction data: " . json_encode($transaction_data));
 
             // Get Snap Token
             $snap_token = Snap::getSnapToken($transaction_data);
@@ -427,10 +477,10 @@ class PaymentHandler
             return [
                 'status' => 'success',
                 'snap_token' => $snap_token,
-                'order_id' => $order_id
             ];
 
         } catch (Exception $e) {
+            error_log("Error processing existing order: " . $e->getMessage());
             return [
                 'status' => 'error',
                 'message' => $e->getMessage()
@@ -444,6 +494,7 @@ class PaymentHandler
 function payment_handled($data, $user_id)
 {
     try {
+
         $paymentHandler = new PaymentHandler($GLOBALS['db'], $user_id);
         $result = $paymentHandler->processPayment($data);
 
@@ -477,17 +528,64 @@ function handle_notification()
 function process_existing_order($order_id, $user_id)
 {
     try {
+        // Debug log
+        error_log("Entering process_existing_order with order_id: $order_id, user_id: $user_id");
+
         $paymentHandler = new PaymentHandler($GLOBALS['db'], $user_id);
         $result = $paymentHandler->processExistingOrder($order_id);
+
+        // Debug log
+        error_log("Result from processExistingOrder: " . print_r($result, true));
 
         if ($result['status'] === 'success') {
             return $result['snap_token'];
         } else {
-            throw new Exception($result['message']);
+            throw new Exception(message: $result['message'] ?? 'Unknown error occurred');
         }
 
     } catch (Exception $e) {
-        http_response_code(400);
+        error_log("Error in process_existing_order: " . $e->getMessage());
         throw new Exception($e->getMessage());
+    }
+}
+
+class WeightCalculator
+{
+    // Konstanta untuk gram per m² berbagai jenis kertas
+    private static $PAPER_WEIGHTS = [
+        'artpaper_120' => 120,
+        'artpaper_150' => 150,
+        'hvs_70' => 70,
+        'hvs_80' => 80
+        // Tambahkan jenis kertas lainnya
+    ];
+
+    // Konstanta untuk ukuran kertas (dalam cm)
+    private static $PAPER_SIZES = [
+        'a4' => ['width' => 21.0, 'height' => 29.7],
+        'a5' => ['width' => 14.8, 'height' => 21.0],
+        'f4' => ['width' => 21.5, 'height' => 33.0]
+        // Tambahkan ukuran lainnya
+    ];
+
+    public static function calculateWeight($paperType, $paperSize, $quantity)
+    {
+        // Validasi input
+        if (!isset(self::$PAPER_WEIGHTS[$paperType]) || !isset(self::$PAPER_SIZES[$paperSize])) {
+            throw new Exception("Invalid paper type or size");
+        }
+
+        // Ambil spesifikasi kertas
+        $gramPerM2 = self::$PAPER_WEIGHTS[$paperType];
+        $dimensions = self::$PAPER_SIZES[$paperSize];
+
+        // Hitung berat per lembar (dalam gram)
+        $weightPerSheet = ($dimensions['width'] * $dimensions['height'] * $gramPerM2) / 10000;
+
+        // Hitung total berat
+        $totalWeight = $weightPerSheet * $quantity;
+
+        // Bulatkan ke atas ke kelipatan 100 gram terdekat untuk keamanan
+        return ceil($totalWeight / 100) * 100;
     }
 }

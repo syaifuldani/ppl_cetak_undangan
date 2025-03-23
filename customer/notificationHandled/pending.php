@@ -12,7 +12,6 @@ if (!isset($_GET['order_id'])) {
 
 try {
     $order_id = $_GET['order_id'];
-    // var_dump($order_id);
 
     // Verifikasi order belongs to current user
     $sql = "SELECT o.*, u.email 
@@ -23,7 +22,6 @@ try {
     $stmt = $db->prepare($sql);
     $stmt->execute([$order_id, $_SESSION['user_id']]);
     $order = $stmt->fetch(PDO::FETCH_ASSOC);
-    // var_dump($order);
 
     if (!$order) {
         throw new Exception('Order tidak ditemukan');
@@ -55,16 +53,16 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pembayaran Berhasil</title>
-    <link rel="stylesheet" href="../../resources/css/succeshandling.css">
+    <title>Pembayaran Pending</title>
+    <link rel="stylesheet" href="../../resources/css/pendinghandling.css">
 </head>
 
 <body>
-    <div class="success-container">
-        <div class="success-card">
-            <div class="success-header">
-                <img src="../../resources/img/centang_hijau.png" alt="Success" class="success-icon">
-                <h1>Pembayaran Berhasil!</h1>
+    <div class="pending-container">
+        <div class="pending-card">
+            <div class="pending-header">
+                <img src="../../resources/img/pending.png" alt="pending" class="pending-icon">
+                <h1>Pesananmu Pending</h1>
                 <p>Pesanan Anda telah dikonfirmasi</p>
             </div>
 
@@ -119,7 +117,7 @@ try {
                 <p>Memproses pembayaran...</p>
             </div>
 
-            <div class="success-footer">
+            <div class="pending-footer">
                 <a href="../../customer/dashboard.php" class="btn-primary">Kembali ke Dashboard</a>
                 <a href="../../customer/pesanan_saya.php" class="btn-secondary">Lihat Pesanan Saya</a>
             </div>
@@ -132,7 +130,7 @@ try {
         const paymentResult = sessionStorage.getItem('paymentResult');
         if (paymentResult) {
             const result = JSON.parse(paymentResult);
-            console.log('Payment Result:', result);
+            // console.log('Payment Result:', result);
 
             // Bersihkan sessionStorage
             sessionStorage.removeItem('paymentResult');

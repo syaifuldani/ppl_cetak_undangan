@@ -10,10 +10,10 @@ body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
         Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
         sans-serif;
-    background: linear-gradient(to top,  #8da6d1 5%, transparent 100%);
+    background: linear-gradient(to top, #8da6d1 5%, transparent 100%);
     background-attachment: fixed;
-    margin: 0; 
-    padding: 0; 
+    margin: 0;
+    padding: 0;
 }
 
 /* Styling untuk navbar */
@@ -28,7 +28,7 @@ body {
     max-width: 100vw;
     z-index: 999;
     top: 0;
-    box-sizing: border-box; 
+    box-sizing: border-box;
 }
 
 .logo {
@@ -101,7 +101,7 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-    overflow-y: auto; 
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
 }
@@ -176,7 +176,8 @@ body {
     position: relative;
 }
 
-.nav-links a, .nav-links button {
+.nav-links a,
+.nav-links button {
     text-decoration: none;
     color: black;
     font-size: 16px;
@@ -521,7 +522,6 @@ body {
     padding: 15px 10px;
 }
 
-
 /* Responsifitas Tampilan Navbar */
 /* Burger Menu */
 .burger {
@@ -546,28 +546,28 @@ body {
 @media screen and (max-width: 1028px) {
     .nav-links {
         position: absolute;
-        left: 0; 
+        left: 0;
         top: 58px;
-        width: 280px; 
+        width: 280px;
         height: 100vh;
         background-color: rgba(146, 172, 217);
         backdrop-filter: blur(10px);
         display: flex;
         flex-direction: column;
-        align-items: flex-start; 
+        align-items: flex-start;
         padding: 20px;
-        transform: translateX(-100%); 
-        transition: transform 0.5s ease-in-out; 
+        transform: translateX(-100%);
+        transition: transform 0.5s ease-in-out;
         z-index: 10;
         border-radius: 3px;
     }
 
     .nav-links.nav-active {
-        transform: translateX(0); 
+        transform: translateX(0);
     }
 
     .nav-links.nav-close {
-        transform: translateX(100%); 
+        transform: translateX(100%);
     }
 
     .burger {
@@ -610,24 +610,24 @@ body {
     }
 
     .search-bar form input[type="text"] {
-        width: 180px; 
-        transition: none; 
+        width: 180px;
+        transition: none;
     }
 
     .dropdown-content {
-        display: none; 
-        background-color: #f9f9f9;  
+        display: none;
+        background-color: #f9f9f9;
         top: 0;
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
         border-radius: 5px;
-        position: relative; 
-        z-index: 1; 
+        position: relative;
+        z-index: 1;
     }
-    
+
     .dropdown:hover .dropdown-content {
-        display: block; 
+        display: block;
     }
-    
+
     .sign-in,
     .register {
         margin-left: 0;
@@ -637,11 +637,11 @@ body {
 
     /* Style Search Result */
     .search-results {
-        width: 100%; 
+        width: 100%;
         max-width: 480px;
         left: 280px;
         top: 58px;
-        transform: translateX(0); 
+        transform: translateX(0);
         max-height: 250px;
     }
 
@@ -662,18 +662,18 @@ body {
 @media screen and (max-width: 780px) {
     /* Style Search Result */
     .search-results {
-        width: 100%; 
+        width: 100%;
         max-width: 270px;
         left: 5px;
         top: 125px;
-        transform: translateX(0); 
+        transform: translateX(0);
         max-height: 250px;
     }
-} 
+}
 
 @media screen and (max-width: 480px) {
     .search-results {
-        width: 100%; 
+        width: 100%;
         max-width: 270px;
         left: 5px;
         top: 125px;

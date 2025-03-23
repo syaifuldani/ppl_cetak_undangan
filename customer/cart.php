@@ -53,6 +53,13 @@ if (isset($_SESSION['user_id'])) {
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $_POST['shipping_data'] = [
+            'courier' => $_POST['shipping_courier'],
+            'service' => $_POST['shipping_service'],
+            'cost' => $_POST['shipping_cost'],
+            'eta' => $_POST['shipping_eta']
+        ];
+
         $response = payment_handled($_POST, $userId);
     }
 
@@ -69,7 +76,7 @@ if (isset($_SESSION['user_id'])) {
     }
 
     // Ambil item keranjang dari database
-    $cartItems = getCartItems(userId: $userId);
+    $cartItems = getCartItems($userId);
 } else {
     // Set status HTTP menjadi 404 (Not Found)
     http_response_code(404);
@@ -202,14 +209,19 @@ if (isset($_POST['query'])) {
                     </div>
 
                     <form id="payment-form" action="" method="POST">
+                        <!-- Hidden inputs akan ditambahkan secara dinamis oleh JavaScript -->
+                        <input type="hidden" name="shipping_cost" value="">
+                        <input type="hidden" name="shipping_eta" value="">
+                        <input type="hidden" name="shipping_courier" value="">
+                        <input type="hidden" name="shipping_service" value="">
                         <div class="form-section">
                             <!-- Tambahkan hidden input untuk snap token -->
                             <input type="hidden" name="snap_token" id="snap-token">
                             <div class="form-group">
                                 <h3>Data Undangan</h3>
-                                <input type="date" name="tanggalacara" placeholder="Tanggal dan Waktu Acara" required>
-                                <input type="text" name="lokasiacara" placeholder="Tempat/Lokasi Acara" required>
-                                <textarea name="keterangan_order" placeholder="Keterangan Tambahan" required></textarea>
+                                <input type="date" name="tanggalacara" placeholder="Tanggal dan Waktu Acara">
+                                <input type="text" name="lokasiacara" placeholder="Tempat/Lokasi Acara">
+                                <textarea name="keterangan_order" placeholder="Keterangan Tambahan"></textarea>
                                 <p class="info">
                                     Tuliskan keterangan tambahan seperti nama orang tua dan calon mempelai, teks
                                     doa,
@@ -224,20 +236,86 @@ if (isset($_POST['query'])) {
                                     Dst.
                                 </p>
                             </div>
-                            <div class="form-group">
+                            <div class="shipping-form">
                                 <h3>Data Alamat Kirim</h3>
-                                <input name="namapenerima" type="text" placeholder="Nama Lengkap Penerima" required>
-                                <input name="email" type="email" placeholder="Email">
-                                <input name="notelppenerima" type="text"
-                                    placeholder="No. Telp Penerima (contoh: +6281234567890)" required>
-                                <textarea name="alamatpenerima" placeholder="Alamat Lengkap" required></textarea>
-                                <input name="kota" type="text" placeholder="Kota" required>
-                                <input name="kodepos" type="text" placeholder="Kode Pos" required>
 
-                                <p class="info">
-                                    Pastikan format nomor telepon diawali dengan +62 dan alamat diisi lengkap
-                                    termasuk kota dan kode pos untuk memastikan pengiriman lancar.
-                                </p>
+                                <div class="form-grid">
+                                    <!-- Kolom Kiri -->
+                                    <div class="form-column">
+                                        <div class="form-group">
+                                            <label>Nama Penerima</label>
+                                            <input type="text" name="namapenerima" placeholder="Nama Lengkap Penerima">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input type="email" name="email" placeholder="Email">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Nomor Telepon</label>
+                                            <input type="text" name="notelppenerima" placeholder="+628123456789">
+                                            <small class="helper-text">Diawali dengan +62</small>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Provinsi</label>
+                                            <select name="provinsi" id="provinsi">
+                                                <option value="">Pilih Provinsi</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Kabupaten/Kota</label>
+                                            <select name="kota" id="kota" disabled>
+                                                <option value="">Pilih Kabupaten/Kota</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Kecamatan</label>
+                                            <input type="text" name="kecamatan" placeholder="Kecamatan">
+                                        </div>
+                                    </div>
+
+                                    <!-- Kolom Kanan -->
+                                    <div class="form-column">
+                                        <div class="form-group">
+                                            <label>Kelurahan/Desa</label>
+                                            <input type="text" name="kelurahan" placeholder="Kelurahan/Desa">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Alamat Lengkap</label>
+                                            <textarea name="alamatpenerima"
+                                                placeholder="Nama jalan, nomor rumah, RT/RW, patokan"></textarea>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Kode Pos</label>
+                                            <input type="text" name="kodepos" placeholder="Kode Pos" pattern="[0-9]{5}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Pilih Kurir</label>
+                                            <select name="courier" id="courier">
+                                                <option value="">Pilih Kurir</option>
+                                                <option value="jne">JNE</option>
+                                                <!-- <option value="pos">POS Indonesia</option>
+                                                <option value="tiki">TIKI</option> -->
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Button cek ongkir di bawah grid -->
+                                <div class="form-actions">
+                                    <button type="button" id="check-shipping" class="btn-check-shipping">
+                                        Cek Ongkir
+                                    </button>
+                                </div>
+
+                                <!-- Hasil cek ongkir -->
+                                <div id="shipping-results" class="shipping-results"></div>
                             </div>
                             <button class="pay-btn" id="pay-btn">Bayar Sekarang</button>
                         </div>
@@ -300,7 +378,7 @@ if (isset($_POST['query'])) {
 
         // Tambahkan event listener pada tombol hapus
         document.querySelectorAll('.delete-item').forEach(button => {
-            button.addEventListener('click', function(e) {
+            button.addEventListener('click', function (e) {
                 e.preventDefault();
                 deleteUrl = this.getAttribute('href'); // Simpan URL penghapusan
                 deleteOverlay.style.display = 'flex'; // Tampilkan overlay
@@ -308,17 +386,17 @@ if (isset($_POST['query'])) {
         });
 
         // Tombol konfirmasi penghapusan
-        confirmDeleteBtn.addEventListener('click', function() {
+        confirmDeleteBtn.addEventListener('click', function () {
             window.location.href = deleteUrl; // Arahkan ke URL penghapusan
         });
 
         // Tombol batal
-        cancelDeleteBtn.addEventListener('click', function() {
+        cancelDeleteBtn.addEventListener('click', function () {
             deleteOverlay.style.display = 'none'; // Sembunyikan overlay
         });
     </script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             const urlParams = new URLSearchParams(window.location.search);
             const updateOverlay = document.getElementById('updateOverlay');
             const closeUpdateOverlayBtn = document.getElementById('closeUpdateOverlay');
@@ -328,7 +406,7 @@ if (isset($_POST['query'])) {
             }
 
             // Tutup overlay saat tombol "OK" ditekan
-            closeUpdateOverlayBtn.addEventListener('click', function() {
+            closeUpdateOverlayBtn.addEventListener('click', function () {
                 updateOverlay.style.display = 'none';
                 // Menghapus parameter dari URL
                 window.history.replaceState({}, document.title, window.location.pathname);
@@ -352,7 +430,8 @@ if (isset($_POST['query'])) {
         }
     </script>
     <script src="..\resources\js\Order.js"></script>
-
+    <script src="..\resources\js\CheckOngkir.js"></script>
+    <script src="..\resources\js\validateInputCart.js"></script>
 </body>
 
 </html>

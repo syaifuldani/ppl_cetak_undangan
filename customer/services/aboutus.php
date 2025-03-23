@@ -19,12 +19,15 @@
             <div class="text-content">
                 <h2>Selamat Datang di Aplikasi Cetak Undangan</h2>
                 <p>
-                    Kami adalah penyedia layanan cetak undangan online yang didedikasikan untuk mempermudah Anda dalam mencetak undangan untuk berbagai acara spesial seperti pernikahan,
-                     ulang tahun, khitanan, dan lainnya. Dengan aplikasi kami, Anda dapat memilih undangan dengan desain yang menarik dan kualitas cetak terbaik tanpa harus repot.
+                    Kami adalah penyedia layanan cetak undangan online yang didedikasikan untuk mempermudah Anda dalam
+                    mencetak undangan untuk berbagai acara spesial seperti pernikahan,
+                    ulang tahun, khitanan, dan lainnya. Dengan aplikasi kami, Anda dapat memilih undangan dengan desain
+                    yang menarik dan kualitas cetak terbaik tanpa harus repot.
                 </p>
                 <h3>Visi Kami</h3>
                 <p>
-                    Menjadi solusi terbaik untuk layanan cetak undangan digital dan fisik dengan memberikan kemudahan, kecepatan, dan kualitas terbaik bagi pelanggan.
+                    Menjadi solusi terbaik untuk layanan cetak undangan digital dan fisik dengan memberikan kemudahan,
+                    kecepatan, dan kualitas terbaik bagi pelanggan.
                 </p>
                 <h3>Misi Kami</h3>
                 <ul>
@@ -32,6 +35,16 @@
                     <li>Memberikan layanan cetak dengan kualitas tinggi dan pengiriman tepat waktu.</li>
                     <li>Mempermudah proses pemesanan undangan secara online dengan sistem yang user-friendly.</li>
                 </ul>
+                <h3>Team :</h3>
+                <p>this website created by us :</p>
+                <ul>
+                    <li>M. Abdillah Al Aziz</li>
+                    <li>Zarkashi Fahriza</li>
+                    <li>Vemas Dwi Prayoga</li>
+                    <li>M. Amanda Rifqianto</li>
+                    <li>Syaiful Rochmandani</li>
+                </ul>
+                <p>to completed the final project of the software design lesson</p>
             </div>
         </div>
         <a href="../dashboard.php" class="back-button">&laquo; Kembali</a>

@@ -2,7 +2,8 @@
 session_start();
 
 // Cek apakah pengguna sudah login
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['user_id']) && $_SESSION['user_id'] != 'admin') {
+    // Jika tidak ada session login, redirect ke halaman login
     header("Location: login_admin.php");
     exit();
 }
@@ -72,23 +73,51 @@ $penjualan_chart = getPenjualanChart();
             <section class="recent-orders">
                 <h3>Penjualan Terbanyak</h3>
                 <div class="sales-list">
-                    <table class="sales-table">
-                        <thead>
-                            <tr>
-                                <th>Nama Produk</th>
-                                <th>Jumlah Order</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($penjualan_terbanyak as $item): ?>
+                    <div class="sales-table-container">
+                        <table class="sales-table">
+                            <thead>
                                 <tr>
-                                    <td><?= htmlspecialchars($item['nama_produk']) ?></td>
-                                    <td><?= htmlspecialchars($item['jumlah_terjual']) ?> orders</td>
+                                    <th>Nama Produk</th>
+                                    <th>Jumlah Order</th>
                                 </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                    <button id="download-pdf">Download Report</button>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($penjualan_terbanyak as $item): ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars($item['nama_produk']) ?></td>
+                                        <td><?= htmlspecialchars($item['jumlah_terjual']) ?> orders</td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Download Report Section Inside Border -->
+                    <div class="download-report-container">
+                        <br>
+                        <h3>Download Laporan Penjualan</h3>
+                        <form id="form-report" method="POST" action="generate_report.php">
+                            <label for="bulan">Pilih Bulan:</label>
+                            <select name="bulan" id="bulan">
+                                <option value="">Semua Bulan</option>
+                                <?php for ($i = 1; $i <= 12; $i++): ?>
+                                    <option value="<?= $i ?>"><?= date("F", mktime(0, 0, 0, $i, 1)) ?></option>
+                                <?php endfor; ?>
+                            </select>
+
+                            <label for="tahun">Pilih Tahun:</label>
+                            <select name="tahun" id="tahun">
+                                <option value="">Semua Tahun</option>
+                                <?php
+                                $currentYear = date('Y');
+                                for ($i = $currentYear; $i >= $currentYear - 10; $i--): ?>
+                                    <option value="<?= $i ?>"><?= $i ?></option>
+                                <?php endfor; ?>
+                            </select>
+
+                            <button type="submit">Download Report</button>
+                        </form>
+                    </div>
                 </div>
             </section>
 
@@ -185,11 +214,15 @@ $penjualan_chart = getPenjualanChart();
         // Fungsi untuk mengunduh halaman sebagai PDF
         document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('download-pdf').addEventListener('click', function () {
-                const element = document.getElementById('content-to-download'); // Tentukan elemen khusus untuk diunduh
+                const element = document.getElementById(
+                    'content-to-download'); // Tentukan elemen khusus untuk diunduh
                 const options = {
-                    margin: 7,          // Mengurangi margin untuk memberi ruang lebih
+                    margin: 7, // Mengurangi margin untuk memberi ruang lebih
                     filename: 'report_penjualan.pdf', // Nama file PDF
-                    image: { type: 'jpeg', quality: 0.98 },
+                    image: {
+                        type: 'jpeg',
+                        quality: 0.98
+                    },
                     html2canvas: {
                         scale: 0.5, // Mengurangi skala untuk memastikan konten lebih kecil dan muat
                         logging: true, // Logging untuk debugging
@@ -202,7 +235,8 @@ $penjualan_chart = getPenjualanChart();
                         pagesplit: true // Membagi konten ke beberapa halaman jika diperlukan
                     }
                 };
-                html2pdf().from(element).set(options).save(); // Mengunduh elemen dengan pengaturan yang ditentukan
+                html2pdf().from(element).set(options)
+                    .save(); // Mengunduh elemen dengan pengaturan yang ditentukan
             });
         });
     </script>

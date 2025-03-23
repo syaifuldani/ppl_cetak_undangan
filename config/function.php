@@ -1,4 +1,5 @@
 <?php
+
 require "../config/connection.php";
 
 // ----------------------------------------------------------------
@@ -465,7 +466,8 @@ function deleteCartItems($userId, $cartId)
     }
 }
 
-function searchProducts($searchTerm) {
+function searchProducts($searchTerm)
+{
     global $db;
     $searchResults = [];
 
@@ -485,7 +487,7 @@ function searchProducts($searchTerm) {
                 // Mengonversi gambar biner menjadi format base64
                 $base64Image = base64_encode($product['gambar_satu']);
                 echo '<a href="productdetail.php?id=' . $product['product_id'] . '" class="search-item">';
-                echo '<img src="data:image/jpeg;base64,' . $base64Image . '" alt="Produk">'; 
+                echo '<img src="data:image/jpeg;base64,' . $base64Image . '" alt="Produk">';
                 echo '<label>';
                 echo '<p>' . $product['nama_produk'] . '</p>';
                 echo '<p class="kategori"> Kategori Undangan : ' . $product['kategori'] . '</p>';
@@ -495,10 +497,10 @@ function searchProducts($searchTerm) {
         } else {
             echo '<p>Undangan Tidak Ditemukan</p>';
         }
-        exit;  
+        exit;
     }
 
-    return $searchResults; 
+    return $searchResults;
 }
 
 
@@ -830,7 +832,62 @@ function handleImageUpload($file, $allowed_extensions, $max_size, &$errors, $fie
     return file_get_contents($file['tmp_name']);
 }
 
+function processForgotPassword($data)
+{
+    global $db; // Gunakan koneksi $db dari PDO
+    $errors = [];
 
+    // Validasi email
+    if (empty($data['email'])) {
+        $errors['email'] = 'Email wajib diisi.';
+    } else {
+        $email = htmlspecialchars($data['email']);
+
+        // Query untuk memeriksa apakah email ada di database
+        $sql = "SELECT * FROM users WHERE email = :email";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$user) {
+            $errors['email'] = 'Email tidak ditemukan.';
+        }
+    }
+
+    // Validasi password baru
+    if (empty($data['new_password'])) {
+        $errors['new_password'] = 'Password baru wajib diisi.';
+    } elseif (strlen($data['new_password']) < 6) {
+        $errors['new_password'] = 'Password minimal 6 karakter.';
+    }
+
+    // Validasi konfirmasi password
+    if (empty($data['confirm_password'])) {
+        $errors['confirm_password'] = 'Konfirmasi password wajib diisi.';
+    } elseif ($data['new_password'] !== $data['confirm_password']) {
+        $errors['confirm_password'] = 'Konfirmasi password tidak cocok.';
+    }
+
+    // Jika tidak ada error, proses reset password
+    if (empty($errors)) {
+        $hashedPassword = password_hash($data['new_password'], PASSWORD_BCRYPT);
+        $updateSql = "UPDATE users SET password = :password WHERE email = :email";
+        $updateStmt = $db->prepare($updateSql);
+        $updateStmt->bindParam(':password', $hashedPassword);
+        $updateStmt->bindParam(':email', $email);
+
+        if ($updateStmt->execute()) {
+            $_SESSION['message'] = 'Password berhasil direset. Silakan login.';
+            header('Location: login.php');
+            exit();
+        } else {
+            $errors['general'] = 'Terjadi kesalahan. Coba lagi nanti.';
+        }
+    }
+
+    return $errors;
+}
 
 function getAllDataByCategory($category)
 {
@@ -862,31 +919,30 @@ function getOrdersByID($userId)
 {
     global $db;
 
-    $sql = "SELECT o.*, 
-            GROUP_CONCAT(
-                JSON_OBJECT(
-                    'product_id', od.product_id,
-                    'nama_produk', p.nama_produk,
-                    'gambar_satu', p.gambar_satu,
-                    'jumlah_order', od.jumlah_order,
-                    'harga_order', od.harga_order
-                )
-            ) as items
-            FROM orders o
-            LEFT JOIN order_details od ON o.order_id = od.order_id
-            LEFT JOIN products p ON od.product_id = p.product_id
-            WHERE o.user_id = :user_id
-            GROUP BY o.order_id
+    // Query utama untuk orders
+    $sql = "SELECT o.* FROM orders o 
+            WHERE o.user_id = :user_id 
             ORDER BY o.created_at DESC";
 
     $stmt = $db->prepare($sql);
     $stmt->execute([':user_id' => $userId]);
-
     $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Parse the JSON string of items
+    // Query tambahan untuk mendapatkan items per order
     foreach ($orders as &$order) {
-        $order['items'] = json_decode('[' . $order['items'] . ']', true);
+        $itemSql = "SELECT 
+                    od.product_id,
+                    p.nama_produk,
+                    p.gambar_satu,
+                    od.jumlah_order,
+                    od.harga_order
+                FROM order_details od
+                JOIN products p ON od.product_id = p.product_id
+                WHERE od.order_id = :order_id";
+
+        $itemStmt = $db->prepare($itemSql);
+        $itemStmt->execute([':order_id' => $order['order_id']]);
+        $order['items'] = $itemStmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     return $orders;
@@ -905,8 +961,99 @@ function getOrderList($limit, $offset)
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+function updateStatusByOrderId($orderID, $newStatus)
+{
+    try {
+        global $db;
+
+        // Validasi input
+        if (empty($orderID) || empty($newStatus)) {
+            throw new Exception("Data tidak lengkap");
+        }
+
+        // Validasi status yang diperbolehkan
+        $allowed_statuses = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
+        if (!in_array($newStatus, $allowed_statuses)) {
+            throw new Exception("Status tidak valid");
+        }
+
+        // Update status di database
+        $stmt = $db->prepare("
+            UPDATE orders 
+            SET transaction_status = :new_status, 
+                updated_at = NOW()
+            WHERE order_id = :order_id
+        ");
+
+        $stmt->bindParam(':new_status', $newStatus);
+        $stmt->bindParam(':order_id', $orderID);
+
+        if (!$stmt->execute()) {
+            throw new Exception("Gagal mengupdate status order");
+        }
+
+        return [
+            'status' => 'success',
+            'message' => "Status berhasil diupdate menjadi $newStatus"
+        ];
+
+    } catch (Exception $e) {
+        return [
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ];
+    }
+}
+
+function updateResi($orderID, $nomor_resi)
+{
+    try {
+        // Validasi input
+        if (empty($orderID) || empty($nomor_resi)) {
+            throw new Exception("Order ID dan nomor resi tidak boleh kosong");
+        }
+
+        // Cek apakah order exist
+        $checkOrder = "SELECT order_id FROM shipments WHERE order_id = :order_id";
+        $checkStmt = $GLOBALS['db']->prepare($checkOrder);
+        $checkStmt->execute([':order_id' => $orderID]);
+
+        if ($checkStmt->fetch()) {
+            // Update jika data sudah ada
+            $sql = "UPDATE shipments SET nomor_resi = :nomor_resi WHERE order_id = :order_id";
+        } else {
+            // Insert jika data belum ada
+            $sql = "INSERT INTO shipments (order_id, nomor_resi) VALUES (:order_id, :nomor_resi)";
+        }
+
+        // Update nomor resi
+        $stmt = $GLOBALS['db']->prepare($sql);
+        $result = $stmt->execute([
+            ':nomor_resi' => $nomor_resi,
+            ':order_id' => $orderID
+        ]);
+
+        if (!$result) {
+            throw new Exception("Gagal mengupdate nomor resi");
+        }
+
+        return [
+            'success' => true,
+            'message' => 'Nomor resi berhasil diupdate'
+        ];
+    } catch (PDOException $e) {
+        echo "<script>
+        alert('Error: Gagal mengupdate nomor resi - " . $e->getMessage() . "');
+        window.history.back();
+    </script>";
+        exit;
+    }
+
+}
 // ADMIN FUNCTIONS DASHBOARD
-function getPenjualanChart() {
+function getPenjualanChart()
+{
     // Gunakan koneksi PDO yang sudah ada
     global $db;
 
@@ -942,7 +1089,8 @@ function getPenjualanChart() {
 
 
 // Fungsi untuk menghitung jumlah pemesanan
-function getTotalPemesanan() {
+function getTotalPemesanan()
+{
     global $db;
     $sqlPemesanan = "SELECT COUNT(DISTINCT order_id) AS total_pemesanan FROM order_details";
     $stmt = $db->prepare($sqlPemesanan);
@@ -952,7 +1100,8 @@ function getTotalPemesanan() {
 }
 
 // Fungsi untuk menghitung total penjualan selesai
-function getTotalPenjualanSelesai() {
+function getTotalPenjualanSelesai()
+{
     global $db;
     $sqlPenjualanSelesai = "SELECT COUNT(*) AS total_penjualan_selesai FROM orders WHERE transaction_status = 'delivered'";
     $stmt = $db->prepare($sqlPenjualanSelesai);
@@ -962,7 +1111,8 @@ function getTotalPenjualanSelesai() {
 }
 
 // Fungsi untuk mengambil data penjualan per bulan
-function getPenjualanPerBulan() {
+function getPenjualanPerBulan()
+{
     global $db;
     $sqlPenjualan = "SELECT MONTH(transaction_time) AS bulan, SUM(gross_amount) AS total_penjualan
                      FROM payments
@@ -978,7 +1128,8 @@ function getPenjualanPerBulan() {
 }
 
 // Fungsi untuk mendapatkan penjualan terbanyak
-function getPenjualanTerbanyak() {
+function getPenjualanTerbanyak()
+{
     global $db;
     $sqlPenjualanTerbanyak = "SELECT 
         p.nama_produk AS nama_produk,
@@ -998,7 +1149,8 @@ function getPenjualanTerbanyak() {
 }
 
 // Fungsi untuk mendapatkan pesanan terbaru
-function getPesananTerbaru() {
+function getPesananTerbaru()
+{
     global $db;
     $sqlPesananTerbaru = "SELECT 
         o.nama_penerima,

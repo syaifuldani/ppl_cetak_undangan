@@ -97,16 +97,20 @@ $products = getRandomProducts(2);
                     <div class="image-gallery">
                         <div class="image-zoom">
                             <div class="main-image" onmousemove="zoomImage(event)" onmouseleave="resetImage()">
-                                <img id="mainImage" src="<?= $product['gambar_satu']; ?>" alt="<?= htmlspecialchars($product['nama_produk']); ?>">
+                                <img id="mainImage" src="<?= $product['gambar_satu']; ?>"
+                                    alt="<?= htmlspecialchars($product['nama_produk']); ?>">
                             </div>
                         </div>
                         <div class="thumbnail-images">
-                            <img src="<?= $product['gambar_satu']; ?>" alt="Thumbnail 1" class="thumb" onclick="changeImage(this)">
+                            <img src="<?= $product['gambar_satu']; ?>" alt="Thumbnail 1" class="thumb"
+                                onclick="changeImage(this)">
                             <?php if (isset($product['gambar_dua'])): ?>
-                                <img src="<?= $product['gambar_dua']; ?>" alt="Thumbnail 2" class="thumb" onclick="changeImage(this)">
+                                <img src="<?= $product['gambar_dua']; ?>" alt="Thumbnail 2" class="thumb"
+                                    onclick="changeImage(this)">
                             <?php endif; ?>
                             <?php if (isset($product['gambar_tiga'])): ?>
-                                <img src="<?= $product['gambar_tiga']; ?>" alt="Thumbnail 3" class="thumb" onclick="changeImage(this)">
+                                <img src="<?= $product['gambar_tiga']; ?>" alt="Thumbnail 3" class="thumb"
+                                    onclick="changeImage(this)">
                             <?php endif; ?>
                         </div>
                     </div>
@@ -118,7 +122,9 @@ $products = getRandomProducts(2);
                             <h1><?= htmlspecialchars($product['nama_produk']); ?></h1>
 
                             <!-- Harga produk -->
-                            <p class="price">Rp. <?= htmlspecialchars(number_format($product['harga_produk'], 2, ',', '.')); ?>/Lembar</p>
+                            <p class="price">Rp.
+                                <?= htmlspecialchars(number_format($product['harga_produk'], 2, ',', '.')); ?>/Lembar
+                            </p>
 
                             <div class="description">
                                 <h4>Deskripsi Produk</h4>
@@ -131,14 +137,17 @@ $products = getRandomProducts(2);
                         <!-- Inputan Kuantitas -->
                         <div class="quantity">
                             <form action="" method="POST" id="addToCartForm">
-                                <input type="hidden" name="product_id" value="<?= htmlspecialchars($product['product_id']); ?>">
-                                <input type="hidden" name="price" value="<?= htmlspecialchars($product['harga_produk']); ?>">
+                                <input type="hidden" name="product_id"
+                                    value="<?= htmlspecialchars($product['product_id']); ?>">
+                                <input type="hidden" name="price"
+                                    value="<?= htmlspecialchars($product['harga_produk']); ?>">
 
                                 <?php if (isset($_SESSION['user_id'])): ?>
-                                    <input type="hidden" name="user_id" value="<?= htmlspecialchars($_SESSION['user_id']); ?>">
+                                    <input type="hidden" name="user_id"
+                                        value="<?= htmlspecialchars($_SESSION['user_id']); ?>">
 
                                     <button type="button" onclick="decreaseQuantity()">-</button>
-                                    <input type="text" name="quantity" id="quantityInput" value="1">
+                                    <input type="number" name="quantity" id="quantityInput" value="1">
                                     <button type="button" onclick="increaseQuantity()">+</button>
 
                                     <button type="submit" class="order-btn">
@@ -159,21 +168,25 @@ $products = getRandomProducts(2);
                             <?php
                             if (!empty($products) && !isset($products['error'])):
                                 foreach ($products as $product):
-                            ?>
+                                    ?>
                                     <div class="product-card">
-                                        <img class="product" src="<?= htmlspecialchars($product['gambar_satu']); ?>" alt="<?= htmlspecialchars($product['nama_produk']); ?>">
+                                        <img class="product" src="<?= htmlspecialchars($product['gambar_satu']); ?>"
+                                            alt="<?= htmlspecialchars($product['nama_produk']); ?>">
                                         <p class="product-name"><?= htmlspecialchars($product['nama_produk']); ?></p>
                                         <div class="description">
                                             <h6>Deskripsi Produk</h6>
                                             <p><?= htmlspecialchars($product['deskripsi']); ?></p>
                                         </div>
-                                        <p class="product-price">Rp. <?= htmlspecialchars(number_format($product['harga_produk'], 2, ',', '.')); ?></p>
-                                        <a href="productdetail.php?id=<?= htmlspecialchars($product['product_id']); ?>" class="detail-button">
+                                        <p class="product-price">Rp.
+                                            <?= htmlspecialchars(number_format($product['harga_produk'], 2, ',', '.')); ?>
+                                        </p>
+                                        <a href="productdetail.php?id=<?= htmlspecialchars($product['product_id']); ?>"
+                                            class="detail-button">
                                             <img class="cart-icon" src="../resources/img/icons/cart.png" alt="">
                                             <p>Lihat Detail</p>
                                         </a>
                                     </div>
-                                <?php
+                                    <?php
                                 endforeach;
                             else:
                                 ?>

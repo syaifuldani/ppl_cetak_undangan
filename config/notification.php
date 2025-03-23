@@ -1,7 +1,6 @@
 <?php
-// Buat file baru: notification.php
-require_once __DIR__ . '/midtrans_config.php';
-require_once __DIR__ . '/connection.php';
+require_once __DIR__ . '../../config/midtrans_config.php';
+require_once __DIR__ . '../../config/connection.php';
 
 use Dotenv\Dotenv;
 use Midtrans\Config;
@@ -16,91 +15,97 @@ Config::$isProduction = false;
 Config::$isSanitized = true;
 Config::$is3ds = true;
 
-// Enable error logging
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 header("Content-Type: application/json");
 
-// Log raw request
 $raw_post = file_get_contents('php://input');
 error_log("Raw POST data: " . $raw_post);
-error_log("POST array: " . print_r($_POST, true));
+
+// Enable error logging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('error_log', __DIR__ . '/midtrans_notification.log');
 
 try {
-    // Inisialisasi notifikasi Midtrans
-    $notif = new Midtrans\Notification();
+    $notif = new Notification();
+    error_log("Notification object created: " . json_encode($notif));
 
-    // Log notifikasi object
-    error_log("Notification object: " . print_r($notif, true));
-
-    $transaction = $notif->transaction_status;
-    $type = $notif->payment_type;
+    $transaction_status = $notif->transaction_status;
     $order_id = $notif->order_id;
-    $fraud = $notif->fraud_status;
+    $payment_type = $notif->payment_type;
+    $fraud_status = $notif->fraud_status;
 
-    error_log("Processing payment notification: " . json_encode([
-        'order_id' => $order_id,
-        'transaction_status' => $transaction,
-        'payment_type' => $type,
-        'fraud_status' => $fraud
-    ]));
+    // Extract base order_id
+    $base_order_id = preg_replace('/-[a-f0-9]+$/', '', $order_id);
+    error_log("Processing order ID: $base_order_id");
 
-    // Update database
-    $sql = "UPDATE orders SET 
-            payment_type = :payment_type,
-            transaction_status = :transaction_status,
-            transaction_time = :transaction_time,
-            payment_details = :payment_details,
-            fraud_status = :fraud_status
-            WHERE order_id = :order_id";
+    $GLOBALS['db']->beginTransaction();
 
-    $stmt = $GLOBALS['db']->prepare($sql);
+    try {
+        // Update untuk semua tipe status, tidak hanya settlement
+        $sql = "UPDATE orders SET 
+                payment_type = :payment_type,
+                transaction_status = :transaction_status,
+                transaction_time = NOW(),
+                payment_details = :payment_details,
+                fraud_status = :fraud_status,
+                updated_at = NOW()
+                WHERE order_id = :order_id";
 
-    $paymentDetails = json_encode([
-        'transaction_id' => $notif->transaction_id,
-        'status_code' => $notif->status_code,
-        'status_message' => $notif->status_message,
-        'gross_amount' => $notif->gross_amount
-    ]);
+        $paymentDetails = json_encode([
+            'transaction_id' => $notif->transaction_id,
+            'payment_type' => $payment_type,
+            'transaction_time' => date('Y-m-d H:i:s'),
+            'transaction_status' => $transaction_status,
+            'gross_amount' => $notif->gross_amount,
+            'fraud_status' => $fraud_status,
+            'status_code' => $notif->status_code,
+            'status_message' => $notif->status_message,
+            'original_order_id' => $order_id
+        ]);
 
-    $params = [
-        ':payment_type' => $type,
-        ':transaction_status' => $transaction,
-        ':transaction_time' => date('Y-m-d H:i:s'),
-        ':payment_details' => $paymentDetails,
-        ':fraud_status' => $fraud,
-        ':order_id' => $order_id
-    ];
+        $stmt = $GLOBALS['db']->prepare($sql);
+        $params = [
+            ':payment_type' => $payment_type,
+            ':transaction_status' => $transaction_status,
+            ':payment_details' => $paymentDetails,
+            ':fraud_status' => $fraud_status,
+            ':order_id' => $base_order_id
+        ];
 
-    // Log parameters
-    error_log("Update parameters: " . json_encode($params));
+        error_log("Executing update with params: " . json_encode($params));
 
-    // Execute update
-    $result = $stmt->execute($params);
+        if (!$stmt->execute($params)) {
+            throw new Exception("Failed to update order: " . json_encode($stmt->errorInfo()));
+        }
 
-    if ($result) {
-        // Verify update
-        $verifyStmt = $GLOBALS['db']->prepare("SELECT * FROM orders WHERE order_id = ?");
-        $verifyStmt->execute([$order_id]);
-        $updatedOrder = $verifyStmt->fetch(PDO::FETCH_ASSOC);
-        error_log("Updated order data: " . json_encode($updatedOrder));
+        $GLOBALS['db']->commit();
 
+        // Kirim response 200 OK ke Midtrans
+        http_response_code(200);
         echo json_encode([
             'status' => 'success',
-            'message' => 'Payment notification processed successfully'
+            'message' => 'Notification processed successfully'
         ]);
-    } else {
-        throw new Exception("Failed to update order status");
+        exit;
+
+    } catch (Exception $e) {
+        $GLOBALS['db']->rollBack();
+        error_log("Database error: " . $e->getMessage());
+        throw $e;
     }
 
 } catch (Exception $e) {
     error_log("Notification Error: " . $e->getMessage());
     error_log("Stack trace: " . $e->getTraceAsString());
 
-    http_response_code(500);
+    // Tetap kirim 200 OK ke Midtrans untuk menghentikan retry
+    http_response_code(200);
     echo json_encode([
         'status' => 'error',
         'message' => $e->getMessage()
     ]);
+    exit;
 }
